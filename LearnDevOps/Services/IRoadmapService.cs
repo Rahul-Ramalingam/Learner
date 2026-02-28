@@ -4,6 +4,7 @@ public interface IRoadmapService
 {
     RoadmapData? GetRoadmap(string slug);
     RoadmapTopic? GetTopic(string slug, string topicId);
+    RoadmapProject? GetProject(string slug, string projectId);
     List<string> GetAvailableSlugs();
 }
 
@@ -17,6 +18,7 @@ public class RoadmapData
     public string Emoji { get; set; } = "";
     public string ColorHex { get; set; } = "#58CC02";
     public List<RoadmapSection> Sections { get; set; } = new();
+    public RoadmapProject? CapstoneProject { get; set; }
 }
 
 public class RoadmapSection
@@ -25,6 +27,29 @@ public class RoadmapSection
     public string Title { get; set; } = "";
     public int Order { get; set; }
     public List<RoadmapTopic> Topics { get; set; } = new();
+    public RoadmapProject? Project { get; set; }
+}
+
+public class RoadmapProject
+{
+    public string Id { get; set; } = "";
+    public string Title { get; set; } = "";
+    public string Description { get; set; } = "";
+    public string Difficulty { get; set; } = "intermediate";
+    public string EstimatedTime { get; set; } = "";
+    public string Icon { get; set; } = "\U0001f6e0\ufe0f";
+    public List<string> Objectives { get; set; } = new();
+    public List<ProjectTask> Tasks { get; set; } = new();
+    public List<string> ArchitectureHints { get; set; } = new();
+    public List<string> TechStack { get; set; } = new();
+    public List<Resource> Resources { get; set; } = new();
+}
+
+public class ProjectTask
+{
+    public string Title { get; set; } = "";
+    public string Description { get; set; } = "";
+    public bool IsBonus { get; set; }
 }
 
 public class RoadmapTopic

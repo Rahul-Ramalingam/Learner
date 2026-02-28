@@ -507,7 +507,83 @@
             }
           ]
         }
-      ]
+      ],
+      "project": {
+        "id": "project-url-shortener",
+        "title": "Design & Build a URL Shortener",
+        "description": "Apply core system design principles by building a fully functional URL shortening service. You'll work through requirements gathering, API design, database schema, and basic scaling considerations — the classic system design interview warm-up brought to life.",
+        "difficulty": "beginner",
+        "estimatedTime": "3-4 hours",
+        "icon": "🔗",
+        "objectives": [
+          "Practice structured system design thinking: requirements, estimation, API, schema",
+          "Build a working REST API with short URL generation and redirection",
+          "Implement base62 encoding for compact URL keys",
+          "Add analytics tracking (click count, referrer, timestamp)",
+          "Consider and document trade-offs for scaling"
+        ],
+        "tasks": [
+          {
+            "title": "Define functional & non-functional requirements",
+            "description": "Document read/write ratio, expected QPS, URL expiration policy, and storage estimates.",
+            "isBonus": false
+          },
+          {
+            "title": "Design the REST API",
+            "description": "POST /shorten, GET /:shortCode, GET /:shortCode/stats endpoints with request/response schemas.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement short code generation",
+            "description": "Use base62 encoding with auto-incrementing IDs or MD5 hash truncation. Handle collisions.",
+            "isBonus": false
+          },
+          {
+            "title": "Build the redirect service",
+            "description": "Implement 301/302 redirect with click tracking middleware.",
+            "isBonus": false
+          },
+          {
+            "title": "Add analytics dashboard",
+            "description": "Track clicks, unique visitors, referrers, geographic data. Expose via /stats endpoint.",
+            "isBonus": false
+          },
+          {
+            "title": "Add rate limiting",
+            "description": "Implement token bucket or sliding window rate limiter for the shorten endpoint.",
+            "isBonus": true
+          },
+          {
+            "title": "Write a scaling design doc",
+            "description": "Document how you'd scale to 1B URLs: sharding strategy, caching layer, read replicas.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Start with a monolith — a single service handling both shortening and redirecting is fine for v1",
+          "Use a relational database (PostgreSQL) for strong consistency on writes, add Redis cache for hot reads",
+          "Consider base62 encoding over hashing to avoid collision resolution complexity",
+          "302 (temporary) redirects allow better analytics; 301 (permanent) reduces server load — document the trade-off"
+        ],
+        "techStack": [
+          "Node.js or Python",
+          "PostgreSQL",
+          "Redis",
+          "Docker"
+        ],
+        "resources": [
+          {
+            "title": "System Design: URL Shortener",
+            "url": "https://www.youtube.com/watch?v=fMZMm_0ZhK4",
+            "type": "video"
+          },
+          {
+            "title": "Designing a URL Shortener",
+            "url": "https://github.com/donnemartin/system-design-primer#design-pastebin",
+            "type": "article"
+          }
+        ]
+      }
     },
     {
       "id": "consistency-patterns",
@@ -700,7 +776,83 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-distributed-kv-store",
+        "title": "Build a Distributed KV Store with Tunable Consistency",
+        "description": "Build a distributed key-value store that lets clients choose their consistency level per request (ONE, QUORUM, ALL) — similar to Apache Cassandra's tunable consistency model. Experience the CAP theorem trade-offs firsthand.",
+        "difficulty": "advanced",
+        "estimatedTime": "8-10 hours",
+        "icon": "🗄️",
+        "objectives": [
+          "Implement quorum-based reads and writes across multiple nodes",
+          "Support tunable consistency levels: ONE, QUORUM, ALL",
+          "Handle node failures with hinted handoff",
+          "Implement vector clocks or last-write-wins for conflict resolution",
+          "Observe CAP theorem trade-offs under network partitions"
+        ],
+        "tasks": [
+          {
+            "title": "Build a single-node KV store",
+            "description": "GET/PUT/DELETE operations with an in-memory hash map and write-ahead log.",
+            "isBonus": false
+          },
+          {
+            "title": "Add replication across 3 nodes",
+            "description": "Each key is replicated to N nodes using consistent hashing for partition assignment.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement tunable consistency",
+            "description": "Support ONE (fastest), QUORUM (balanced), ALL (strongest) consistency on reads and writes.",
+            "isBonus": false
+          },
+          {
+            "title": "Add conflict resolution",
+            "description": "Implement vector clocks or last-write-wins (LWW) timestamps for concurrent write conflicts.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement hinted handoff",
+            "description": "When a replica is down, store hints locally and replay when the node recovers.",
+            "isBonus": false
+          },
+          {
+            "title": "Simulate network partitions",
+            "description": "Add a chaos testing mode that drops messages between nodes to observe consistency vs availability trade-offs.",
+            "isBonus": true
+          },
+          {
+            "title": "Add read repair",
+            "description": "On read, detect stale replicas and trigger background repair.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Use consistent hashing to assign keys to nodes — this simplifies adding/removing nodes later",
+          "For QUORUM consistency with N=3, require W=2 writes and R=2 reads to guarantee overlap",
+          "Vector clocks track causality but add complexity — start with LWW timestamps, then upgrade",
+          "Run each node as a separate process communicating via gRPC or HTTP for realistic simulation"
+        ],
+        "techStack": [
+          "Go or Java",
+          "gRPC",
+          "Protocol Buffers",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Dynamo: Amazon's Key-Value Store",
+            "url": "https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf",
+            "type": "article"
+          },
+          {
+            "title": "Cassandra Consistency Levels",
+            "url": "https://www.youtube.com/watch?v=86olupkuCho",
+            "type": "video"
+          }
+        ]
+      }
     },
     {
       "id": "availability-patterns",
@@ -1205,7 +1357,78 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-self-healing-service",
+        "title": "Build a Self-Healing Service with Failover",
+        "description": "Build a service that demonstrates active-passive failover, health checking, and automatic recovery. Implement the patterns that keep production systems running at 99.99% availability.",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "icon": "🩹",
+        "objectives": [
+          "Implement active-passive failover with automatic leader election",
+          "Build health check endpoints (liveness + readiness probes)",
+          "Add circuit breaker pattern for downstream dependency failures",
+          "Implement retry with exponential backoff and jitter",
+          "Achieve automatic recovery without manual intervention"
+        ],
+        "tasks": [
+          {
+            "title": "Build the primary service",
+            "description": "REST API with health endpoints (/health/live, /health/ready) and simulated work.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement a health checker/watchdog",
+            "description": "Periodically polls health endpoints, detects failures after N consecutive misses.",
+            "isBonus": false
+          },
+          {
+            "title": "Add active-passive failover",
+            "description": "Standby instance takes over when primary fails. Use a shared lock (Redis/file) for leader election.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement circuit breaker",
+            "description": "Wrap downstream calls with circuit breaker (closed/open/half-open states). Track failure rates.",
+            "isBonus": false
+          },
+          {
+            "title": "Add retry with backoff",
+            "description": "Exponential backoff with jitter for transient failures. Configurable max retries and timeout.",
+            "isBonus": false
+          },
+          {
+            "title": "Chaos testing mode",
+            "description": "Inject random failures: crash the primary, slow responses, return 500s. Verify auto-recovery.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Use Redis SETNX for distributed leader election — simple and effective for this scale",
+          "Health checks should distinguish liveness (is the process alive?) from readiness (can it serve traffic?)",
+          "Circuit breaker thresholds: open after 5 failures in 30s, half-open after 15s, close after 3 successes",
+          "Run primary + standby as Docker containers with a shared Redis instance for coordination"
+        ],
+        "techStack": [
+          "C# or Node.js",
+          "Redis",
+          "Docker Compose",
+          "Polly or custom circuit breaker"
+        ],
+        "resources": [
+          {
+            "title": "Circuit Breaker Pattern",
+            "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker",
+            "type": "official"
+          },
+          {
+            "title": "Health Check APIs",
+            "url": "https://www.youtube.com/watch?v=mhkLQp8CuRw",
+            "type": "video"
+          }
+        ]
+      }
     },
     {
       "id": "background-jobs",
@@ -1398,7 +1621,83 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-distributed-task-queue",
+        "title": "Build a Distributed Task Queue",
+        "description": "Create a production-grade task queue system similar to Celery or Sidekiq. Handle job scheduling, retries, dead letter queues, and worker scaling — essential infrastructure for any large-scale application.",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "icon": "⚙️",
+        "objectives": [
+          "Design a reliable job queue with at-least-once delivery semantics",
+          "Implement worker pools that process jobs concurrently",
+          "Add retry policies with exponential backoff and dead letter queues",
+          "Support scheduled/delayed job execution",
+          "Build a monitoring dashboard for queue depth and worker status"
+        ],
+        "tasks": [
+          {
+            "title": "Design the job schema",
+            "description": "Job ID, type, payload, status (pending/running/completed/failed), retry count, scheduled_at, created_at.",
+            "isBonus": false
+          },
+          {
+            "title": "Build the job producer API",
+            "description": "POST /jobs endpoint to enqueue jobs. Support immediate and delayed scheduling.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement worker consumers",
+            "description": "Workers poll for jobs, execute them, and update status. Handle concurrent job claiming with optimistic locking.",
+            "isBonus": false
+          },
+          {
+            "title": "Add retry and dead letter queue",
+            "description": "Failed jobs retry with exponential backoff. After max retries, move to DLQ for manual review.",
+            "isBonus": false
+          },
+          {
+            "title": "Build the monitoring dashboard",
+            "description": "Real-time view of queue depth, active workers, success/failure rates, and DLQ size.",
+            "isBonus": false
+          },
+          {
+            "title": "Add job priorities",
+            "description": "Support HIGH/MEDIUM/LOW priority levels with weighted fair scheduling.",
+            "isBonus": true
+          },
+          {
+            "title": "Implement job chaining",
+            "description": "Allow jobs to spawn child jobs and track completion of job workflows/pipelines.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Redis lists (BRPOPLPUSH) give you atomic, blocking queue operations — great for the job queue",
+          "Use optimistic locking (Redis WATCH/MULTI or DB row versioning) to prevent double-processing",
+          "Store completed/failed job history in PostgreSQL, keep active queue in Redis for speed",
+          "Scale workers horizontally — each worker should be stateless and independently deployable"
+        ],
+        "techStack": [
+          "Python or Node.js",
+          "Redis",
+          "PostgreSQL",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Building a Job Queue",
+            "url": "https://www.youtube.com/watch?v=nFg3qlSGs04",
+            "type": "video"
+          },
+          {
+            "title": "Reliable Task Queues",
+            "url": "https://redis.io/docs/latest/develop/use/patterns/",
+            "type": "official"
+          }
+        ]
+      }
     },
     {
       "id": "dns",
@@ -1467,7 +1766,77 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-dns-resolver",
+        "title": "Build a DNS Resolver & Custom DNS Server",
+        "description": "Implement a recursive DNS resolver from scratch and a custom authoritative DNS server. Understand how domain names translate to IP addresses across the global DNS hierarchy.",
+        "difficulty": "intermediate",
+        "estimatedTime": "5-6 hours",
+        "icon": "🌐",
+        "objectives": [
+          "Understand the DNS protocol (UDP packets, header format, record types)",
+          "Build a recursive resolver that queries root → TLD → authoritative servers",
+          "Implement DNS caching with TTL-based expiration",
+          "Create a custom authoritative DNS server for your own zone",
+          "Support A, AAAA, CNAME, MX, and TXT record types"
+        ],
+        "tasks": [
+          {
+            "title": "Parse DNS packets",
+            "description": "Implement DNS message parsing: header, question, answer, authority, and additional sections.",
+            "isBonus": false
+          },
+          {
+            "title": "Build a stub resolver",
+            "description": "Send queries to a known DNS server (e.g., 8.8.8.8) and parse responses.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement recursive resolution",
+            "description": "Start from root servers, follow referrals through TLD and authoritative servers.",
+            "isBonus": false
+          },
+          {
+            "title": "Add DNS caching",
+            "description": "Cache resolved records with TTL. Serve from cache when fresh, re-resolve when expired.",
+            "isBonus": false
+          },
+          {
+            "title": "Build an authoritative server",
+            "description": "Serve your own DNS zone with configurable A, CNAME, MX records from a zone file.",
+            "isBonus": false
+          },
+          {
+            "title": "Add DNS-over-HTTPS (DoH)",
+            "description": "Wrap your resolver in an HTTPS endpoint that accepts DNS queries via HTTP.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "DNS uses UDP on port 53 — start with UDP, add TCP fallback for large responses (>512 bytes)",
+          "Root server IPs are hardcoded (there are 13) — these are your starting point for recursion",
+          "CNAME records require following the chain until you reach an A/AAAA record",
+          "Use a hash map with TTL timestamps for the cache — check freshness on every lookup"
+        ],
+        "techStack": [
+          "Python or Go",
+          "UDP sockets",
+          "Docker"
+        ],
+        "resources": [
+          {
+            "title": "Implement DNS in a Weekend",
+            "url": "https://implement-dns.wizardzines.com/",
+            "type": "article"
+          },
+          {
+            "title": "DNS Explained",
+            "url": "https://www.youtube.com/watch?v=27r4Bzuj5NQ",
+            "type": "video"
+          }
+        ]
+      }
     },
     {
       "id": "cdn",
@@ -1661,7 +2030,78 @@
             }
           ]
         }
-      ]
+      ],
+      "project": {
+        "id": "project-cdn-simulator",
+        "title": "Build a Static Asset CDN Simulator",
+        "description": "Create a multi-node CDN simulation with edge caches, an origin server, cache invalidation, and geographic routing. See how CDNs minimize latency by serving content from the nearest edge.",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "icon": "📡",
+        "objectives": [
+          "Build an origin server and multiple edge cache nodes",
+          "Implement pull-based caching: cache on first request, serve from cache thereafter",
+          "Add cache invalidation (purge, TTL expiry, versioned URLs)",
+          "Simulate geographic routing to nearest edge node",
+          "Measure and compare latency with and without CDN caching"
+        ],
+        "tasks": [
+          {
+            "title": "Build the origin server",
+            "description": "Serves static files (images, CSS, JS) with proper Cache-Control headers.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement edge cache nodes",
+            "description": "3 edge nodes that proxy to origin, cache responses locally, and serve cached content.",
+            "isBonus": false
+          },
+          {
+            "title": "Add cache-control logic",
+            "description": "Honor Cache-Control headers, implement TTL expiration, and cache key generation.",
+            "isBonus": false
+          },
+          {
+            "title": "Build a routing layer",
+            "description": "Request router that directs clients to the nearest edge node based on simulated geography.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement cache invalidation",
+            "description": "Support purge API (DELETE /cache/:key), TTL expiry, and cache busting via versioned URLs.",
+            "isBonus": false
+          },
+          {
+            "title": "Add metrics dashboard",
+            "description": "Track cache hit ratio, bandwidth saved, and per-node cache utilization.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Each edge node is an HTTP reverse proxy — check local cache first, fetch from origin on miss",
+          "Use consistent hashing for cache key distribution if you want to avoid duplicate caching",
+          "Simulate latency: origin = 200ms, same-region edge = 20ms, cross-region edge = 100ms",
+          "Run origin + 3 edge nodes as separate Docker containers with simulated network delays"
+        ],
+        "techStack": [
+          "Node.js or Go",
+          "Nginx",
+          "Redis",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "How CDNs Work",
+            "url": "https://www.youtube.com/watch?v=RI9np1LWzqw",
+            "type": "video"
+          },
+          {
+            "title": "CDN Architecture",
+            "url": "https://github.com/donnemartin/system-design-primer#content-delivery-network",
+            "type": "article"
+          }
+        ]
+      }
     },
     {
       "id": "load-balancers",
@@ -1979,7 +2419,82 @@
             }
           ]
         }
-      ]
+      ],
+      "project": {
+        "id": "project-layer7-load-balancer",
+        "title": "Build a Layer-7 Load Balancer",
+        "description": "Implement a Layer-7 (application-level) load balancer with multiple routing algorithms, health checking, sticky sessions, and request routing based on URL paths and headers.",
+        "difficulty": "advanced",
+        "estimatedTime": "8-10 hours",
+        "icon": "⚖️",
+        "objectives": [
+          "Implement round-robin, weighted round-robin, and least-connections algorithms",
+          "Add Layer-7 routing: route by URL path, HTTP headers, or cookie values",
+          "Build active health checking with automatic backend removal/recovery",
+          "Implement sticky sessions using cookies",
+          "Add request/response logging and metrics"
+        ],
+        "tasks": [
+          {
+            "title": "Build the HTTP reverse proxy",
+            "description": "Forward incoming HTTP requests to a pool of backend servers. Handle request/response streaming.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement routing algorithms",
+            "description": "Round-robin, weighted round-robin (configurable weights), and least-connections.",
+            "isBonus": false
+          },
+          {
+            "title": "Add health checking",
+            "description": "Periodically probe backends (/health). Remove unhealthy backends, re-add when recovered.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement path-based routing",
+            "description": "Route /api/* to API servers, /static/* to static servers, /* to web servers.",
+            "isBonus": false
+          },
+          {
+            "title": "Add sticky sessions",
+            "description": "Use a session cookie to pin users to the same backend for stateful applications.",
+            "isBonus": false
+          },
+          {
+            "title": "Add rate limiting per client",
+            "description": "Token bucket per client IP. Return 429 when limit exceeded.",
+            "isBonus": true
+          },
+          {
+            "title": "Implement graceful backend draining",
+            "description": "When removing a backend, finish in-flight requests before stopping traffic.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Use non-blocking I/O (async/await or goroutines) to handle thousands of concurrent connections",
+          "Health checks should run in a background goroutine/thread — don't block request handling",
+          "For sticky sessions, hash the session cookie to a backend index for O(1) lookup",
+          "Test with 3-5 simple HTTP backend servers that return their server ID in the response"
+        ],
+        "techStack": [
+          "Go or Node.js",
+          "HTTP/1.1",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Load Balancer Deep Dive",
+            "url": "https://www.youtube.com/watch?v=sCR3SAVdyCc",
+            "type": "video"
+          },
+          {
+            "title": "NGINX Load Balancing",
+            "url": "https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/",
+            "type": "official"
+          }
+        ]
+      }
     },
     {
       "id": "horizontal-scaling",
@@ -2172,7 +2687,85 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-scalable-chat",
+        "title": "Build a Horizontally Scalable Chat Service",
+        "description": "Build a real-time chat application that scales horizontally across multiple server instances. Handle WebSocket connections, message fanout via pub/sub, and session affinity — the core challenge of any real-time system at scale.",
+        "difficulty": "advanced",
+        "estimatedTime": "8-10 hours",
+        "icon": "💬",
+        "objectives": [
+          "Handle WebSocket connections across multiple server instances",
+          "Implement pub/sub message fanout using Redis",
+          "Support chat rooms, direct messages, and presence (online/offline)",
+          "Scale servers horizontally behind a load balancer",
+          "Persist message history with pagination"
+        ],
+        "tasks": [
+          {
+            "title": "Build a single-server chat",
+            "description": "WebSocket server with rooms, join/leave, and message broadcasting within one process.",
+            "isBonus": false
+          },
+          {
+            "title": "Add Redis pub/sub for cross-server fanout",
+            "description": "When a message is sent to any server, it reaches all subscribers across all server instances.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement presence tracking",
+            "description": "Track online/offline status per user across all servers using Redis sets.",
+            "isBonus": false
+          },
+          {
+            "title": "Add message persistence",
+            "description": "Store messages in PostgreSQL. Support pagination (GET /rooms/:id/messages?before=timestamp).",
+            "isBonus": false
+          },
+          {
+            "title": "Deploy behind a load balancer",
+            "description": "Run 3 chat server instances behind a load balancer. Verify cross-server messaging works.",
+            "isBonus": false
+          },
+          {
+            "title": "Add typing indicators",
+            "description": "Show 'User is typing...' with debounced pub/sub events.",
+            "isBonus": true
+          },
+          {
+            "title": "Implement message delivery receipts",
+            "description": "Track sent/delivered/read status for direct messages.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "WebSocket connections are stateful — use sticky sessions OR ensure all servers subscribe to the same Redis pub/sub channels",
+          "Redis pub/sub is fire-and-forget — for guaranteed delivery, combine with a message queue",
+          "Presence tracking: SADD user to room set, SREM on disconnect, SMEMBERS to list online users",
+          "For message ordering, use server-assigned timestamps (not client clocks) as the source of truth"
+        ],
+        "techStack": [
+          "Node.js or Go",
+          "WebSocket",
+          "Redis Pub/Sub",
+          "PostgreSQL",
+          "Docker Compose",
+          "Nginx"
+        ],
+        "resources": [
+          {
+            "title": "Scaling WebSockets",
+            "url": "https://www.youtube.com/watch?v=1BfCnjr_Vjg",
+            "type": "video"
+          },
+          {
+            "title": "Chat System Design",
+            "url": "https://github.com/donnemartin/system-design-primer#design-a-chat-service",
+            "type": "article"
+          }
+        ]
+      }
     },
     {
       "id": "databases",
@@ -2923,7 +3516,84 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-multi-model-db",
+        "title": "Build a Multi-Model Database System",
+        "description": "Design and implement a data layer that uses the right database for each use case: relational for transactions, document store for flexible schemas, and search index for full-text queries. Experience the polyglot persistence pattern used by Netflix, Uber, and other large-scale systems.",
+        "difficulty": "advanced",
+        "estimatedTime": "10-12 hours",
+        "icon": "💾",
+        "objectives": [
+          "Design a data model spanning relational, document, and search databases",
+          "Implement CRUD operations with proper transaction management",
+          "Synchronize data across multiple database types with change data capture",
+          "Implement database sharding strategy for the relational layer",
+          "Add read replicas and measure replication lag"
+        ],
+        "tasks": [
+          {
+            "title": "Design the data model",
+            "description": "Users/Orders in PostgreSQL, Product Catalog in MongoDB, Search Index in Elasticsearch. Document entity relationships.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement relational CRUD",
+            "description": "User registration, orders with ACID transactions, foreign key relationships in PostgreSQL.",
+            "isBonus": false
+          },
+          {
+            "title": "Add document store",
+            "description": "Flexible product catalog in MongoDB with nested attributes, variants, and dynamic schemas.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement full-text search",
+            "description": "Index products in Elasticsearch. Support fuzzy search, filters, facets, and autocomplete.",
+            "isBonus": false
+          },
+          {
+            "title": "Sync data between databases",
+            "description": "When a product is updated in MongoDB, sync to Elasticsearch. Use events or CDC.",
+            "isBonus": false
+          },
+          {
+            "title": "Add database sharding",
+            "description": "Shard orders by user_id across 2 PostgreSQL instances. Implement shard routing.",
+            "isBonus": true
+          },
+          {
+            "title": "Set up read replicas",
+            "description": "Configure PostgreSQL read replica. Route reads to replica, writes to primary. Measure lag.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Use PostgreSQL for data requiring ACID (users, orders, payments) — consistency is king here",
+          "MongoDB shines for product catalogs with variable attributes — don't force a rigid schema",
+          "Elasticsearch is a search engine, not a primary database — always keep a source of truth elsewhere",
+          "For CDC, consider Debezium or simple application-level events as a starting point"
+        ],
+        "techStack": [
+          "Node.js or Python",
+          "PostgreSQL",
+          "MongoDB",
+          "Elasticsearch",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Polyglot Persistence",
+            "url": "https://www.youtube.com/watch?v=K4qE0UZjTkU",
+            "type": "video"
+          },
+          {
+            "title": "Database Sharding Explained",
+            "url": "https://www.youtube.com/watch?v=5faMjKuB9bc",
+            "type": "video"
+          }
+        ]
+      }
     },
     {
       "id": "caching",
@@ -3550,7 +4220,83 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-multi-layer-cache",
+        "title": "Build a Multi-Layer Cache System",
+        "description": "Implement a comprehensive caching strategy with L1 (in-process), L2 (distributed), and cache-aside patterns. Handle cache invalidation, thundering herd protection, and cache warming — the problems that make caching the hardest problem in computer science.",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "icon": "⚡",
+        "objectives": [
+          "Implement L1 (in-memory LRU) and L2 (Redis distributed) caches",
+          "Build cache-aside, write-through, and write-behind patterns",
+          "Handle cache invalidation with event-driven pub/sub",
+          "Protect against thundering herd (cache stampede) with distributed locks",
+          "Implement cache warming for predictable traffic patterns"
+        ],
+        "tasks": [
+          {
+            "title": "Build L1 in-memory cache",
+            "description": "LRU cache with configurable max size and TTL. Track hit/miss rates.",
+            "isBonus": false
+          },
+          {
+            "title": "Add L2 Redis cache",
+            "description": "Fall through from L1 miss to L2. Implement cache-aside pattern with DB fallback.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement write-through caching",
+            "description": "On writes, update cache and database synchronously. Ensure consistency.",
+            "isBonus": false
+          },
+          {
+            "title": "Add thundering herd protection",
+            "description": "Use distributed locks (Redis SETNX) to ensure only one request populates the cache on a miss.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement cache invalidation",
+            "description": "Publish invalidation events via Redis pub/sub. All instances evict stale entries.",
+            "isBonus": false
+          },
+          {
+            "title": "Add cache warming",
+            "description": "Pre-populate hot keys on service startup based on access patterns.",
+            "isBonus": true
+          },
+          {
+            "title": "Build a cache metrics dashboard",
+            "description": "Track hit ratio, latency percentiles (p50/p95/p99), memory usage, and eviction rate.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "L1 is per-process and fast (~1ms) but limited in size; L2 is shared and larger but slower (~5ms); DB is the source of truth (~50ms)",
+          "Cache-aside: check cache → miss → read DB → populate cache. Simple and widely used.",
+          "For thundering herd: lock the cache key, let one request fetch, others wait or get slightly stale data",
+          "Cache invalidation via pub/sub ensures all application instances stay consistent"
+        ],
+        "techStack": [
+          "Node.js or Python",
+          "Redis",
+          "PostgreSQL",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Caching Strategies",
+            "url": "https://www.youtube.com/watch?v=U3RkDLtS7uY",
+            "type": "video"
+          },
+          {
+            "title": "Redis Caching Patterns",
+            "url": "https://redis.io/docs/latest/develop/use/client-side-caching/",
+            "type": "official"
+          }
+        ]
+      }
     },
     {
       "id": "asynchronism",
@@ -3743,7 +4489,83 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-event-driven-orders",
+        "title": "Build an Event-Driven Order Processing Pipeline",
+        "description": "Create an order processing system using event-driven architecture with message queues. Orders flow through validation, payment, inventory, and shipping stages — each handled by an independent microservice communicating via events.",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "icon": "📨",
+        "objectives": [
+          "Design an event-driven architecture with clear event schemas",
+          "Implement producer/consumer patterns with message queues",
+          "Handle event ordering, idempotency, and dead letter queues",
+          "Build a saga pattern for distributed transaction management",
+          "Implement compensating transactions for failure rollback"
+        ],
+        "tasks": [
+          {
+            "title": "Design the event schema",
+            "description": "Define events: OrderCreated, PaymentProcessed, InventoryReserved, OrderShipped, OrderFailed.",
+            "isBonus": false
+          },
+          {
+            "title": "Build the Order Service",
+            "description": "Accepts orders via REST API, publishes OrderCreated events to the message queue.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement Payment Service",
+            "description": "Consumes OrderCreated, processes payment, publishes PaymentProcessed or PaymentFailed.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement Inventory Service",
+            "description": "Consumes PaymentProcessed, reserves stock, publishes InventoryReserved or OutOfStock.",
+            "isBonus": false
+          },
+          {
+            "title": "Add compensating transactions",
+            "description": "When Inventory fails, publish a refund event. Payment Service reverses the charge.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement dead letter queue",
+            "description": "Failed events after max retries go to DLQ. Build a UI to inspect and replay.",
+            "isBonus": true
+          },
+          {
+            "title": "Add an event store",
+            "description": "Log all events to a database for audit trail, debugging, and event replay.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Use RabbitMQ for simplicity or Kafka for high throughput — both work for this project",
+          "Each service should be idempotent: processing the same event twice should have no side effects",
+          "The saga pattern coordinates multi-step transactions without distributed locks — use choreography (events) not orchestration for v1",
+          "Events should include a correlation ID (order ID) to track the full flow across services"
+        ],
+        "techStack": [
+          "Node.js or Python",
+          "RabbitMQ or Kafka",
+          "PostgreSQL",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Event-Driven Architecture",
+            "url": "https://www.youtube.com/watch?v=STKCRSUsyP0",
+            "type": "video"
+          },
+          {
+            "title": "Saga Pattern Explained",
+            "url": "https://microservices.io/patterns/data/saga.html",
+            "type": "article"
+          }
+        ]
+      }
     },
     {
       "id": "idempotent-operations",
@@ -3812,7 +4634,77 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-idempotent-payment-api",
+        "title": "Build an Idempotent Payment API",
+        "description": "Create a payment processing API that guarantees exactly-once semantics even when clients retry due to network failures. Master the idempotency key pattern used by Stripe, PayPal, and every serious payment system.",
+        "difficulty": "intermediate",
+        "estimatedTime": "4-6 hours",
+        "icon": "💳",
+        "objectives": [
+          "Implement idempotency keys for safe request retries",
+          "Handle concurrent duplicate requests with database-level locking",
+          "Build a payment state machine (pending → processing → completed/failed)",
+          "Store and replay cached responses for duplicate requests",
+          "Design robust error handling that preserves idempotency guarantees"
+        ],
+        "tasks": [
+          {
+            "title": "Design the payment API",
+            "description": "POST /payments with idempotency_key header. Define request/response schemas.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement idempotency key storage",
+            "description": "Store idempotency_key → response mapping. Return cached response on duplicate requests.",
+            "isBonus": false
+          },
+          {
+            "title": "Handle concurrent duplicates",
+            "description": "Use database advisory locks or unique constraints to prevent race conditions.",
+            "isBonus": false
+          },
+          {
+            "title": "Build payment state machine",
+            "description": "Transitions: created → processing → completed/failed. Each transition is idempotent.",
+            "isBonus": false
+          },
+          {
+            "title": "Add retry simulation",
+            "description": "Client that sends the same request 3 times with network failures. Verify only one payment is created.",
+            "isBonus": false
+          },
+          {
+            "title": "Add idempotency key expiration",
+            "description": "Auto-expire keys after 24 hours. Allow reuse of expired keys for new requests.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Idempotency key + response should be stored in the same database transaction as the payment mutation",
+          "Use SELECT FOR UPDATE or advisory locks to serialize concurrent requests with the same key",
+          "The first request creates the payment; subsequent requests return the stored response without side effects",
+          "Consider: what if the first request crashes between creating the payment and storing the response?"
+        ],
+        "techStack": [
+          "Node.js or C#",
+          "PostgreSQL",
+          "Docker"
+        ],
+        "resources": [
+          {
+            "title": "Stripe Idempotent Requests",
+            "url": "https://stripe.com/docs/api/idempotent_requests",
+            "type": "official"
+          },
+          {
+            "title": "Idempotency Explained",
+            "url": "https://www.youtube.com/watch?v=4OuaONkZw1I",
+            "type": "video"
+          }
+        ]
+      }
     },
     {
       "id": "communication",
@@ -4253,7 +5145,83 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-api-gateway",
+        "title": "Build a Multi-Protocol API Gateway",
+        "description": "Create an API gateway that supports REST, GraphQL, and WebSocket protocols, with request routing, authentication, rate limiting, and response transformation. The single entry point pattern used by every microservices architecture.",
+        "difficulty": "advanced",
+        "estimatedTime": "8-10 hours",
+        "icon": "🚪",
+        "objectives": [
+          "Build a reverse proxy that routes requests to multiple backend services",
+          "Support REST and WebSocket protocols through a single gateway",
+          "Implement JWT authentication and authorization middleware",
+          "Add rate limiting, request/response logging, and caching",
+          "Support response aggregation from multiple services"
+        ],
+        "tasks": [
+          {
+            "title": "Build the reverse proxy core",
+            "description": "Route requests to backend services based on URL path prefix (/users/*, /orders/*, etc.).",
+            "isBonus": false
+          },
+          {
+            "title": "Add JWT authentication",
+            "description": "Validate JWT tokens in the gateway. Inject user context into forwarded requests.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement rate limiting",
+            "description": "Per-user and per-endpoint rate limits using token bucket algorithm with Redis.",
+            "isBonus": false
+          },
+          {
+            "title": "Add WebSocket proxying",
+            "description": "Proxy WebSocket connections to backend services. Handle upgrade handshake.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement response aggregation",
+            "description": "GET /dashboard aggregates data from users, orders, and analytics services in parallel.",
+            "isBonus": false
+          },
+          {
+            "title": "Add request/response transformation",
+            "description": "Transform backend responses: rename fields, filter sensitive data, add pagination metadata.",
+            "isBonus": true
+          },
+          {
+            "title": "Add circuit breaker per backend",
+            "description": "If a backend fails repeatedly, short-circuit requests and return fallback responses.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "The gateway should be stateless — all state (sessions, rate limits) goes in Redis",
+          "Use middleware chaining: auth → rate limit → route → transform → respond",
+          "For response aggregation, fire parallel requests with Promise.all/asyncio.gather — don't serialize",
+          "WebSocket proxying requires handling the HTTP Upgrade handshake correctly"
+        ],
+        "techStack": [
+          "Node.js or Go",
+          "Redis",
+          "JWT",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "API Gateway Pattern",
+            "url": "https://microservices.io/patterns/apigateway.html",
+            "type": "article"
+          },
+          {
+            "title": "Building an API Gateway",
+            "url": "https://www.youtube.com/watch?v=6ULyxuHKxg8",
+            "type": "video"
+          }
+        ]
+      }
     },
     {
       "id": "performance-antipatterns",
@@ -4880,7 +5848,83 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-refactor-broken-service",
+        "title": "Refactor a Deliberately Broken Service",
+        "description": "Start with a working-but-terrible codebase riddled with every performance antipattern in the book: N+1 queries, chatty APIs, unbounded result sets, synchronous I/O, memory leaks, and missing indexes. Your mission: identify and fix them all.",
+        "difficulty": "intermediate",
+        "estimatedTime": "5-7 hours",
+        "icon": "🐛",
+        "objectives": [
+          "Identify and fix N+1 query problems with eager loading",
+          "Eliminate chatty API calls with response aggregation and batching",
+          "Add pagination and result limiting to prevent unbounded queries",
+          "Convert synchronous blocking I/O to async operations",
+          "Add database indexes and measure query performance improvement"
+        ],
+        "tasks": [
+          {
+            "title": "Profile the broken service",
+            "description": "Run the service and identify bottlenecks using logging, query analysis, and response times.",
+            "isBonus": false
+          },
+          {
+            "title": "Fix N+1 query problems",
+            "description": "Replace loops of individual queries with batch/eager loading. Measure query count before/after.",
+            "isBonus": false
+          },
+          {
+            "title": "Add pagination everywhere",
+            "description": "All list endpoints return paginated results. Add cursor-based pagination for large datasets.",
+            "isBonus": false
+          },
+          {
+            "title": "Optimize API chattiness",
+            "description": "Combine multiple sequential API calls into batch endpoints. Reduce round trips.",
+            "isBonus": false
+          },
+          {
+            "title": "Add database indexes",
+            "description": "Identify slow queries with EXPLAIN ANALYZE. Add appropriate indexes. Measure improvement.",
+            "isBonus": false
+          },
+          {
+            "title": "Fix memory leaks",
+            "description": "Identify and fix event listener leaks, unbounded caches, and connection pool exhaustion.",
+            "isBonus": true
+          },
+          {
+            "title": "Add performance benchmarks",
+            "description": "Write load tests that verify performance targets: p95 < 200ms, throughput > 500 RPS.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Use EXPLAIN ANALYZE on every slow query — the execution plan tells you exactly what's wrong",
+          "N+1 fix: use JOIN or IN (...) queries instead of one query per item in a loop",
+          "For pagination, cursor-based (WHERE id > last_seen_id) beats offset-based at scale",
+          "Profile memory usage over time — leaks show as a steadily increasing RSS"
+        ],
+        "techStack": [
+          "Node.js or Python",
+          "PostgreSQL",
+          "k6 or Artillery for load testing",
+          "Docker"
+        ],
+        "resources": [
+          {
+            "title": "N+1 Query Problem",
+            "url": "https://www.youtube.com/watch?v=uCbFMZYQbxE",
+            "type": "video"
+          },
+          {
+            "title": "Database Indexing Explained",
+            "url": "https://use-the-index-luke.com/",
+            "type": "article"
+          }
+        ]
+      }
     },
     {
       "id": "monitoring",
@@ -5321,7 +6365,85 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-observability-stack",
+        "title": "Build a Full Observability Stack",
+        "description": "Set up a complete observability platform with metrics, logging, and distributed tracing for a multi-service application. Build dashboards, set up alerts, and practice incident response — the day-two operations skills every engineer needs.",
+        "difficulty": "intermediate",
+        "estimatedTime": "6-8 hours",
+        "icon": "📊",
+        "objectives": [
+          "Instrument services with metrics (RED: Rate, Errors, Duration)",
+          "Set up centralized logging with structured JSON logs",
+          "Implement distributed tracing across multiple services",
+          "Build Grafana dashboards with meaningful visualizations",
+          "Configure alerting rules with proper severity levels"
+        ],
+        "tasks": [
+          {
+            "title": "Deploy the monitoring stack",
+            "description": "Set up Prometheus, Grafana, and Jaeger/Zipkin with Docker Compose.",
+            "isBonus": false
+          },
+          {
+            "title": "Instrument a service with metrics",
+            "description": "Add RED metrics: request rate, error rate, and duration histograms. Expose /metrics endpoint.",
+            "isBonus": false
+          },
+          {
+            "title": "Add structured logging",
+            "description": "JSON logs with correlation IDs, severity levels, and service metadata. Ship to Loki or ELK.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement distributed tracing",
+            "description": "Add OpenTelemetry tracing across 3 services. Propagate trace context via headers.",
+            "isBonus": false
+          },
+          {
+            "title": "Build Grafana dashboards",
+            "description": "Service health dashboard with request rate, error rate, latency percentiles, and saturation.",
+            "isBonus": false
+          },
+          {
+            "title": "Configure alerting",
+            "description": "Alert on: error rate > 5%, p99 latency > 2s, service down for > 30s. Test alert firing.",
+            "isBonus": true
+          },
+          {
+            "title": "Run a game day",
+            "description": "Inject failures (kill a service, add latency, exhaust resources) and practice incident response using your dashboards.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Prometheus pulls metrics from /metrics endpoints — use client libraries (prom-client, prometheus-go) to instrument",
+          "Structured JSON logs are 10x more useful than plain text — always include request_id, service, timestamp",
+          "OpenTelemetry is the standard for tracing — use its SDK, not vendor-specific libraries",
+          "Good dashboards answer: 'Is the system healthy?' at a glance — USE method (Utilization, Saturation, Errors)"
+        ],
+        "techStack": [
+          "Node.js or Go",
+          "Prometheus",
+          "Grafana",
+          "Jaeger",
+          "OpenTelemetry",
+          "Docker Compose"
+        ],
+        "resources": [
+          {
+            "title": "Observability Engineering",
+            "url": "https://www.youtube.com/watch?v=bvVgP4tw_Hc",
+            "type": "video"
+          },
+          {
+            "title": "OpenTelemetry Docs",
+            "url": "https://opentelemetry.io/docs/",
+            "type": "official"
+          }
+        ]
+      }
     },
     {
       "id": "cloud-design-patterns",
@@ -7257,7 +8379,279 @@
           ],
           "subtopics": []
         }
-      ]
+      ],
+      "project": {
+        "id": "project-resilient-cloud-native",
+        "title": "Build a Resilient Cloud-Native Microservice",
+        "description": "Design and implement a production-ready microservice that employs multiple cloud design patterns: retry, circuit breaker, bulkhead, sidecar, strangler fig, and CQRS. This is the culmination of everything you've learned — a service that's built to survive in production.",
+        "difficulty": "advanced",
+        "estimatedTime": "10-12 hours",
+        "icon": "☁️",
+        "objectives": [
+          "Implement retry, circuit breaker, and bulkhead resilience patterns",
+          "Apply CQRS to separate read and write models for performance",
+          "Use the sidecar pattern for cross-cutting concerns (logging, metrics, auth)",
+          "Implement the ambassador pattern for external service communication",
+          "Design for graceful degradation when downstream services fail"
+        ],
+        "tasks": [
+          {
+            "title": "Build the core microservice",
+            "description": "A product catalog service with CRUD, search, and inventory tracking.",
+            "isBonus": false
+          },
+          {
+            "title": "Add retry + circuit breaker",
+            "description": "Wrap all external calls with retry (3 attempts, exponential backoff) and circuit breaker.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement bulkhead pattern",
+            "description": "Isolate thread pools for different downstream services. A slow service shouldn't affect others.",
+            "isBonus": false
+          },
+          {
+            "title": "Apply CQRS",
+            "description": "Separate write model (PostgreSQL) from read model (Elasticsearch). Sync via events.",
+            "isBonus": false
+          },
+          {
+            "title": "Implement sidecar pattern",
+            "description": "Deploy a sidecar container that handles logging, metrics, and health checks for the main service.",
+            "isBonus": false
+          },
+          {
+            "title": "Add graceful degradation",
+            "description": "When the recommendation service is down, serve cached recommendations. When search is down, return popular items.",
+            "isBonus": true
+          },
+          {
+            "title": "Implement strangler fig migration",
+            "description": "Demonstrate incremental migration: route 20% of traffic to new service, 80% to legacy.",
+            "isBonus": true
+          }
+        ],
+        "architectureHints": [
+          "Circuit breaker states: CLOSED (normal) → OPEN (failing fast) → HALF-OPEN (testing recovery). Track error rate over sliding window.",
+          "Bulkhead: use separate thread/connection pools for each downstream service to prevent cascade failures",
+          "CQRS allows independent scaling of reads (Elasticsearch cluster) and writes (PostgreSQL with replicas)",
+          "The sidecar runs as a separate container in the same pod/docker-compose service — shares network namespace"
+        ],
+        "techStack": [
+          "C# or Go",
+          "PostgreSQL",
+          "Elasticsearch",
+          "Redis",
+          "Docker Compose",
+          "Envoy (sidecar)"
+        ],
+        "resources": [
+          {
+            "title": "Cloud Design Patterns",
+            "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/",
+            "type": "official"
+          },
+          {
+            "title": "CQRS Explained",
+            "url": "https://www.youtube.com/watch?v=DQ3D_mplIgY",
+            "type": "video"
+          }
+        ]
+      }
     }
-  ]
+  ],
+  "capstoneProject": {
+    "id": "capstone-megascale",
+    "title": "MegaScale: Distributed Social Media Platform",
+    "description": "Design and build a distributed social media platform from scratch that demonstrates mastery of ALL system design concepts. This 6-phase capstone covers everything from basic APIs to multi-region deployment, making it the ultimate portfolio project for top product-based company interviews at Google, Meta, Amazon, and Netflix.",
+    "difficulty": "expert",
+    "estimatedTime": "40-60 hours",
+    "icon": "🚀",
+    "objectives": [
+      "Design a complete social media architecture handling 10M+ users",
+      "Implement a news feed with fan-out-on-write for real-time delivery",
+      "Build real-time messaging with WebSockets across distributed servers",
+      "Handle media uploads with CDN integration and image processing",
+      "Implement full-text search with autocomplete and relevance ranking",
+      "Deploy with horizontal scaling, database sharding, and multi-region failover",
+      "Set up comprehensive observability: metrics, logs, traces, and SLO dashboards",
+      "Apply chaos engineering to validate system resilience"
+    ],
+    "tasks": [
+      {
+        "title": "Phase 1: Design the system architecture",
+        "description": "Create a high-level architecture diagram covering all services, databases, queues, and CDN. Define API contracts between services.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 1: Build User Service",
+        "description": "User registration, authentication (JWT), profiles, and follow/unfollow with PostgreSQL.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 1: Add rate limiting and API gateway",
+        "description": "Token bucket rate limiter per user. API gateway routes requests to microservices.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 1: Set up Redis caching layer",
+        "description": "Cache user profiles, session data, and hot configurations. Implement cache-aside pattern.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 2: Build Post Service",
+        "description": "Create/read/delete posts with text, images, and links. Store posts in PostgreSQL, media metadata in S3.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 2: Implement media upload pipeline",
+        "description": "Upload images to S3/MinIO, generate thumbnails asynchronously, serve via CDN with proper cache headers.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 2: Build the News Feed",
+        "description": "Fan-out-on-write: when a user posts, push to all followers' feed caches in Redis. Paginate with cursor-based scrolling.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 2: Add like/comment system",
+        "description": "Like counts with Redis counters for speed, persisted to PostgreSQL asynchronously. Nested comment threads.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 3: Build Messaging Service",
+        "description": "Real-time 1:1 and group chat using WebSockets. Message persistence in PostgreSQL. Redis pub/sub for cross-server fanout.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 3: Implement Notification Service",
+        "description": "Push notifications for likes, comments, follows, and messages. Event-driven with RabbitMQ/Kafka.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 3: Set up event bus",
+        "description": "Kafka or RabbitMQ event bus connecting all services. Define event schemas and consumer groups.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 4: Build Search Service",
+        "description": "Full-text search on posts and users using Elasticsearch. Support autocomplete, filters, and relevance ranking.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 4: Implement Recommendation Engine",
+        "description": "Suggest users to follow based on mutual connections and content similarity. Use collaborative filtering.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 4: Add trending topics",
+        "description": "Track hashtag frequency with sliding window counters in Redis. Display top trending topics.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 5: Implement database sharding",
+        "description": "Shard user data by user_id hash across multiple PostgreSQL instances. Implement shard routing layer.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 5: Add horizontal scaling",
+        "description": "Run each service with 3+ replicas behind load balancers. Verify stateless design works.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 5: Implement circuit breakers",
+        "description": "Add circuit breakers on all inter-service calls. Define fallback behavior for each service.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 5: Add multi-region support",
+        "description": "Deploy read replicas in a second region. Route users to nearest region. Handle cross-region replication lag.",
+        "isBonus": true
+      },
+      {
+        "title": "Phase 6: Set up Prometheus + Grafana",
+        "description": "Instrument all services with RED metrics. Build service health dashboards with meaningful alerts.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 6: Implement distributed tracing",
+        "description": "Add OpenTelemetry tracing across all services. Track request flow from API gateway to database.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 6: Build SLO dashboard",
+        "description": "Define SLOs for availability (99.9%), latency (p99 < 500ms), and error rate (< 0.1%). Track error budgets.",
+        "isBonus": false
+      },
+      {
+        "title": "Phase 6: Chaos engineering",
+        "description": "Kill random services, inject latency, exhaust database connections. Verify graceful degradation.",
+        "isBonus": true
+      },
+      {
+        "title": "Bonus: Implement content moderation pipeline",
+        "description": "Async content moderation with ML-based toxicity detection. Flag and queue for review.",
+        "isBonus": true
+      },
+      {
+        "title": "Bonus: Add A/B testing framework",
+        "description": "Feature flag service with percentage-based rollouts. Track metrics per experiment.",
+        "isBonus": true
+      },
+      {
+        "title": "Bonus: Write the System Design Document",
+        "description": "Document the complete architecture: trade-offs, capacity planning, failure modes, and runbooks. This is your interview portfolio piece.",
+        "isBonus": false
+      }
+    ],
+    "architectureHints": [
+      "Start with a monolith per bounded context (User, Post, Feed, Chat), then split into microservices as complexity grows",
+      "Fan-out-on-write for the news feed: when a user posts, push the post ID to each follower's Redis sorted set. For celebrity users (>10K followers), use fan-out-on-read to avoid hot keys.",
+      "Use Kafka for the event bus — its durability and replay capability are essential for a system this complex",
+      "Shard PostgreSQL by user_id using hash-based partitioning. Keep a routing table in the API gateway.",
+      "For real-time messaging, each WebSocket server subscribes to Redis pub/sub channels per conversation. Load balance WebSocket connections with sticky sessions.",
+      "Media pipeline: client uploads to pre-signed S3 URL -> S3 event triggers Lambda/worker -> generate thumbnails -> update CDN -> notify client via WebSocket",
+      "Elasticsearch should be a secondary index, not a primary data store. Sync from PostgreSQL via CDC (Debezium) or application-level events.",
+      "Design for failure: every service should have a fallback. Feed down? Show cached version. Search down? Show trending posts. Chat down? Queue messages for later delivery."
+    ],
+    "techStack": [
+      "Node.js / Go / C# (microservices)",
+      "PostgreSQL (primary data store)",
+      "Redis (caching, pub/sub, counters)",
+      "Kafka or RabbitMQ (event bus)",
+      "Elasticsearch (search)",
+      "S3/MinIO (object storage)",
+      "Nginx (load balancer, CDN)",
+      "Prometheus + Grafana (monitoring)",
+      "Jaeger (distributed tracing)",
+      "Docker Compose / Kubernetes"
+    ],
+    "resources": [
+      {
+        "title": "Designing Instagram",
+        "url": "https://www.youtube.com/watch?v=QmX2NPkJTKg",
+        "type": "video"
+      },
+      {
+        "title": "Facebook News Feed Architecture",
+        "url": "https://www.youtube.com/watch?v=hYVRSvSMFc8",
+        "type": "video"
+      },
+      {
+        "title": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer",
+        "type": "official"
+      },
+      {
+        "title": "Designing Data-Intensive Applications",
+        "url": "https://dataintensive.net/",
+        "type": "article"
+      },
+      {
+        "title": "Meta Engineering Blog",
+        "url": "https://engineering.fb.com/",
+        "type": "article"
+      }
+    ]
+  }
 }

@@ -50,6 +50,25 @@ public class RoadmapService : IRoadmapService
         return null;
     }
 
+    public RoadmapProject? GetProject(string slug, string projectId)
+    {
+        var roadmap = GetRoadmap(slug);
+        if (roadmap == null) return null;
+
+        // Check capstone project
+        if (roadmap.CapstoneProject != null && roadmap.CapstoneProject.Id == projectId)
+            return roadmap.CapstoneProject;
+
+        // Check section projects
+        foreach (var section in roadmap.Sections)
+        {
+            if (section.Project != null && section.Project.Id == projectId)
+                return section.Project;
+        }
+
+        return null;
+    }
+
     public List<string> GetAvailableSlugs()
     {
         var dir = Path.Combine(_env.WebRootPath, "data", "roadmaps");

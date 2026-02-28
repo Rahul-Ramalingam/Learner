@@ -120,6 +120,66 @@
                         }
                     }
                 </div>
+
+                @* Section project card *@
+                @if (sect.Project != null)
+                {
+                    var diffColor = sect.Project.Difficulty switch {
+                        "beginner" => "#22c55e",
+                        "intermediate" => "#f59e0b",
+                        "advanced" => "#f97316",
+                        "expert" => "#ef4444",
+                        _ => "#6366f1"
+                    };
+                    <div class="rm-project-card" data-project-id="@sect.Project.Id" title="@sect.Project.Title">
+                        <div class="rm-project-card-icon">@sect.Project.Icon</div>
+                        <div class="rm-project-card-info">
+                            <div class="rm-project-card-title">@sect.Project.Title</div>
+                            <div class="rm-project-card-meta">
+                                <span class="rm-project-badge" style="background: @diffColor; color: #fff;">@sect.Project.Difficulty</span>
+                                @if (!string.IsNullOrEmpty(sect.Project.EstimatedTime))
+                                {
+                                    <span class="rm-project-time">@sect.Project.EstimatedTime</span>
+                                }
+                            </div>
+                        </div>
+                        <span class="rm-project-card-arrow">→</span>
+                    </div>
+                }
+            </div>
+        }
+
+        @* Capstone Project *@
+        @if (Model.CapstoneProject != null)
+        {
+            var capDiffColor = Model.CapstoneProject.Difficulty switch {
+                "beginner" => "#22c55e",
+                "intermediate" => "#f59e0b",
+                "advanced" => "#f97316",
+                "expert" => "#ef4444",
+                _ => "#6366f1"
+            };
+            <div class="rm-capstone-card" data-project-id="@Model.CapstoneProject.Id">
+                <div class="rm-capstone-header" style="background: linear-gradient(135deg, @Model.ColorHex, @capDiffColor)">
+                    <span class="rm-capstone-icon">@Model.CapstoneProject.Icon</span>
+                    <div class="rm-capstone-label">CAPSTONE PROJECT</div>
+                </div>
+                <div class="rm-capstone-body">
+                    <h3 class="rm-capstone-title">@Model.CapstoneProject.Title</h3>
+                    <p class="rm-capstone-desc">@Model.CapstoneProject.Description</p>
+                    <div class="rm-capstone-meta">
+                        <span class="rm-project-badge" style="background: @capDiffColor; color: #fff;">@Model.CapstoneProject.Difficulty</span>
+                        @if (!string.IsNullOrEmpty(Model.CapstoneProject.EstimatedTime))
+                        {
+                            <span class="rm-project-time">@Model.CapstoneProject.EstimatedTime</span>
+                        }
+                        @if (Model.CapstoneProject.Tasks?.Count > 0)
+                        {
+                            <span class="rm-project-time">@Model.CapstoneProject.Tasks.Count tasks</span>
+                        }
+                    </div>
+                    <div class="rm-capstone-cta" style="background: @Model.ColorHex">Start Capstone →</div>
+                </div>
             </div>
         }
     </div>

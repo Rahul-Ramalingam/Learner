@@ -50,6 +50,24 @@ public class RoadmapController : Controller
         return View(topic);
     }
 
+    // GET /roadmap/{slug}/project/{projectId}
+    [HttpGet]
+    public IActionResult Project(string slug, string projectId)
+    {
+        var roadmap = _roadmapService.GetRoadmap(slug);
+        if (roadmap == null) return NotFound();
+
+        var project = _roadmapService.GetProject(slug, projectId);
+        if (project == null) return NotFound();
+
+        ViewBag.Slug = slug;
+        ViewBag.RoadmapTitle = roadmap.Title;
+        ViewBag.RoadmapEmoji = roadmap.Emoji;
+        ViewBag.ColorHex = roadmap.ColorHex;
+
+        return View(project);
+    }
+
     // POST /roadmap/{slug}/topic/{topicId}/status — AJAX
     [HttpPost]
     public IActionResult UpdateTopicStatus(string slug, string topicId, [FromBody] TopicStatusUpdate update)

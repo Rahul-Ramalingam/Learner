@@ -42,6 +42,11 @@ app.MapStaticAssets();
 
 // Custom routes for clean URLs
 app.MapControllerRoute(
+    name: "roadmap-project",
+    pattern: "roadmap/{slug}/project/{projectId}",
+    defaults: new { controller = "Roadmap", action = "Project" });
+
+app.MapControllerRoute(
     name: "roadmap-topic-status",
     pattern: "roadmap/{slug}/topic/{topicId}/status",
     defaults: new { controller = "Roadmap", action = "UpdateTopicStatus" });

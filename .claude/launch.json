@@ -8,6 +8,12 @@
       "port": 5003
     },
     {
+      "name": "LearnDevOps (LAN)",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "R:\\Learn\\LearnDevOps\\LearnDevOps.csproj", "--urls", "http://0.0.0.0:5003"],
+      "port": 5003
+    },
+    {
       "name": "LearnDevOps (HTTPS)",
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "--project", "R:\\Learn\\LearnDevOps\\LearnDevOps.csproj", "--launch-profile", "https"],

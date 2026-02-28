@@ -757,6 +757,173 @@
     }
 }
 
+/* ---------- Section Project Card ---------- */
+.rm-project-card {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    max-width: 520px;
+    margin: .75rem auto 0;
+    padding: .75rem 1.1rem;
+    border-radius: 14px;
+    background: var(--dq-card, #fff);
+    border: 2px dashed color-mix(in srgb, var(--rm-track-color, var(--dq-green)) 50%, var(--dq-border, #e5e7eb));
+    cursor: pointer;
+    transition: all .22s cubic-bezier(.34,1.2,.64,1);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+.rm-project-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: var(--rm-track-color, var(--dq-green));
+    box-shadow: 0 6px 20px rgba(0,0,0,.1);
+    border-style: solid;
+}
+
+.rm-project-card-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.rm-project-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.rm-project-card-title {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--dq-heading, #1f2937);
+    margin-bottom: .25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rm-project-card-meta {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.rm-project-badge {
+    font-size: .62rem;
+    font-weight: 700;
+    padding: .15rem .5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.rm-project-time {
+    font-size: .72rem;
+    color: var(--dq-text-muted);
+    font-weight: 500;
+}
+
+.rm-project-card-arrow {
+    font-size: 1.1rem;
+    color: var(--dq-text-muted);
+    flex-shrink: 0;
+    transition: transform .2s, color .2s;
+}
+
+.rm-project-card:hover .rm-project-card-arrow {
+    transform: translateX(3px);
+    color: var(--rm-track-color, var(--dq-green));
+}
+
+/* ---------- Capstone Project Card ---------- */
+.rm-capstone-card {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+    margin: 2.5rem auto 1rem;
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--dq-card, #fff);
+    border: 2px solid var(--dq-border, #e5e7eb);
+    box-shadow: 0 4px 24px rgba(0,0,0,.1);
+    cursor: pointer;
+    transition: all .25s cubic-bezier(.34,1.2,.64,1);
+}
+
+.rm-capstone-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 10px 36px rgba(0,0,0,.16);
+    border-color: var(--rm-track-color, var(--dq-green));
+}
+
+.rm-capstone-header {
+    padding: 1.5rem;
+    text-align: center;
+    color: #fff;
+}
+
+.rm-capstone-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: .5rem;
+    animation: dqPopIn .6s cubic-bezier(.34,1.56,.64,1) .15s both;
+}
+
+.rm-capstone-label {
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .9;
+}
+
+.rm-capstone-body {
+    padding: 1.5rem;
+}
+
+.rm-capstone-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--dq-heading, #1f2937);
+    margin: 0 0 .55rem;
+}
+
+.rm-capstone-desc {
+    font-size: .88rem;
+    color: var(--dq-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.rm-capstone-meta {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+}
+
+.rm-capstone-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .55rem 1.2rem;
+    border-radius: 10px;
+    color: #fff;
+    font-size: .88rem;
+    font-weight: 700;
+    transition: transform .15s, box-shadow .15s;
+}
+
+.rm-capstone-card:hover .rm-capstone-cta {
+    transform: scale(1.04);
+    box-shadow: 0 3px 12px rgba(0,0,0,.2);
+}
+
 /* ---------- Dark Mode ---------- */
 [data-theme="dark"] .rm-section-header {
     box-shadow: 0 3px 12px rgba(0,0,0,.35);
@@ -829,4 +996,16 @@
 [data-theme="dark"] .rm-panel-status-btn {
     border-color: var(--dq-border);
     color: var(--dq-text-muted);
+}
+
+[data-theme="dark"] .rm-project-card {
+    background: var(--dq-card);
+    border-color: color-mix(in srgb, var(--rm-track-color, var(--dq-green)) 30%, var(--dq-border));
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+[data-theme="dark"] .rm-capstone-card {
+    background: var(--dq-card);
+    border-color: var(--dq-border);
+    box-shadow: 0 4px 24px rgba(0,0,0,.3);
 }

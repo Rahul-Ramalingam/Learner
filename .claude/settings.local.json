@@ -36,7 +36,13 @@
       "Bash(python gen_sd_sec16.py)",
       "Bash(python gen_sd_combine.py)",
       "Bash(python -c \":*)",
-      "Bash(python patch_sd.py)"
+      "Bash(python patch_sd.py)",
+      "Bash(python gen_projects.py)",
+      "Bash(python \"R:\\\\Learn\\\\LearnDevOps\\\\gen_projects.py\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\(r''R:\\\\Learn\\\\LearnDevOps\\\\wwwroot\\\\data\\\\roadmaps\\\\system-design.json'',''r'',encoding=''utf-8''\\)\\); print\\(f''Sections: {len\\(d[\"\"sections\"\"]\\)}''\\); print\\(f''CapstoneProject: {d[\"\"capstoneProject\"\"][\"\"title\"\"] if d.get\\(\"\"capstoneProject\"\"\\) else \"\"None\"\"}''\\); topics=0; projects=0; for s in d[''sections'']: topics+=len\\(s[''topics'']\\); projects+=\\(1 if s.get\\(''project''\\) else 0\\); print\\(f''Topics: {topics}''\\); print\\(f''Section projects: {projects}''\\)\")",
+      "Bash(python \"R:\\\\Learn\\\\LearnDevOps\\\\verify_json.py\")",
+      "Bash(python \"R:\\\\Learn\\\\LearnDevOps\\\\verify_json2.py\")",
+      "Bash(ipconfig)"
     ]
   }
 }
