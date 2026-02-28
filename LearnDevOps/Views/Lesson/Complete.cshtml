@@ -1,0 +1,114 @@
+@model LessonCompleteViewModel
+@{
+    ViewData["Title"] = Model.OutOfLives ? "Out of Lives!" : "Lesson Complete!";
+}
+
+<div class="container py-5" style="max-width: 640px">
+
+    @if (Model.OutOfLives)
+    {
+        <!-- Failed State -->
+        <div class="dq-complete-card dq-complete-card--fail text-center">
+            <div class="dq-complete-icon">💔</div>
+            <h2 class="dq-complete-title">Out of Lives!</h2>
+            <p class="text-muted">You ran out of hearts. No XP awarded this time.</p>
+            <p>Keep practising — you've got this! 💪</p>
+
+            <div class="d-flex flex-column gap-3 mt-4">
+                <a asp-controller="Lesson" asp-action="Start" asp-route-id="@Model.Lesson.Id"
+                   class="dq-btn-primary">Try Again</a>
+                <a asp-controller="Track" asp-action="Index" asp-route-slug="@Model.Track.Slug"
+                   class="dq-btn-secondary">Back to @Model.Track.Name</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Success State -->
+        <div class="dq-complete-card dq-complete-card--success text-center">
+            <div class="dq-complete-icon">@(Model.IsPerfect ? "🏆" : "🎉")</div>
+            <h2 class="dq-complete-title">@(Model.IsPerfect ? "Perfect!" : "Well Done!")</h2>
+
+            @if (Model.IsPerfect)
+            {
+                <div class="dq-perfect-badge">⭐ Perfect score — no mistakes!</div>
+            }
+
+            <!-- XP Earned -->
+            <div class="dq-xp-reward my-4">
+                <div class="dq-xp-reward-amount">+@Model.XpEarned XP</div>
+                <div class="dq-xp-reward-label">Earned this lesson</div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="dq-complete-stats row g-3 mb-4">
+                <div class="col-4">
+                    <div class="dq-stat-card">
+                        <div class="dq-stat-val">@(Model.MistakeCount == 0 ? "✨" : Model.MistakeCount.ToString())</div>
+                        <div class="dq-stat-lbl">Mistakes</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="dq-stat-card">
+                        <div class="dq-stat-val">@for (int i = 0; i < Model.LivesRemaining; i++) { <span>❤️</span> }</div>
+                        <div class="dq-stat-lbl">Lives Left</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="dq-stat-card">
+                        <div class="dq-stat-val">@(Model.CurrentStreak > 0 ? "🔥 " + Model.CurrentStreak : "—")</div>
+                        <div class="dq-stat-lbl">Day Streak</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level Up Banner -->
+            @if (Model.LeveledUp)
+            {
+                <div class="dq-levelup-banner mb-4">
+                    🎊 Level Up! You're now <strong>Level @Model.NewLevel</strong> — @Model.LevelTitle
+                </div>
+            }
+
+            <!-- XP Progress Bar -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between small text-muted mb-1">
+                    <span>Level @Model.NewLevel</span>
+                    <span>@Model.NewTotalXp XP total</span>
+                </div>
+                <div class="dq-progress-bar">
+                    <div class="dq-progress-fill" style="width: @Model.LevelProgressPercent.ToString("F0")%"></div>
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            @if (Model.NewlyEarnedAchievements.Any())
+            {
+                <div class="dq-achievements-earned mb-4">
+                    <h5 class="mb-3">🏅 New Achievements!</h5>
+                    @foreach (var a in Model.NewlyEarnedAchievements)
+                    {
+                        <div class="dq-achievement-item" style="--badge-color: @a.BadgeColorHex">
+                            <span class="dq-ach-emoji">@a.Emoji</span>
+                            <div>
+                                <div class="dq-ach-title">@a.Title</div>
+                                <div class="dq-ach-desc">@a.Description</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-column gap-3">
+                @if (Model.NextLessonId.HasValue)
+                {
+                    <a asp-controller="Lesson" asp-action="Start" asp-route-id="@Model.NextLessonId"
+                       class="dq-btn-primary">Next Lesson →</a>
+                }
+                <a asp-controller="Track" asp-action="Index" asp-route-slug="@Model.Track.Slug"
+                   class="dq-btn-secondary">Back to @Model.Track.Name</a>
+            </div>
+        </div>
+    }
+</div>

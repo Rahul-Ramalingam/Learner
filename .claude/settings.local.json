@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \":*)",
+      "Bash(py --version)",
+      "Bash(node --version)",
+      "Bash(pwsh --version)",
+      "Bash(python -c \"print\\(''hello world''\\)\")",
+      "Bash(wc -l /r/Learn/LearnDevOps/Data/SeedData/*.cs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5003/)",
+      "Bash(curl -s http://localhost:5003/)",
+      "Bash(pkill -f \"dotnet run\")",
+      "Bash(pkill -f \"LearnDevOps.dll\")",
+      "Bash(taskkill /F /PID 63024)",
+      "Bash(kill -9 63024)",
+      "Bash(Get-Process)",
+      "Bash(Where-Object {$_Name -like \"*Learn*\" -or $_Name -like \"*dotnet*\"})",
+      "Bash(Select-Object Id, Name)",
+      "Bash(xargs kill -9)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(taskkill //F //IM LearnDevOps.exe)",
+      "WebFetch(domain:roadmap.sh)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_close",
+      "Bash(node -e \"const fs=require\\(''fs''\\); [''aspnet-core'',''docker'',''kubernetes'',''system-design''].forEach\\(f=>{try{JSON.parse\\(fs.readFileSync\\(''R:/Learn/LearnDevOps/wwwroot/data/roadmaps/''+f+''.json'',''utf8''\\)\\);console.log\\(f+''.json: valid''\\)}catch\\(e\\){console.log\\(f+''.json: INVALID - ''+e.message\\)}}\\)\")",
+      "mcp__playwright__browser_take_screenshot",
+      "Bash(node /tmp/gen-sd.js)",
+      "mcp__playwright__browser_evaluate",
+      "Bash(python gen_sd_part1.py)",
+      "Bash(python gen_sd_sec9.py)",
+      "Bash(python gen_sd_sec10.py)",
+      "Bash(python gen_sd_sec11_13.py)",
+      "Bash(python gen_sd_sec14.py)",
+      "Bash(python gen_sd_sec15.py)",
+      "Bash(python gen_sd_sec16.py)",
+      "Bash(python gen_sd_combine.py)",
+      "Bash(python -c \":*)",
+      "Bash(python patch_sd.py)"
+    ]
+  }
+}

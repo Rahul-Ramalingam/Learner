@@ -1,0 +1,39 @@
+@model LessonStartViewModel
+@{
+    ViewData["Title"] = Model.Lesson.Title;
+}
+
+<div class="container py-5" style="max-width: 640px">
+    <a asp-controller="Track" asp-action="Index" asp-route-slug="@Model.Track.Slug" class="dq-back-link d-inline-block mb-4">
+        ← @Model.Track.Name
+    </a>
+
+    <div class="dq-lesson-start-card text-center" style="--track-color: @Model.Track.ColorHex">
+        <div class="dq-lesson-start-emoji">@Model.Lesson.Emoji</div>
+        <h1 class="dq-lesson-start-title">@Model.Lesson.Title</h1>
+        <p class="dq-lesson-start-meta">@Model.QuestionCount questions · Up to 15 XP</p>
+
+        @if (Model.AlreadyCompleted)
+        {
+            <div class="alert dq-already-done-alert d-flex align-items-center gap-2 text-start">
+                <span style="font-size: 1.4rem">✅</span>
+                <div>
+                    <strong>Already completed!</strong> You earned <strong>@Model.PreviousXpEarned XP</strong> last time.
+                    Practice again for half XP.
+                </div>
+            </div>
+        }
+
+        <div class="dq-lives-preview mb-4">
+            <span title="Lives">❤️❤️❤️</span>
+            <span class="ms-2 text-muted small">You have 3 lives</span>
+        </div>
+
+        <form asp-controller="Lesson" asp-action="Begin" asp-route-id="@Model.Lesson.Id" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="dq-btn-primary w-100">
+                @(Model.AlreadyCompleted ? "Practice Again" : "Start Lesson") 🚀
+            </button>
+        </form>
+    </div>
+</div>

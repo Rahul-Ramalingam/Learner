@@ -1,0 +1,795 @@
+{
+  "slug": "aspnet-core",
+  "title": "ASP.NET Core Roadmap",
+  "description": "Master ASP.NET Core from C# basics to building production-grade web applications and APIs.",
+  "emoji": "🔷",
+  "colorHex": "#512bd4",
+  "sections": [
+    {
+      "id": "csharp-fundamentals",
+      "title": "C# Fundamentals",
+      "order": 1,
+      "topics": [
+        {
+          "id": "csharp-basics-and-oop",
+          "title": "C# Basics & OOP",
+          "description": "C# is a strongly-typed, object-oriented language that serves as the foundation for all ASP.NET Core development. Understanding value types vs reference types, classes, interfaces, inheritance, and polymorphism is essential before diving into web frameworks.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "C# Tutorial For Beginners - Full Course", "url": "https://www.youtube.com/watch?v=GhQdlMFylQ8", "channel": "freeCodeCamp", "duration": "4:31:08" },
+            { "title": "C# Full Course - Beginner to Advanced", "url": "https://www.youtube.com/watch?v=M5ugY7fWydE", "channel": "IAmTimCorey", "duration": "3:45:22" },
+            { "title": "Object Oriented Programming in C#", "url": "https://www.youtube.com/watch?v=pTFZdxQzrk8", "channel": "IAmTimCorey", "duration": "1:12:34" }
+          ],
+          "resources": [
+            { "title": "Introduction to C# - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/", "type": "official" },
+            { "title": "Object-Oriented Programming in C#", "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/", "type": "official" },
+            { "title": "C# Fundamentals - Pluralsight", "url": "https://www.pluralsight.com/courses/csharp-fundamentals-dev", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between a value type and a reference type in C#?", "a": "Value types (int, struct, enum) are stored on the stack and hold their data directly, while reference types (class, string, array) are stored on the heap with a reference pointer on the stack. When you assign a value type to another variable, a copy is made, but assigning a reference type copies only the reference, so both variables point to the same object. This distinction affects memory allocation, garbage collection behavior, and how data is passed to methods." },
+            { "q": "Explain the four pillars of OOP as they apply in C#.", "a": "The four pillars are Encapsulation (bundling data and methods together using access modifiers like private and public), Abstraction (hiding complex implementation details behind simple interfaces using abstract classes and interfaces), Inheritance (creating new classes that reuse and extend behavior from base classes using the colon syntax), and Polymorphism (allowing objects to take many forms through method overriding with virtual/override keywords and interface implementations). C# supports single class inheritance but allows multiple interface implementations." },
+            { "q": "What is the difference between an abstract class and an interface in C#?", "a": "An abstract class can contain both implemented and abstract methods, fields, constructors, and has a single inheritance constraint. An interface traditionally defined only method signatures with no implementation, but since C# 8.0 it can have default implementations. A class can implement multiple interfaces but inherit from only one abstract class. Use abstract classes when you want to share code among related classes, and interfaces when unrelated classes need to share a contract." }
+          ],
+          "tips": [
+            "Master the difference between value types and reference types early — it prevents countless debugging headaches with unexpected mutations.",
+            "Always prefer composition over inheritance unless you have a clear 'is-a' relationship between types."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "linq",
+          "title": "LINQ",
+          "description": "Language Integrated Query (LINQ) provides a consistent, expressive syntax for querying and transforming collections, databases, and XML directly in C#. Mastering LINQ is critical because EF Core and many ASP.NET Core patterns rely heavily on LINQ expressions for data access and manipulation.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "LINQ Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=5l2qA3Pc83M", "channel": "IAmTimCorey", "duration": "1:05:18" },
+            { "title": "LINQ in C# - Full Guide", "url": "https://www.youtube.com/watch?v=_3vAet-FQEY", "channel": "Nick Chapsas", "duration": "22:15" },
+            { "title": "Master LINQ in C#", "url": "https://www.youtube.com/watch?v=jd2LFm2lCms", "channel": "Raw Coding", "duration": "38:42" }
+          ],
+          "resources": [
+            { "title": "LINQ Overview - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/dotnet/csharp/linq/", "type": "official" },
+            { "title": "Standard Query Operators", "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/standard-query-operators-overview", "type": "official" },
+            { "title": "101 LINQ Samples", "url": "https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is deferred execution in LINQ and why does it matter?", "a": "Deferred execution means that a LINQ query is not evaluated when it is defined but rather when it is iterated over, such as with a foreach loop or by calling ToList(). This matters because it allows query composition without multiple database round trips, enables efficient memory usage by processing elements one at a time, and means the underlying data source is queried with the most up-to-date data at the time of execution rather than at definition time." },
+            { "q": "What is the difference between IEnumerable and IQueryable in LINQ?", "a": "IEnumerable executes queries in memory on the client side using delegates, making it suitable for in-memory collections like lists and arrays. IQueryable builds an expression tree that can be translated into a remote query language like SQL and executed on the server side. When working with EF Core, using IQueryable ensures filtering and sorting happen in the database, dramatically improving performance compared to pulling all records into memory with IEnumerable." },
+            { "q": "Explain the difference between Select and SelectMany in LINQ.", "a": "Select performs a one-to-one projection, transforming each element in a sequence into a new form and returning a sequence of the same count. SelectMany performs a one-to-many projection, flattening nested collections into a single sequence. For example, if you have a list of orders each containing a list of line items, Select would give you a list of lists of line items, whereas SelectMany would flatten them into a single continuous list of all line items across all orders." }
+          ],
+          "tips": [
+            "Always call ToList() or ToArray() when you need to materialize a query and prevent multiple enumerations of the same LINQ expression.",
+            "Use method syntax over query syntax for consistency — most C# codebases and EF Core examples prefer the fluent lambda-based approach."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "async-await",
+          "title": "Async/Await",
+          "description": "Asynchronous programming with async/await is fundamental to building scalable ASP.NET Core applications that do not block threads while waiting for I/O operations. Understanding Task, ValueTask, and the async state machine ensures your web server can handle thousands of concurrent requests efficiently.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Async and Await in C# - The Full Guide", "url": "https://www.youtube.com/watch?v=il9gl8MN17s", "channel": "Nick Chapsas", "duration": "25:48" },
+            { "title": "C# Async/Await Tutorial", "url": "https://www.youtube.com/watch?v=2moh18sh5p4", "channel": "IAmTimCorey", "duration": "1:01:22" },
+            { "title": "How Async/Await Really Works in C#", "url": "https://www.youtube.com/watch?v=R-z2Hv-7nxk", "channel": "Raw Coding", "duration": "32:10" }
+          ],
+          "resources": [
+            { "title": "Asynchronous Programming with Async and Await", "url": "https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/", "type": "official" },
+            { "title": "Async Best Practices - David Fowler", "url": "https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md", "type": "article" },
+            { "title": "Task-based Asynchronous Pattern", "url": "https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What happens under the hood when you use async/await in C#?", "a": "The C# compiler transforms an async method into a state machine that tracks where to resume execution after each await point. When the awaited task is not yet complete, the method returns to the caller and the continuation is scheduled to run when the task completes. The SynchronizationContext or TaskScheduler determines which thread picks up the continuation. This means the calling thread is freed to do other work rather than being blocked, which is crucial for ASP.NET Core's thread pool efficiency." },
+            { "q": "Why should you avoid async void methods?", "a": "Async void methods are fire-and-forget and do not return a Task that callers can await or observe. If an exception is thrown inside an async void method, it will crash the process because it is raised on the SynchronizationContext rather than being captured in a Task. You cannot test async void methods easily, and you have no way to know when they complete. The only acceptable use of async void is for event handlers in UI frameworks. Always return Task or ValueTask instead." },
+            { "q": "When should you use ValueTask instead of Task?", "a": "ValueTask is a struct that avoids heap allocation when the result is already available synchronously, making it ideal for methods that frequently complete synchronously such as cached reads. However, ValueTask has restrictions: it can only be awaited once and should not be used with Task.WhenAll. Use Task as your default return type and only switch to ValueTask when profiling shows that the allocation overhead of Task is a measurable bottleneck in hot paths." }
+          ],
+          "tips": [
+            "Never use .Result or .Wait() on a Task inside ASP.NET Core — it can cause deadlocks and always degrades throughput.",
+            "Add ConfigureAwait(false) in library code but not in ASP.NET Core controller or middleware code where there is no SynchronizationContext."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "aspnet-core-basics",
+      "title": "ASP.NET Core Basics",
+      "order": 2,
+      "topics": [
+        {
+          "id": "middleware-pipeline",
+          "title": "Middleware Pipeline",
+          "description": "The ASP.NET Core middleware pipeline is the core request-processing architecture where each middleware component can handle, transform, or pass along HTTP requests and responses. Understanding how middleware ordering works and how to write custom middleware is essential for cross-cutting concerns like logging, authentication, and error handling.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "ASP.NET Core Middleware Explained", "url": "https://www.youtube.com/watch?v=5eifH7LEnGo", "channel": "Nick Chapsas", "duration": "18:33" },
+            { "title": "Middleware in ASP.NET Core", "url": "https://www.youtube.com/watch?v=bGLmNCqNMSc", "channel": "IAmTimCorey", "duration": "45:12" },
+            { "title": "ASP.NET Core Middleware Pipeline Deep Dive", "url": "https://www.youtube.com/watch?v=xGiHEsmLqJM", "channel": "Raw Coding", "duration": "28:44" }
+          ],
+          "resources": [
+            { "title": "ASP.NET Core Middleware - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/", "type": "official" },
+            { "title": "Write Custom Middleware", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write", "type": "official" },
+            { "title": "Middleware Ordering Best Practices", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/#middleware-order", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does the ASP.NET Core middleware pipeline work?", "a": "The middleware pipeline is a chain of components arranged in a specific order where each component receives an HTTP request, can perform work before and after calling the next component, and can short-circuit the pipeline by not calling next. The pipeline is configured in Program.cs using Use, Map, and Run methods on the application builder. The order of middleware registration is critical because it determines the execution order — for example, authentication middleware must run before authorization middleware." },
+            { "q": "What is the difference between Use, Run, and Map when configuring middleware?", "a": "Use adds a middleware delegate that can call next to pass the request to the next middleware and can also execute logic after the response flows back. Run adds a terminal middleware that does not call next and always ends the pipeline. Map branches the pipeline based on a request path prefix, creating a separate pipeline fork for that path. There is also MapWhen which branches based on an arbitrary predicate rather than a path." },
+            { "q": "Why does middleware order matter in ASP.NET Core?", "a": "Middleware executes in the exact order it is registered, and each component sees the request before downstream components and the response after them. If you place error handling middleware after authentication, unhandled auth exceptions will not be caught. Similarly, CORS middleware must run before endpoints are mapped. The recommended order is exception handling, HSTS, HTTPS redirection, static files, routing, CORS, authentication, authorization, and finally custom or endpoint middleware." }
+          ],
+          "tips": [
+            "Always place UseExceptionHandler first and UseAuthorization after UseAuthentication — middleware order bugs are notoriously hard to diagnose.",
+            "Use the middleware pipeline diagram from the official docs as a reference until the ordering becomes second nature."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "routing-and-mvc",
+          "title": "Routing & MVC",
+          "description": "ASP.NET Core routing maps incoming HTTP requests to controllers and actions using attribute routing or conventional routing patterns. The MVC pattern separates concerns into Models, Views, and Controllers, providing a structured approach to building server-rendered web applications and APIs.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "ASP.NET Core MVC Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=hZ1DASYd9rk", "channel": "freeCodeCamp", "duration": "3:15:45" },
+            { "title": "Routing in ASP.NET Core", "url": "https://www.youtube.com/watch?v=kTjJk2SNpCo", "channel": "IAmTimCorey", "duration": "52:18" },
+            { "title": "ASP.NET Core MVC Deep Dive", "url": "https://www.youtube.com/watch?v=Pi46L7UYP8I", "channel": "Les Jackson", "duration": "1:22:30" }
+          ],
+          "resources": [
+            { "title": "Routing in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing", "type": "official" },
+            { "title": "MVC Overview - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/aspnet/core/mvc/overview", "type": "official" },
+            { "title": "Attribute Routing in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between conventional routing and attribute routing in ASP.NET Core?", "a": "Conventional routing defines route templates centrally in Program.cs using MapControllerRoute with patterns like {controller}/{action}/{id?}, which works well for MVC apps with consistent URL structures. Attribute routing uses [Route], [HttpGet], and similar attributes directly on controllers and actions, providing more granular control over each endpoint's URL. Attribute routing is the recommended approach for APIs because it keeps the URL definition close to the code that handles it and supports versioning and complex route patterns more naturally." },
+            { "q": "Explain the MVC pattern as implemented in ASP.NET Core.", "a": "In ASP.NET Core MVC, a Model represents the data and business logic, a View is a Razor template that renders HTML using model data, and a Controller handles incoming requests, interacts with services, and selects which view to return. When a request arrives, routing determines the controller and action method. The action method processes the request, optionally works with models and services, and returns an IActionResult such as a View, JSON, or a redirect. This separation makes applications easier to test and maintain." },
+            { "q": "What are endpoint routing and its benefits?", "a": "Endpoint routing, introduced in ASP.NET Core 3.0, decouples the process of matching a request to an endpoint from the process of dispatching it. This means middleware can inspect which endpoint was matched before the endpoint actually executes, enabling smarter authorization, CORS, and logging decisions. It unifies routing across MVC controllers, Razor Pages, gRPC, SignalR, and health checks into a single routing system configured with MapControllers, MapRazorPages, and similar methods." }
+          ],
+          "tips": [
+            "Prefer attribute routing with [ApiController] for Web APIs and reserve conventional routing for traditional MVC apps with views.",
+            "Use route constraints like [Route(\"api/users/{id:int}\")] to reject bad requests at the routing level before your action code runs."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "minimal-apis",
+          "title": "Minimal APIs",
+          "description": "Minimal APIs were introduced in .NET 6 to provide a lightweight, low-ceremony way to build HTTP endpoints without controllers or extensive boilerplate. They are ideal for microservices, small APIs, and rapid prototyping while still supporting filters, validation, and dependency injection.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Minimal APIs in .NET - Full Course", "url": "https://www.youtube.com/watch?v=pYl_jnqlXu8", "channel": "Nick Chapsas", "duration": "35:22" },
+            { "title": "Minimal APIs vs Controllers in ASP.NET Core", "url": "https://www.youtube.com/watch?v=MhPz_t9qato", "channel": "Milan Jovanovic", "duration": "14:55" },
+            { "title": ".NET Minimal API Tutorial", "url": "https://www.youtube.com/watch?v=eRJFNGIsJEo", "channel": "Les Jackson", "duration": "58:40" }
+          ],
+          "resources": [
+            { "title": "Minimal APIs Overview", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview", "type": "official" },
+            { "title": "Tutorial: Create a Minimal API", "url": "https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api", "type": "official" },
+            { "title": "Minimal API Filters", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are Minimal APIs and when would you use them over controllers?", "a": "Minimal APIs let you define HTTP endpoints as lambda expressions directly in Program.cs using methods like MapGet, MapPost, and MapPut, eliminating the need for controller classes. They are ideal for microservices with a small number of endpoints, quick prototypes, or when you want minimal boilerplate. Use controllers when you need built-in features like model validation attributes, complex filters, or when your API has many endpoints that benefit from controller-based organization." },
+            { "q": "How do you organize Minimal APIs as the project grows?", "a": "As a Minimal API project grows, you can organize endpoints using extension methods grouped by feature, where each static class defines a MapXxxEndpoints method that registers related routes. You can also use the MapGroup method to apply common prefixes, filters, and metadata to groups of endpoints. Libraries like Carter provide even more structure by defining endpoint modules. This keeps Program.cs clean while maintaining the simplicity of Minimal APIs." },
+            { "q": "How do Minimal APIs handle dependency injection?", "a": "Minimal APIs support dependency injection by declaring service parameters directly in the endpoint handler delegate. ASP.NET Core automatically resolves registered services from the DI container when they appear as parameters. For complex binding scenarios, you can use attributes like [FromServices], [FromQuery], [FromRoute], and [FromBody] to specify the binding source explicitly. This means you get the same DI capabilities as controllers without inheriting from a base class." }
+          ],
+          "tips": [
+            "Use MapGroup to organize related Minimal API endpoints under a common prefix and apply shared filters in one place.",
+            "Minimal APIs support TypedResults for better OpenAPI documentation and testability — prefer TypedResults.Ok() over Results.Ok()."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "dependency-injection",
+      "title": "Dependency Injection",
+      "order": 3,
+      "topics": [
+        {
+          "id": "built-in-di-container",
+          "title": "Built-in DI Container",
+          "description": "ASP.NET Core has a built-in dependency injection container that is deeply integrated into the framework, managing the creation and lifetime of services throughout your application. Understanding how to register and resolve services is fundamental because controllers, middleware, and virtually every framework component relies on DI.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Dependency Injection in ASP.NET Core", "url": "https://www.youtube.com/watch?v=Hhpq7oYcpGE", "channel": "IAmTimCorey", "duration": "58:15" },
+            { "title": "ASP.NET Core DI - Everything You Need to Know", "url": "https://www.youtube.com/watch?v=tKEF6xaeoig", "channel": "Nick Chapsas", "duration": "20:44" },
+            { "title": "Dependency Injection Deep Dive", "url": "https://www.youtube.com/watch?v=dAkSM1rBmVk", "channel": "Raw Coding", "duration": "34:22" }
+          ],
+          "resources": [
+            { "title": "Dependency Injection in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection", "type": "official" },
+            { "title": "Dependency Injection Guidelines", "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines", "type": "official" },
+            { "title": "DI Best Practices - Steve Smith", "url": "https://ardalis.com/new-is-glue/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is dependency injection and why is it important in ASP.NET Core?", "a": "Dependency injection is a design pattern where an object's dependencies are provided to it rather than created internally, following the Inversion of Control principle. In ASP.NET Core, DI is a first-class citizen that enables loose coupling between components, makes code more testable by allowing mock implementations to be injected, and provides a consistent way to manage object lifetimes. The framework itself uses DI extensively for services like logging, configuration, and database contexts." },
+            { "q": "How do you register services in the ASP.NET Core DI container?", "a": "Services are registered in Program.cs using the builder.Services collection with methods like AddSingleton, AddScoped, and AddTransient that accept interface-to-implementation mappings. You can also register services using factory delegates for complex creation logic, use AddSingleton with a pre-built instance, or use extension methods like AddDbContext and AddHttpClient that register multiple related services at once. The TryAdd variants only register if no service of that type is already registered, preventing accidental overrides." },
+            { "q": "What are the limitations of the built-in DI container compared to third-party containers?", "a": "The built-in container does not support property injection, named registrations, child containers, or automatic registration by convention. It does not support decoration patterns natively, though Scrutor can add that capability. For most applications the built-in container is sufficient, but if you need advanced features, you can replace it with Autofac or other containers by calling builder.Host.UseServiceProviderFactory. Microsoft intentionally keeps the built-in container simple to encourage good DI practices." }
+          ],
+          "tips": [
+            "Register interfaces rather than concrete types — this makes swapping implementations and unit testing dramatically easier.",
+            "Use the Options pattern with IOptions<T> to inject configuration values instead of reading IConfiguration directly in services."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "service-lifetimes",
+          "title": "Service Lifetimes",
+          "description": "ASP.NET Core's DI container supports three service lifetimes — Transient, Scoped, and Singleton — each determining how long a service instance lives and how it is shared. Choosing the correct lifetime prevents memory leaks, concurrency bugs, and the infamous captive dependency problem.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Service Lifetimes Explained - Transient vs Scoped vs Singleton", "url": "https://www.youtube.com/watch?v=v6Nr7Zman_Y", "channel": "Nick Chapsas", "duration": "16:38" },
+            { "title": "DI Service Lifetimes in ASP.NET Core", "url": "https://www.youtube.com/watch?v=aMjiiWtfj2M", "channel": "Milan Jovanovic", "duration": "12:22" },
+            { "title": "Understanding Dependency Injection Lifetimes", "url": "https://www.youtube.com/watch?v=vNlPKGtzKcE", "channel": "IAmTimCorey", "duration": "38:50" }
+          ],
+          "resources": [
+            { "title": "Service Lifetimes - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#service-lifetimes", "type": "official" },
+            { "title": "Avoiding Captive Dependencies", "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines#captive-dependency", "type": "official" },
+            { "title": "Scope Validation in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection#scope-validation", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "Explain the three DI service lifetimes in ASP.NET Core.", "a": "Transient services are created every time they are requested, which is suitable for lightweight stateless services. Scoped services are created once per HTTP request scope and shared within that scope, making them ideal for DbContext and unit-of-work patterns. Singleton services are created once for the entire application lifetime and shared across all requests, suitable for caches, configuration, and thread-safe stateless services. Choosing the wrong lifetime can cause concurrency issues or memory leaks." },
+            { "q": "What is the captive dependency problem?", "a": "The captive dependency problem occurs when a longer-lived service depends on a shorter-lived service — for example, a Singleton that injects a Scoped service. The Scoped service gets captured and held by the Singleton for the entire application lifetime, which means it is never disposed and may hold stale data or database connections. ASP.NET Core throws an InvalidOperationException in Development when ValidateScopes is enabled to help detect this issue. The fix is to inject IServiceScopeFactory and create a scope manually when a Singleton needs a Scoped dependency." },
+            { "q": "When should you use Scoped vs Transient for a service?", "a": "Use Scoped when the service maintains state that should be consistent within a single HTTP request, such as a DbContext or a unit-of-work. Use Transient when each consumer should get its own independent instance with no shared state, which is common for lightweight helper services or when the service holds no per-request state. If a Transient service is injected into multiple places within one request, each injection gets a different instance, while a Scoped service would be the same instance everywhere within that request." }
+          ],
+          "tips": [
+            "Enable ValidateScopes and ValidateOnBuild in development to catch captive dependency and missing registration errors at startup.",
+            "Register DbContext as Scoped — registering it as Singleton or Transient will cause connection pooling and change-tracking issues."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "database-and-ef-core",
+      "title": "Database & EF Core",
+      "order": 4,
+      "topics": [
+        {
+          "id": "entity-framework-core",
+          "title": "Entity Framework Core",
+          "description": "Entity Framework Core is Microsoft's modern object-relational mapper (ORM) that lets you work with databases using C# objects and LINQ queries instead of raw SQL. It supports multiple database providers including SQL Server, PostgreSQL, SQLite, and MySQL, and follows conventions-over-configuration to reduce boilerplate.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Entity Framework Core Full Course", "url": "https://www.youtube.com/watch?v=SryQxUeChMc", "channel": "Les Jackson", "duration": "2:15:30" },
+            { "title": "EF Core - Getting Started", "url": "https://www.youtube.com/watch?v=SryQxUeChMc", "channel": "IAmTimCorey", "duration": "1:05:44" },
+            { "title": "EF Core Performance Tips", "url": "https://www.youtube.com/watch?v=dDANjr5MCew", "channel": "Nick Chapsas", "duration": "22:18" }
+          ],
+          "resources": [
+            { "title": "EF Core Overview - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/ef/core/", "type": "official" },
+            { "title": "Getting Started with EF Core", "url": "https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app", "type": "official" },
+            { "title": "EF Core - DbContext Configuration", "url": "https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Entity Framework Core and how does it differ from EF6?", "a": "Entity Framework Core is a lightweight, extensible, cross-platform ORM built for .NET Core and .NET 5+. Unlike EF6, which was tied to .NET Framework and used EDMX files, EF Core is modular, supports multiple database providers through NuGet packages, and uses code-first with fluent API or data annotations as its primary approach. EF Core is faster, supports new features like compiled queries and batching, but initially lacked some EF6 features like lazy loading, which was added in later versions." },
+            { "q": "What is the difference between code-first and database-first approaches in EF Core?", "a": "In code-first, you define your entity classes and DbContext in C# and EF Core generates the database schema through migrations. This is the recommended approach as it keeps the schema in source control and allows seamless team collaboration. In database-first, you reverse-engineer entity classes from an existing database using the dotnet ef dbcontext scaffold command. Code-first is preferred for new projects, while database-first is useful when working with legacy databases or when DBAs manage the schema." },
+            { "q": "How does change tracking work in EF Core?", "a": "EF Core's change tracker monitors the state of entities retrieved through a DbContext, automatically detecting modifications when SaveChanges is called. Entities can be in states: Added, Modified, Deleted, Unchanged, or Detached. When you modify a property on a tracked entity, EF Core marks it as Modified and generates an UPDATE statement for only the changed columns. For read-only queries, use AsNoTracking() to disable change tracking, which significantly improves performance by skipping snapshot creation and identity resolution." }
+          ],
+          "tips": [
+            "Always use AsNoTracking() for read-only queries — it can improve performance by 30-50% by skipping change tracking overhead.",
+            "Configure entity relationships and constraints in OnModelCreating with Fluent API rather than relying solely on conventions for production code."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "migrations-and-querying",
+          "title": "Migrations & Querying",
+          "description": "EF Core migrations provide a way to incrementally evolve your database schema alongside your application code, keeping schema changes version-controlled and reproducible. Efficient querying with LINQ to Entities, including eager loading, split queries, and raw SQL, is critical for application performance.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "EF Core Migrations Explained", "url": "https://www.youtube.com/watch?v=fl6r-9rQjns", "channel": "Nick Chapsas", "duration": "19:42" },
+            { "title": "EF Core Querying Deep Dive", "url": "https://www.youtube.com/watch?v=LDRxo6wDIE0", "channel": "Milan Jovanovic", "duration": "16:55" },
+            { "title": "EF Core - Migrations and Relationships", "url": "https://www.youtube.com/watch?v=4G_p8AefmuY", "channel": "IAmTimCorey", "duration": "48:30" }
+          ],
+          "resources": [
+            { "title": "EF Core Migrations - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/", "type": "official" },
+            { "title": "Querying Data - EF Core", "url": "https://learn.microsoft.com/en-us/ef/core/querying/", "type": "official" },
+            { "title": "Loading Related Data", "url": "https://learn.microsoft.com/en-us/ef/core/querying/related-data/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do EF Core migrations work and how do you apply them in production?", "a": "Migrations capture schema changes as C# code files that can be applied forward or reverted. You create a migration with dotnet ef migrations add, which compares the current model snapshot with the DbContext and generates Up and Down methods. In development, dotnet ef database update applies pending migrations. In production, you should generate a SQL script with dotnet ef migrations script and review it before execution, or use migration bundles for self-contained deployment. Never use Database.Migrate() in production startup code as it can cause race conditions in multi-instance deployments." },
+            { "q": "What is the N+1 query problem and how do you avoid it in EF Core?", "a": "The N+1 problem occurs when EF Core executes one query to load a list of N parent entities and then N additional queries to load each parent's related child entities during enumeration. This happens with lazy loading or when accessing navigation properties in a loop. You avoid it by using eager loading with Include and ThenInclude to load related data in a single query, using projection with Select to fetch only needed columns, or using split queries with AsSplitQuery() when a single query would create a cartesian explosion with multiple collection includes." },
+            { "q": "When should you use raw SQL queries in EF Core?", "a": "Use raw SQL when you need database-specific features not supported by LINQ, when LINQ-generated queries are inefficient for complex reporting, when calling stored procedures, or when you need maximum performance for a specific query. EF Core provides FromSqlRaw and FromSqlInterpolated for queries that return entity types, and Database.ExecuteSqlRaw for non-query commands. Always use parameterized queries or interpolated versions to prevent SQL injection. Raw SQL results can still be composed with LINQ for additional filtering and sorting." }
+          ],
+          "tips": [
+            "Use dotnet ef migrations script --idempotent to generate production-safe SQL scripts that check which migrations have already been applied.",
+            "Enable sensitive data logging in development with EnableSensitiveDataLogging() to see actual parameter values in generated SQL for easier debugging."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "api-development",
+      "title": "API Development",
+      "order": 5,
+      "topics": [
+        {
+          "id": "restful-api-design",
+          "title": "RESTful API Design",
+          "description": "Designing RESTful APIs involves following HTTP semantics, resource-oriented URLs, proper status codes, and consistent response formats to build predictable and maintainable web services. ASP.NET Core provides excellent support for REST through the [ApiController] attribute, model binding, content negotiation, and problem details for error responses.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Building a REST API with ASP.NET Core", "url": "https://www.youtube.com/watch?v=ZXdFisA_hOY", "channel": "Les Jackson", "duration": "2:45:18" },
+            { "title": "REST API Best Practices in ASP.NET Core", "url": "https://www.youtube.com/watch?v=baQiAaHnq5E", "channel": "Nick Chapsas", "duration": "24:30" },
+            { "title": "Building RESTful APIs with .NET", "url": "https://www.youtube.com/watch?v=Mr3TiSbx630", "channel": "Julio Casal", "duration": "1:35:12" }
+          ],
+          "resources": [
+            { "title": "Web API Best Practices - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design", "type": "official" },
+            { "title": "Create Web APIs with ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/web-api/", "type": "official" },
+            { "title": "Handle Errors in ASP.NET Core Web APIs", "url": "https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What makes an API truly RESTful?", "a": "A truly RESTful API adheres to REST constraints: it uses resources identified by URIs, manipulates resources through representations using standard HTTP methods (GET, POST, PUT, PATCH, DELETE), communicates statelessly with each request containing all needed information, uses proper HTTP status codes, and ideally implements HATEOAS with hypermedia links to guide clients. In practice, most APIs implement a pragmatic subset often called REST-like or Richardson Maturity Model Level 2, focusing on resource-oriented URLs and correct HTTP method semantics." },
+            { "q": "How does the [ApiController] attribute improve API development?", "a": "The [ApiController] attribute enables several conventions that reduce boilerplate: it requires attribute routing, enables automatic model validation that returns 400 Bad Request with problem details when ModelState is invalid, enables binding source inference so [FromBody] is assumed for complex types and [FromRoute] for route parameters, and returns problem details responses for error status codes. It also makes the controller API-focused by removing the need for manual ModelState.IsValid checks in every action." },
+            { "q": "How should you handle errors consistently in an ASP.NET Core API?", "a": "Use the Problem Details standard (RFC 7807) by returning ProblemDetails objects with appropriate HTTP status codes. Configure the global exception handler middleware to catch unhandled exceptions and return consistent error responses. Use Result pattern or FluentValidation for validation errors. Configure builder.Services.AddProblemDetails() and app.UseExceptionHandler() to automatically format exceptions. Create custom exception types mapped to specific status codes and use middleware or filters to translate them into Problem Details responses." }
+          ],
+          "tips": [
+            "Use plural nouns for resource URLs like /api/products and rely on HTTP methods for actions — avoid verbs in URLs like /api/getProducts.",
+            "Always return appropriate status codes: 201 with Location header for creation, 204 for successful deletion, and 409 for conflict scenarios."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "swagger-openapi",
+          "title": "Swagger/OpenAPI",
+          "description": "OpenAPI is a specification for describing RESTful APIs, and Swagger UI provides an interactive documentation interface that lets developers explore and test your API endpoints directly in the browser. ASP.NET Core integrates seamlessly with Swashbuckle and NSwag to auto-generate OpenAPI specs from your code.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Swagger in ASP.NET Core", "url": "https://www.youtube.com/watch?v=qSBFMnHoVtg", "channel": "Nick Chapsas", "duration": "15:22" },
+            { "title": "OpenAPI and Swagger for .NET APIs", "url": "https://www.youtube.com/watch?v=sSa6Bbb1X4o", "channel": "IAmTimCorey", "duration": "42:18" },
+            { "title": "Documenting APIs with Swagger", "url": "https://www.youtube.com/watch?v=VE79AB3zvrw", "channel": "dotnet", "duration": "28:05" }
+          ],
+          "resources": [
+            { "title": "ASP.NET Core Web API Documentation with Swagger", "url": "https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger", "type": "official" },
+            { "title": "Swashbuckle and ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle", "type": "official" },
+            { "title": "OpenAPI Specification", "url": "https://swagger.io/specification/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between OpenAPI and Swagger?", "a": "OpenAPI is the specification (formerly known as Swagger Specification) that defines a standard, language-agnostic format for describing RESTful APIs. Swagger is now the name for the toolset built around the OpenAPI specification, including Swagger UI for interactive documentation, Swagger Editor for writing specs, and Swagger Codegen for generating client SDKs. When people say Swagger in the .NET context, they usually mean the Swagger UI and the Swashbuckle library that generates the OpenAPI spec from ASP.NET Core code." },
+            { "q": "How do you add authentication support to Swagger in ASP.NET Core?", "a": "You configure Swagger to include a security definition and requirement in Program.cs. For JWT Bearer, you call AddSecurityDefinition to define the Bearer scheme, then AddSecurityRequirement to apply it globally. This adds an Authorize button to Swagger UI where users can paste their JWT token. For OAuth 2.0, you can configure OAuth flows with authorize and token endpoints. You can also use the [Authorize] attribute on controllers and operation filters to show lock icons only on protected endpoints." },
+            { "q": "How do you customize the OpenAPI documentation generated by Swashbuckle?", "a": "You can customize the generated spec by adding XML comments with summary and remarks tags on controllers and models, then enabling XML documentation in the project file and Swagger configuration. Use [ProducesResponseType] attributes to document response types and status codes. Schema filters let you modify how types are represented, and operation filters can add custom metadata. You can also use SwaggerDoc to define multiple API versions and include/exclude endpoints per version using document filters." }
+          ],
+          "tips": [
+            "Enable XML documentation comments in your project file and configure Swashbuckle to include them — this generates far richer API documentation automatically.",
+            "Use [Produces] and [ProducesResponseType] attributes on every action to ensure Swagger accurately documents all possible response types and status codes."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "authentication-and-authorization",
+      "title": "Authentication & Authorization",
+      "order": 6,
+      "topics": [
+        {
+          "id": "aspnet-identity-and-jwt",
+          "title": "ASP.NET Identity & JWT",
+          "description": "ASP.NET Core Identity provides a complete membership system for managing users, passwords, roles, and claims out of the box, backed by Entity Framework Core. JSON Web Tokens (JWT) are the standard approach for securing APIs, enabling stateless authentication where the server validates a signed token instead of maintaining session state.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "ASP.NET Core Identity - Full Course", "url": "https://www.youtube.com/watch?v=Y6DlKbEdJhI", "channel": "IAmTimCorey", "duration": "1:45:30" },
+            { "title": "JWT Authentication in ASP.NET Core", "url": "https://www.youtube.com/watch?v=v7q3pEK1EA0", "channel": "Nick Chapsas", "duration": "28:44" },
+            { "title": "ASP.NET Core Authentication with JWT", "url": "https://www.youtube.com/watch?v=8FvN5bhVYxY", "channel": "Julio Casal", "duration": "52:18" }
+          ],
+          "resources": [
+            { "title": "Introduction to Identity on ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity", "type": "official" },
+            { "title": "JWT Bearer Authentication in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/security/authentication/jwt-authn", "type": "official" },
+            { "title": "ASP.NET Core Security Overview", "url": "https://learn.microsoft.com/en-us/aspnet/core/security/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does JWT authentication work in ASP.NET Core?", "a": "When a user logs in, the server validates credentials and issues a JWT containing claims about the user, signed with a secret key or certificate. The client stores the token and sends it in the Authorization header as Bearer <token> with each request. ASP.NET Core's JWT Bearer middleware validates the token signature, expiration, issuer, and audience on every request and populates HttpContext.User with the token's claims. Since the server does not store session data, JWTs enable stateless, scalable authentication suitable for distributed systems and microservices." },
+            { "q": "What is the difference between authentication and authorization in ASP.NET Core?", "a": "Authentication is the process of verifying who a user is, handled by authentication schemes like JWT Bearer, Cookie, or OpenID Connect that set the HttpContext.User principal. Authorization is the process of determining what an authenticated user is allowed to do, handled by the [Authorize] attribute and authorization policies. ASP.NET Core supports role-based authorization, claims-based authorization, and policy-based authorization. Authentication must happen first via UseAuthentication middleware, followed by UseAuthorization." },
+            { "q": "How do you handle JWT token refresh in ASP.NET Core?", "a": "The common approach is to issue a short-lived access token (15-30 minutes) alongside a longer-lived refresh token stored securely. When the access token expires, the client sends the refresh token to a dedicated endpoint that validates it against stored refresh tokens in the database, revokes the old one, and issues a new access token and refresh token pair. This rotation strategy limits the window of exposure if an access token is compromised while keeping the user logged in. Store refresh tokens hashed in the database and implement absolute expiration to force re-login periodically." }
+          ],
+          "tips": [
+            "Keep JWT access tokens short-lived (15-30 minutes) and use refresh tokens for longevity — this limits damage from token theft.",
+            "Never store JWTs in localStorage for browser apps due to XSS risk — use httpOnly secure cookies or the BFF pattern instead."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "oauth2-and-oidc",
+          "title": "OAuth 2.0 & OIDC",
+          "description": "OAuth 2.0 is the industry-standard protocol for authorization that lets applications obtain limited access to user accounts on third-party services. OpenID Connect (OIDC) is an identity layer built on top of OAuth 2.0 that adds authentication, enabling features like \"Sign in with Google\" and single sign-on across applications.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "OAuth 2.0 and OpenID Connect Explained", "url": "https://www.youtube.com/watch?v=996OiexHze0", "channel": "freeCodeCamp", "duration": "1:05:22" },
+            { "title": "OAuth and OIDC in ASP.NET Core", "url": "https://www.youtube.com/watch?v=Fhfvbl_KbWo", "channel": "Raw Coding", "duration": "45:30" },
+            { "title": "External Auth Providers in ASP.NET Core", "url": "https://www.youtube.com/watch?v=MbARIHqJjH0", "channel": "Nick Chapsas", "duration": "22:15" }
+          ],
+          "resources": [
+            { "title": "OAuth 2.0 Overview - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow", "type": "official" },
+            { "title": "External Login Providers in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/", "type": "official" },
+            { "title": "OpenID Connect Specification", "url": "https://openid.net/specs/openid-connect-core-1_0.html", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between OAuth 2.0 and OpenID Connect?", "a": "OAuth 2.0 is an authorization framework that allows a third-party application to obtain limited access to an HTTP service by issuing access tokens. It answers the question 'what is this user allowed to access?' OpenID Connect (OIDC) is an authentication layer built on top of OAuth 2.0 that introduces the ID token, a JWT containing identity claims that answers the question 'who is this user?' OIDC adds standard scopes like openid, profile, and email, a UserInfo endpoint, and discovery metadata. You typically use both together: OIDC for login and OAuth 2.0 for API access." },
+            { "q": "Explain the OAuth 2.0 Authorization Code flow with PKCE.", "a": "The Authorization Code flow with PKCE is the recommended flow for web and mobile apps. The client generates a random code_verifier and its SHA-256 hash called code_challenge. The user is redirected to the authorization server with the code_challenge. After login and consent, the server redirects back with an authorization code. The client exchanges this code along with the original code_verifier for tokens. The server verifies the code_verifier matches the original code_challenge, preventing authorization code interception attacks. PKCE replaces the need for a client secret, making it safe for public clients like SPAs and mobile apps." },
+            { "q": "How do you implement external authentication (e.g., Google) in ASP.NET Core?", "a": "You register the external authentication provider in Program.cs using AddAuthentication().AddGoogle() or similar methods, providing the client ID and secret obtained from the provider's developer console. ASP.NET Core handles the OAuth/OIDC flow automatically: redirecting to the provider, handling the callback, validating tokens, and creating a ClaimsPrincipal. You can use the ExternalLogin Razor Page from Identity scaffolding or build custom logic with SignInManager.GetExternalLoginInfoAsync(). Map external claims to your local user model to maintain a consistent identity regardless of the authentication method." }
+          ],
+          "tips": [
+            "Always use Authorization Code flow with PKCE — the implicit flow is deprecated and insecure for all new applications.",
+            "Use a mature identity provider like Duende IdentityServer or Keycloak rather than building your own OAuth server from scratch."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "caching",
+      "title": "Caching",
+      "order": 7,
+      "topics": [
+        {
+          "id": "in-memory-and-distributed-caching",
+          "title": "In-Memory & Distributed Caching",
+          "description": "ASP.NET Core provides built-in support for both in-memory caching through IMemoryCache and distributed caching through IDistributedCache, allowing you to store frequently accessed data to reduce database load and improve response times. Choosing between in-memory and distributed caching depends on whether your app runs on a single server or is deployed across multiple instances.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Caching in ASP.NET Core - In Memory & Distributed", "url": "https://www.youtube.com/watch?v=2jj2wCiV50Q", "channel": "Nick Chapsas", "duration": "24:18" },
+            { "title": "Response Caching and Output Caching in .NET", "url": "https://www.youtube.com/watch?v=LJyMJFkF9Ys", "channel": "Milan Jovanovic", "duration": "16:40" },
+            { "title": "Caching Strategies in ASP.NET Core", "url": "https://www.youtube.com/watch?v=IB8jBpB1EFE", "channel": "IAmTimCorey", "duration": "55:12" }
+          ],
+          "resources": [
+            { "title": "Caching in ASP.NET Core - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview", "type": "official" },
+            { "title": "In-Memory Caching", "url": "https://learn.microsoft.com/en-us/aspnet/core/performance/caching/memory", "type": "official" },
+            { "title": "Distributed Caching", "url": "https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between in-memory caching and distributed caching?", "a": "In-memory caching using IMemoryCache stores data in the web server's local memory, providing extremely fast access but limited to a single process — if the app restarts or runs on multiple servers, each has its own isolated cache. Distributed caching using IDistributedCache stores data in an external backing store like Redis or SQL Server, shared across all application instances. Use in-memory caching for single-server deployments or per-instance data, and distributed caching for multi-instance deployments where cache consistency across servers matters." },
+            { "q": "How does output caching differ from response caching in ASP.NET Core?", "a": "Response caching sets HTTP cache headers (Cache-Control, ETag, Expires) that instruct browsers and CDN proxies to cache responses, but the server has no control once headers are sent. Output caching, introduced in .NET 7, is a server-side middleware that stores entire HTTP responses in memory or a distributed store and serves them directly without executing the endpoint logic. Output caching gives you full control over cache invalidation, tag-based eviction, and per-endpoint policies. Use response caching for public CDN-cacheable content and output caching when you need server-side control." },
+            { "q": "What cache invalidation strategies can you use in ASP.NET Core?", "a": "Common strategies include time-based expiration with absolute and sliding windows set via MemoryCacheEntryOptions or DistributedCacheEntryOptions. You can use cache-aside pattern where the application checks the cache first and loads from the database on a miss. Event-driven invalidation publishes messages when data changes to signal cache eviction. For output caching, tag-based eviction lets you invalidate groups of cached responses. The CancellationTokenSource approach allows programmatic expiration of in-memory cache entries when the underlying data changes." }
+          ],
+          "tips": [
+            "Always set both absolute and sliding expiration on cache entries — sliding alone can keep stale data alive indefinitely if accessed frequently.",
+            "Use the cache-aside pattern by default: check cache first, fetch from database on miss, then populate the cache before returning."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "redis",
+          "title": "Redis",
+          "description": "Redis is the most popular distributed caching solution for ASP.NET Core applications, providing sub-millisecond response times and rich data structures beyond simple key-value pairs. It serves as a session store, cache layer, pub/sub message broker, and rate limiter in production .NET deployments.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Redis Caching in ASP.NET Core", "url": "https://www.youtube.com/watch?v=UrQWii_kfIE", "channel": "Nick Chapsas", "duration": "18:42" },
+            { "title": "Redis with .NET - Full Tutorial", "url": "https://www.youtube.com/watch?v=GVjQxVFDEDU", "channel": "Les Jackson", "duration": "1:15:30" },
+            { "title": "Distributed Caching with Redis in .NET", "url": "https://www.youtube.com/watch?v=J1gwnY8V1gE", "channel": "Milan Jovanovic", "duration": "14:55" }
+          ],
+          "resources": [
+            { "title": "Distributed Caching with Redis - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed#distributed-redis-cache", "type": "official" },
+            { "title": "StackExchange.Redis Documentation", "url": "https://stackexchange.github.io/StackExchange.Redis/", "type": "official" },
+            { "title": "Redis Documentation", "url": "https://redis.io/docs/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "Why choose Redis over other distributed cache solutions?", "a": "Redis offers sub-millisecond latency with in-memory storage, rich data structures (strings, hashes, lists, sets, sorted sets, streams) beyond simple key-value caching, built-in pub/sub for real-time messaging, atomic operations, Lua scripting, and persistence options. Compared to SQL Server distributed cache, Redis is orders of magnitude faster. Compared to NCache or Memcached, Redis provides more data structure versatility. Redis also supports clustering for horizontal scaling and Redis Sentinel for high availability, making it the de facto standard for .NET distributed caching." },
+            { "q": "How do you integrate Redis with ASP.NET Core's IDistributedCache?", "a": "Install the Microsoft.Extensions.Caching.StackExchangeRedis NuGet package and register it in Program.cs with builder.Services.AddStackExchangeRedisCache() providing the connection string. This registers Redis as the IDistributedCache implementation, so any service that injects IDistributedCache will transparently use Redis. You can also use the StackExchange.Redis library directly via IConnectionMultiplexer for advanced scenarios like pub/sub, hash operations, or Lua scripts that go beyond the simple string-based IDistributedCache interface." },
+            { "q": "How do you handle Redis connection failures gracefully in ASP.NET Core?", "a": "Implement a circuit breaker pattern using Polly to stop hammering Redis when it is down and fall back to a degraded mode. Configure retry policies with exponential backoff in the StackExchange.Redis connection options. Use the IDistributedCache abstraction so you can swap to an in-memory fallback. Set appropriate connection and sync timeouts. Monitor Redis health through ASP.NET Core health checks with AddRedis(). In critical paths, consider a multi-layer cache strategy where an in-memory L1 cache sits in front of Redis L2 cache." }
+          ],
+          "tips": [
+            "Use the IDistributedCache abstraction for simple caching but inject IConnectionMultiplexer directly when you need Redis-specific features like pub/sub or hash operations.",
+            "Set appropriate key prefixes and use a consistent naming convention like appname:entity:id to avoid key collisions in shared Redis instances."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "logging-and-monitoring",
+      "title": "Logging & Monitoring",
+      "order": 8,
+      "topics": [
+        {
+          "id": "ilogger-and-serilog",
+          "title": "ILogger & Serilog",
+          "description": "ASP.NET Core's built-in ILogger abstraction provides structured logging that can be directed to multiple outputs through logging providers. Serilog is the most popular third-party logging library for .NET, offering structured event data, rich sinks for various destinations, and powerful filtering and enrichment capabilities.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Logging in ASP.NET Core - From Basics to Serilog", "url": "https://www.youtube.com/watch?v=oXNslgIXIbQ", "channel": "Nick Chapsas", "duration": "22:30" },
+            { "title": "Serilog in ASP.NET Core - Complete Guide", "url": "https://www.youtube.com/watch?v=_iryZxv8Rxw", "channel": "IAmTimCorey", "duration": "48:22" },
+            { "title": "Structured Logging with Serilog in .NET", "url": "https://www.youtube.com/watch?v=nVAkSBpsuTk", "channel": "Milan Jovanovic", "duration": "15:18" }
+          ],
+          "resources": [
+            { "title": "Logging in ASP.NET Core - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/", "type": "official" },
+            { "title": "Serilog ASP.NET Core Integration", "url": "https://github.com/serilog/serilog-aspnetcore", "type": "official" },
+            { "title": "Serilog Best Practices", "url": "https://benfoster.io/blog/serilog-best-practices/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is structured logging and why is it better than plain text logging?", "a": "Structured logging captures log events as data with named properties rather than flat text strings. Instead of logging 'User 42 placed order 1001', structured logging captures UserId=42 and OrderId=1001 as separate searchable fields. This enables powerful querying in log aggregation tools like Seq, Elasticsearch, or Application Insights — you can filter by UserId or correlate all events for an OrderId. Serilog uses message templates with curly braces like 'User {UserId} placed order {OrderId}' to capture these properties while still producing human-readable output." },
+            { "q": "How do you configure Serilog to replace the default ASP.NET Core logging?", "a": "Install Serilog.AspNetCore and call builder.Host.UseSerilog() in Program.cs, which replaces the default logging providers with Serilog. Configure sinks like Console, File, Seq, or Elasticsearch to specify where logs are written. Use Enrich.FromLogContext() to automatically include request-scoped properties. Configure minimum levels per namespace in appsettings.json using Serilog's configuration. Add UseSerilogRequestLogging() middleware to get a single structured log entry per HTTP request instead of multiple framework-level messages." },
+            { "q": "What are log levels and how should you use them effectively?", "a": "ASP.NET Core defines six log levels: Trace (most verbose, detailed debugging), Debug (development-time information), Information (normal application flow events), Warning (unexpected situations that do not cause failure), Error (failures that affect the current operation), and Critical (system-wide failures requiring immediate attention). In production, set the minimum level to Information or Warning to avoid excessive log volume. Use Debug and Trace only in development. Never log sensitive data like passwords, tokens, or PII at any level." }
+          ],
+          "tips": [
+            "Use Serilog's message template syntax with curly braces like Log.Information(\"Processing {OrderId}\", orderId) instead of string interpolation to preserve structured properties.",
+            "Configure different minimum log levels per namespace in appsettings.json to reduce noise from chatty framework logs while keeping your application logs verbose."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "health-checks",
+          "title": "Health Checks",
+          "description": "ASP.NET Core health checks provide a standardized way to report the health of your application and its dependencies, enabling load balancers, orchestrators like Kubernetes, and monitoring systems to make informed decisions about traffic routing. You can check database connectivity, external service availability, memory usage, and custom conditions.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Health Checks in ASP.NET Core", "url": "https://www.youtube.com/watch?v=p2faw9DCSsY", "channel": "Nick Chapsas", "duration": "16:22" },
+            { "title": "ASP.NET Core Health Checks Deep Dive", "url": "https://www.youtube.com/watch?v=Kbfto6Y79tY", "channel": "Milan Jovanovic", "duration": "13:45" },
+            { "title": "Monitoring .NET Apps with Health Checks", "url": "https://www.youtube.com/watch?v=fuECuGpMwAI", "channel": "dotnet", "duration": "32:10" }
+          ],
+          "resources": [
+            { "title": "Health Checks in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks", "type": "official" },
+            { "title": "AspNetCore.Diagnostics.HealthChecks", "url": "https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks", "type": "article" },
+            { "title": "Health Check UI", "url": "https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks#health-checks-ui", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do health checks work in ASP.NET Core?", "a": "Health checks are registered in Program.cs using builder.Services.AddHealthChecks() and exposed as HTTP endpoints with app.MapHealthChecks(). Each health check implements IHealthCheck and returns Healthy, Degraded, or Unhealthy status. You can tag health checks and map different endpoints for different tags — for example, /health/ready for readiness probes that check all dependencies and /health/live for liveness probes that just confirm the process is running. Kubernetes uses these endpoints to decide whether to route traffic to a pod or restart it." },
+            { "q": "What is the difference between liveness and readiness health checks?", "a": "Liveness checks determine if the application process is alive and not stuck in an unrecoverable state — if it fails, the orchestrator restarts the instance. It should be a simple, fast check that does not test external dependencies. Readiness checks determine if the application is ready to accept traffic by verifying all dependencies like databases, caches, and external services are reachable. If readiness fails, the orchestrator removes the instance from the load balancer but does not restart it. Separating these prevents cascading restarts when an external dependency is temporarily down." },
+            { "q": "How do you implement custom health checks for your specific dependencies?", "a": "Create a class implementing IHealthCheck with a CheckHealthAsync method that tests the dependency and returns HealthCheckResult.Healthy, Degraded, or Unhealthy. Register it with builder.Services.AddHealthChecks().AddCheck<MyCustomCheck>(). The Xabaril AspNetCore.Diagnostics.HealthChecks library provides pre-built checks for SQL Server, Redis, RabbitMQ, Azure services, and dozens more. You can set failure status, tags for filtering, and timeout per check. Add response writers to return detailed JSON payloads showing each check's status for monitoring dashboards." }
+          ],
+          "tips": [
+            "Always separate liveness and readiness probes into different endpoints — a database outage should remove you from the load balancer, not trigger a restart loop.",
+            "Use the AspNetCore.Diagnostics.HealthChecks NuGet packages for pre-built checks on common dependencies instead of writing them from scratch."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "real-time-and-signalr",
+      "title": "Real-Time & SignalR",
+      "order": 9,
+      "topics": [
+        {
+          "id": "signalr",
+          "title": "SignalR",
+          "description": "ASP.NET Core SignalR is a library that simplifies adding real-time bidirectional communication to web applications, automatically managing the connection and choosing the best transport (WebSockets, Server-Sent Events, or Long Polling). It provides a high-level abstraction through Hubs that let you call client-side methods from the server and vice versa.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Real-Time Web Apps with SignalR", "url": "https://www.youtube.com/watch?v=RaXx_f3bIRU", "channel": "IAmTimCorey", "duration": "1:05:18" },
+            { "title": "SignalR in ASP.NET Core - Complete Tutorial", "url": "https://www.youtube.com/watch?v=2TnOSy2oHys", "channel": "Les Jackson", "duration": "1:22:30" },
+            { "title": "Getting Started with SignalR in .NET", "url": "https://www.youtube.com/watch?v=1TrttIkbs6c", "channel": "dotnet", "duration": "35:44" }
+          ],
+          "resources": [
+            { "title": "SignalR Overview - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction", "type": "official" },
+            { "title": "SignalR Hubs", "url": "https://learn.microsoft.com/en-us/aspnet/core/signalr/hubs", "type": "official" },
+            { "title": "SignalR Scale-Out with Redis", "url": "https://learn.microsoft.com/en-us/aspnet/core/signalr/redis-backplane", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does SignalR work and what transports does it support?", "a": "SignalR establishes a persistent connection between client and server, enabling the server to push messages to clients without them polling. It performs automatic transport negotiation, preferring WebSockets (full duplex over a single TCP connection), falling back to Server-Sent Events (server-to-client only), and finally to Long Polling as a last resort. The Hub class on the server defines methods that clients can call and provides methods to invoke functions on connected clients. SignalR handles reconnection, connection lifecycle, and group management automatically." },
+            { "q": "How do you scale SignalR across multiple servers?", "a": "Since SignalR connections are persistent, a client connected to Server A will not receive messages sent from Server B without a backplane. A backplane is a message bus that all servers subscribe to, forwarding messages between them. ASP.NET Core SignalR supports Redis as a backplane, which is the most common solution, as well as Azure SignalR Service for fully managed scaling. You configure a Redis backplane with AddStackExchangeRedis() on the SignalR builder. Azure SignalR Service offloads connection management entirely, supporting hundreds of thousands of concurrent connections." },
+            { "q": "What are SignalR groups and how are they used?", "a": "Groups are a logical collection of connections identified by a name that allow you to send messages to a subset of connected clients. A connection can belong to multiple groups. You add a connection to a group with Groups.AddToGroupAsync(Context.ConnectionId, groupName) and send to a group with Clients.Group(groupName).SendAsync(). Common use cases include chat rooms, live dashboards per tenant, and notification channels. Groups are transient — they are created when the first connection is added and removed when the last connection leaves." }
+          ],
+          "tips": [
+            "Always add a Redis backplane before deploying SignalR to multiple server instances — without it, clients on different servers cannot communicate.",
+            "Use strongly-typed hubs by creating an interface for client methods to get compile-time safety instead of magic string method names."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "websockets",
+          "title": "WebSockets",
+          "description": "WebSockets provide a low-level, full-duplex communication channel over a single TCP connection, enabling real-time data exchange between client and server without the overhead of HTTP request-response cycles. While SignalR is the recommended high-level abstraction, understanding raw WebSockets is important for custom protocols and performance-critical scenarios.",
+          "isOptional": true,
+          "youtubeVideos": [
+            { "title": "WebSockets in ASP.NET Core", "url": "https://www.youtube.com/watch?v=ysQhi0MXSXU", "channel": "Raw Coding", "duration": "28:15" },
+            { "title": "WebSocket Protocol Explained", "url": "https://www.youtube.com/watch?v=1BfCnjr_Vjg", "channel": "freeCodeCamp", "duration": "42:30" },
+            { "title": "Real-Time Communication with WebSockets", "url": "https://www.youtube.com/watch?v=6jMQaji_3W0", "channel": "Nick Chapsas", "duration": "18:44" }
+          ],
+          "resources": [
+            { "title": "WebSockets in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets", "type": "official" },
+            { "title": "WebSocket Protocol RFC 6455", "url": "https://datatracker.ietf.org/doc/html/rfc6455", "type": "article" },
+            { "title": "WebSocket vs SignalR Comparison", "url": "https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction#transports", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do WebSockets differ from regular HTTP connections?", "a": "HTTP follows a request-response pattern where the client initiates every exchange, and each request opens a new connection (or reuses one via keep-alive but still requires the request-response cycle). WebSockets start with an HTTP upgrade handshake and then maintain a persistent, full-duplex connection where both client and server can send messages at any time independently. WebSockets have much lower overhead per message since they skip HTTP headers after the initial handshake. They are ideal for scenarios requiring high-frequency, low-latency bidirectional communication like gaming, financial tickers, or collaborative editing." },
+            { "q": "When would you use raw WebSockets instead of SignalR?", "a": "Use raw WebSockets when you need a custom binary protocol for performance-critical applications, when integrating with non-.NET clients that expect a specific WebSocket protocol, when you want minimal overhead without SignalR's JSON/MessagePack framing, or when building infrastructure-level components like proxies or gateways. SignalR should be the default choice for most applications because it handles transport fallback, reconnection, connection management, and group messaging automatically. Raw WebSockets require you to implement all of this yourself." },
+            { "q": "How do you implement WebSocket support in ASP.NET Core?", "a": "Add the WebSockets middleware with app.UseWebSockets() and configure options like KeepAliveInterval. In an endpoint or middleware, check if the request is a WebSocket request with HttpContext.WebSockets.IsWebSocketRequest, then accept the connection with AcceptWebSocketAsync(). Use ReceiveAsync and SendAsync to exchange messages in a loop until the client closes the connection. You need to manage connection state, handle disconnections, and implement your own message protocol. For production, use CancellationTokens for timeout management and handle WebSocketCloseStatus properly." }
+          ],
+          "tips": [
+            "Use SignalR unless you have a specific requirement for a custom protocol — it handles reconnection, fallback, and scaling that you would otherwise build yourself.",
+            "Always implement a ping/pong mechanism or keep-alive for long-lived WebSocket connections to detect dropped connections behind load balancers."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "order": 10,
+      "topics": [
+        {
+          "id": "unit-testing-xunit",
+          "title": "Unit Testing (xUnit)",
+          "description": "xUnit is the most popular testing framework for .NET, used by the .NET team itself, providing a clean and extensible approach to writing unit tests. Combined with mocking libraries like Moq or NSubstitute and assertion libraries like FluentAssertions, it forms the foundation of a robust testing strategy for ASP.NET Core applications.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Unit Testing in C# with xUnit", "url": "https://www.youtube.com/watch?v=dsD0CMgPjUk", "channel": "IAmTimCorey", "duration": "1:15:44" },
+            { "title": "Writing Better Unit Tests in .NET", "url": "https://www.youtube.com/watch?v=9bdKLzPiTkE", "channel": "Nick Chapsas", "duration": "22:38" },
+            { "title": ".NET Testing Best Practices", "url": "https://www.youtube.com/watch?v=aVJcWMxGLnU", "channel": "Milan Jovanovic", "duration": "18:12" }
+          ],
+          "resources": [
+            { "title": "Unit Testing in .NET - Microsoft Learn", "url": "https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test", "type": "official" },
+            { "title": "xUnit Documentation", "url": "https://xunit.net/docs/getting-started/netcore/cmdline", "type": "official" },
+            { "title": "Testing ASP.NET Core Controllers", "url": "https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/testing", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the Arrange-Act-Assert pattern and why is it important?", "a": "Arrange-Act-Assert (AAA) is a pattern that structures each test into three clear phases: Arrange sets up the test data, mocks, and preconditions; Act executes the single operation being tested; Assert verifies the expected outcome. This pattern makes tests readable, maintainable, and consistent. Each test should test one logical concept with a single Act step. If you find yourself needing multiple Act steps, it usually indicates the test should be split into multiple tests. This pattern also helps identify when a test is doing too much setup, suggesting the need for refactoring." },
+            { "q": "How do you mock dependencies in unit tests for ASP.NET Core services?", "a": "Use mocking libraries like Moq or NSubstitute to create fake implementations of interfaces that your service under test depends on. With Moq, you create a Mock<IMyService>(), configure its methods with Setup().Returns(), inject the mock.Object into the class under test, then use Verify() to assert the dependency was called correctly. This isolates the unit being tested from its dependencies. For ASP.NET Core specifically, you often mock ILogger, IOptions<T>, repositories, and external service clients to test controllers and services in isolation." },
+            { "q": "What is the difference between Fact and Theory in xUnit?", "a": "A [Fact] attribute marks a test that always runs with the same inputs and has a single expected outcome. A [Theory] attribute marks a parameterized test that runs multiple times with different inputs supplied via [InlineData], [MemberData], or [ClassData] attributes. Use Theory when you want to test the same logic with multiple input-output combinations without duplicating test methods. For example, a Fact tests that adding a valid user succeeds, while a Theory with InlineData tests that various invalid email formats all fail validation." }
+          ],
+          "tips": [
+            "Follow the naming convention MethodName_Scenario_ExpectedResult for test methods to make test failures immediately understandable without reading the code.",
+            "Use FluentAssertions instead of xUnit's built-in Assert — it produces much clearer failure messages and reads like natural language."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "integration-testing",
+          "title": "Integration Testing",
+          "description": "Integration tests verify that multiple components of your ASP.NET Core application work together correctly by testing the full HTTP request pipeline including middleware, routing, filters, and real or test databases. ASP.NET Core's WebApplicationFactory and TestServer make it straightforward to spin up an in-memory test server for realistic end-to-end testing.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Integration Testing in ASP.NET Core", "url": "https://www.youtube.com/watch?v=xs8gNQjCXw0", "channel": "Nick Chapsas", "duration": "28:15" },
+            { "title": "ASP.NET Core Integration Tests with WebApplicationFactory", "url": "https://www.youtube.com/watch?v=eJTGn2BFJHo", "channel": "Milan Jovanovic", "duration": "18:44" },
+            { "title": "Testing ASP.NET Core Web APIs", "url": "https://www.youtube.com/watch?v=gJoGYdaHLQE", "channel": "IAmTimCorey", "duration": "55:30" }
+          ],
+          "resources": [
+            { "title": "Integration Tests in ASP.NET Core", "url": "https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests", "type": "official" },
+            { "title": "WebApplicationFactory<T>", "url": "https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1", "type": "official" },
+            { "title": "Testcontainers for .NET", "url": "https://dotnet.testcontainers.org/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does WebApplicationFactory work for integration testing?", "a": "WebApplicationFactory<TEntryPoint> creates an in-memory TestServer that hosts your ASP.NET Core application using the same configuration as your real app. It bootstraps the full middleware pipeline, DI container, and routing. You call CreateClient() to get an HttpClient that sends requests to this test server. You can override ConfigureWebHost to swap services for testing — for example, replacing the production database with an in-memory SQLite database. The factory implements IClassFixture in xUnit, so the server is created once per test class and shared across test methods." },
+            { "q": "How do you test with a real database in integration tests?", "a": "The modern approach uses Testcontainers, which spins up a real database in a Docker container for each test run. This gives you a realistic test environment without shared state issues. Alternatively, you can use EF Core's in-memory provider for speed, though it does not support all SQL features. Configure WebApplicationFactory to override the DbContext registration to use your test database. Use the Respawn library to efficiently reset database state between tests rather than recreating the container. Always run integration tests in parallel-safe configurations to avoid flaky tests." },
+            { "q": "What is the difference between unit tests and integration tests, and when should you use each?", "a": "Unit tests isolate a single class or method by mocking all dependencies, running extremely fast (milliseconds), and catching logic errors in individual components. Integration tests verify that components work together correctly by testing the actual HTTP pipeline, DI container, middleware, and optionally the database. Unit tests are best for business logic, algorithms, and service methods. Integration tests are best for verifying API endpoints, middleware behavior, authentication flows, and database queries. Follow the testing pyramid: many unit tests, fewer integration tests, and minimal end-to-end tests." }
+          ],
+          "tips": [
+            "Use Testcontainers with a real database instead of EF Core's in-memory provider — it catches SQL-specific bugs that the in-memory provider misses entirely.",
+            "Create a custom WebApplicationFactory base class that configures common test overrides like authentication bypass and test logging to avoid duplication across test classes."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "background-services",
+      "title": "Background Services",
+      "order": 11,
+      "topics": [
+        {
+          "id": "ihostedservice-and-backgroundservice",
+          "title": "IHostedService & BackgroundService",
+          "description": "ASP.NET Core's hosted service infrastructure lets you run background tasks alongside your web application using IHostedService and the higher-level BackgroundService base class. These are ideal for processing message queues, running scheduled tasks, warming caches, and performing cleanup operations without blocking HTTP request handling.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Background Services in ASP.NET Core", "url": "https://www.youtube.com/watch?v=1dEbNGKXA8c", "channel": "Nick Chapsas", "duration": "20:30" },
+            { "title": "Worker Services in .NET", "url": "https://www.youtube.com/watch?v=PzrTiz_NRKA", "channel": "IAmTimCorey", "duration": "42:18" },
+            { "title": "Background Tasks with IHostedService", "url": "https://www.youtube.com/watch?v=rWCcFAsHv04", "channel": "Milan Jovanovic", "duration": "14:55" }
+          ],
+          "resources": [
+            { "title": "Background Tasks with Hosted Services", "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services", "type": "official" },
+            { "title": "Worker Services in .NET", "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/workers", "type": "official" },
+            { "title": "BackgroundService Base Class", "url": "https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.backgroundservice", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between IHostedService and BackgroundService?", "a": "IHostedService is an interface with StartAsync and StopAsync methods that gives you full control over the lifecycle of a hosted service. BackgroundService is an abstract base class that implements IHostedService and provides a simpler model with a single ExecuteAsync method for long-running background work. BackgroundService handles the starting and stopping plumbing for you, manages the CancellationToken, and catches exceptions from ExecuteAsync. Use IHostedService when you need custom startup/shutdown logic, and BackgroundService for straightforward long-running loops." },
+            { "q": "How do you access scoped services from a BackgroundService?", "a": "BackgroundService is registered as a Singleton, so you cannot inject Scoped services like DbContext directly — this would cause a captive dependency. Instead, inject IServiceScopeFactory and create a new scope inside ExecuteAsync for each unit of work. Call scope.ServiceProvider.GetRequiredService<MyDbContext>() within the using block to get a properly scoped instance that will be disposed when the scope ends. This pattern ensures proper resource management and prevents DbContext instances from being held open for the lifetime of the application." },
+            { "q": "What happens if a BackgroundService throws an unhandled exception?", "a": "Before .NET 6, an unhandled exception in ExecuteAsync was silently swallowed, leaving the service dead without any indication. Starting in .NET 6, the default behavior changed so that an unhandled exception in a hosted service stops the host application by default. You can control this with HostOptions.BackgroundServiceExceptionBehavior set to either StopHost or Ignore. Best practice is to always wrap ExecuteAsync logic in a try-catch, log the error, implement retry with exponential backoff, and use the stoppingToken to gracefully exit the loop." }
+          ],
+          "tips": [
+            "Always respect the CancellationToken passed to ExecuteAsync — check stoppingToken.IsCancellationRequested in your loop to allow graceful shutdown.",
+            "Create a new IServiceScope for each iteration when accessing scoped services like DbContext to avoid memory leaks and stale data."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "hangfire",
+          "title": "Hangfire",
+          "description": "Hangfire is a popular open-source library for managing background jobs in .NET applications with automatic retries, scheduling, and a built-in dashboard. It persists jobs to a database, ensuring they survive application restarts, and supports fire-and-forget, delayed, recurring, and continuation job types.",
+          "isOptional": true,
+          "youtubeVideos": [
+            { "title": "Hangfire in ASP.NET Core - Background Jobs Made Easy", "url": "https://www.youtube.com/watch?v=ePPqyi1LXSA", "channel": "Nick Chapsas", "duration": "22:44" },
+            { "title": "Background Job Processing with Hangfire", "url": "https://www.youtube.com/watch?v=GKOFIdFVJaM", "channel": "IAmTimCorey", "duration": "48:15" },
+            { "title": "Scheduling Background Jobs in .NET with Hangfire", "url": "https://www.youtube.com/watch?v=MhP1D7cMwqo", "channel": "Milan Jovanovic", "duration": "15:30" }
+          ],
+          "resources": [
+            { "title": "Hangfire Documentation", "url": "https://docs.hangfire.io/en/latest/", "type": "official" },
+            { "title": "Hangfire Quick Start", "url": "https://docs.hangfire.io/en/latest/getting-started/aspnet-core-applications.html", "type": "official" },
+            { "title": "Hangfire Best Practices", "url": "https://docs.hangfire.io/en/latest/best-practices.html", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the different job types in Hangfire?", "a": "Hangfire supports four job types: Fire-and-Forget jobs execute once as soon as possible using BackgroundJob.Enqueue(); Delayed jobs execute once after a specified time delay using BackgroundJob.Schedule(); Recurring jobs execute repeatedly on a CRON schedule using RecurringJob.AddOrUpdate(); and Continuations execute after a parent job completes using BackgroundJob.ContinueJobWith(). All jobs are serialized and persisted to storage, so they survive application restarts. Failed jobs are automatically retried with exponential backoff by default." },
+            { "q": "How does Hangfire differ from BackgroundService for running background work?", "a": "BackgroundService runs in-process with your web app — if the app crashes or restarts, in-flight work is lost and there is no built-in persistence, retry logic, or dashboard. Hangfire persists jobs to a database (SQL Server, Redis, PostgreSQL), providing durability across restarts, automatic retries with configurable policies, a web dashboard for monitoring, CRON-based scheduling, and distributed processing across multiple servers. Use BackgroundService for simple in-process tasks and Hangfire when you need reliability, persistence, scheduling, and monitoring." },
+            { "q": "How do you ensure Hangfire jobs are idempotent and why does it matter?", "a": "Since Hangfire retries failed jobs automatically, a job might execute more than once, making idempotency essential. Design jobs so that running them multiple times produces the same result. Use unique identifiers to check if work has already been done before processing. For database operations, use upserts instead of inserts. For email sending, track sent message IDs and skip duplicates. For payment processing, use idempotency keys with the payment provider. Wrap non-idempotent operations in distributed locks using Hangfire's DisableConcurrentExecution filter." }
+          ],
+          "tips": [
+            "Pass only primitive identifiers to Hangfire jobs instead of complex objects — Hangfire serializes arguments to JSON, and stale serialized data causes bugs.",
+            "Always make Hangfire jobs idempotent since they can be retried on failure — check if the work was already done before executing."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "microservices-and-deployment",
+      "title": "Microservices & Deployment",
+      "order": 12,
+      "topics": [
+        {
+          "id": "microservices-architecture",
+          "title": "Microservices Architecture",
+          "description": "Microservices architecture decomposes a large application into small, independently deployable services that communicate over the network, each owning its own data and business logic. Understanding when to use microservices versus a monolith, inter-service communication patterns, and distributed system challenges is essential for modern .NET development.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": ".NET Microservices - Full Course", "url": "https://www.youtube.com/watch?v=DgVjEo3OGBI", "channel": "Les Jackson", "duration": "4:25:18" },
+            { "title": "Microservices Architecture Explained", "url": "https://www.youtube.com/watch?v=lL_j7ilk7rc", "channel": "freeCodeCamp", "duration": "1:45:30" },
+            { "title": "Building Microservices with .NET", "url": "https://www.youtube.com/watch?v=jgDz5sFmIN4", "channel": "Julio Casal", "duration": "2:15:42" }
+          ],
+          "resources": [
+            { "title": ".NET Microservices Architecture Guide", "url": "https://learn.microsoft.com/en-us/dotnet/architecture/microservices/", "type": "official" },
+            { "title": "eShopOnContainers Reference Application", "url": "https://github.com/dotnet/eShop", "type": "official" },
+            { "title": "Communication in Microservices", "url": "https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/communication-in-microservice-architecture", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "When should you use microservices instead of a monolith?", "a": "Use microservices when your team is large enough that independent teams can own separate services, when different parts of your system have very different scaling requirements, when you need independent deployment cycles for different features, or when different services benefit from different technology stacks. Start with a monolith for new projects and extract microservices only when you experience specific pain points like deployment bottlenecks, scaling limitations, or team coordination overhead. Premature microservices adoption adds distributed system complexity without the organizational benefits." },
+            { "q": "What are the main inter-service communication patterns?", "a": "Synchronous communication uses HTTP/REST or gRPC where one service calls another and waits for a response — simple but creates coupling and cascading failure risk. Asynchronous communication uses message brokers like RabbitMQ or Azure Service Bus where services publish events and others subscribe, providing loose coupling and resilience. The Saga pattern coordinates multi-service transactions using choreography (event-driven) or orchestration (central coordinator). API Gateway pattern provides a single entry point that routes and aggregates requests. Use synchronous for queries and asynchronous for commands and events." },
+            { "q": "What are the biggest challenges of microservices architecture?", "a": "Distributed systems introduce network unreliability, requiring retry policies, circuit breakers, and timeout handling. Data consistency across services is complex since you cannot use database transactions — you must use eventual consistency patterns like Sagas. Observability becomes harder, requiring distributed tracing with correlation IDs across services. Service discovery, API versioning, and deployment orchestration add operational complexity. Testing is harder because you need to test service interactions. Debugging production issues requires centralized logging and tracing tools like Jaeger or Zipkin." }
+          ],
+          "tips": [
+            "Start with a well-structured modular monolith and extract microservices only when you have a clear organizational or scaling reason — avoid premature decomposition.",
+            "Implement the circuit breaker pattern with Polly for all synchronous inter-service calls to prevent cascading failures across your system."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "docker-for-dotnet",
+          "title": "Docker for .NET",
+          "description": "Docker enables you to package ASP.NET Core applications into portable containers that run consistently across development, testing, and production environments. Understanding multi-stage Dockerfiles, optimized .NET images, and container orchestration is essential for modern deployment workflows.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker for .NET Developers", "url": "https://www.youtube.com/watch?v=3s-RfwvijpY", "channel": "Nick Chapsas", "duration": "28:15" },
+            { "title": "Containerize .NET Apps with Docker", "url": "https://www.youtube.com/watch?v=f0lMGPB10bM", "channel": "Les Jackson", "duration": "1:05:22" },
+            { "title": ".NET in Docker - Best Practices", "url": "https://www.youtube.com/watch?v=T04hc80IBao", "channel": "dotnet", "duration": "35:44" }
+          ],
+          "resources": [
+            { "title": "Containerize a .NET App", "url": "https://learn.microsoft.com/en-us/dotnet/core/docker/build-container", "type": "official" },
+            { "title": ".NET Docker Images", "url": "https://hub.docker.com/_/microsoft-dotnet", "type": "official" },
+            { "title": "Docker Best Practices for .NET", "url": "https://learn.microsoft.com/en-us/dotnet/core/docker/introduction", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do you create an optimized Dockerfile for ASP.NET Core?", "a": "Use a multi-stage Dockerfile with separate build and runtime stages. The build stage uses the larger SDK image (mcr.microsoft.com/dotnet/sdk) to restore, build, and publish the application. The runtime stage uses the smaller ASP.NET runtime image (mcr.microsoft.com/dotnet/aspnet) and copies only the published output. Restore NuGet packages in a separate layer before copying source code to leverage Docker layer caching. Use .dockerignore to exclude bin, obj, and other unnecessary files. For even smaller images, use the Alpine-based variants or consider AOT compilation for minimal container sizes." },
+            { "q": "What is the difference between the .NET SDK, ASP.NET, and runtime Docker images?", "a": "The SDK image (dotnet/sdk) includes the compiler, MSBuild, NuGet, and all development tools needed to build applications — it is the largest image and should only be used in build stages. The ASP.NET image (dotnet/aspnet) includes the ASP.NET Core runtime for running web applications and is the standard production image. The runtime image (dotnet/runtime) is for console applications and worker services that do not need ASP.NET. There is also a runtime-deps image for self-contained or AOT deployments that only includes the native OS dependencies." },
+            { "q": "How do you handle environment-specific configuration in containerized .NET apps?", "a": "Pass configuration via environment variables using Docker's -e flag or docker-compose environment section. ASP.NET Core's configuration system automatically reads environment variables prefixed with the right convention. Use ASPNETCORE_ENVIRONMENT to set the environment name, which controls which appsettings.{Environment}.json file is loaded. For sensitive data like connection strings and API keys, use Docker secrets or mount them as files. Never bake secrets into Docker images. Use the options pattern and IOptions<T> to bind environment-specific configuration to strongly-typed classes." }
+          ],
+          "tips": [
+            "Always use multi-stage builds to keep your production Docker image small — only include the runtime and published output, never the SDK.",
+            "Copy the .csproj file and run dotnet restore before copying source code to maximize Docker layer caching and speed up rebuilds."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "cicd-with-github-actions",
+          "title": "CI/CD with GitHub Actions",
+          "description": "GitHub Actions provides a powerful CI/CD platform for automating the build, test, and deployment pipeline of ASP.NET Core applications directly from your GitHub repository. Understanding workflow syntax, reusable actions, and deployment strategies ensures reliable and repeatable releases of your .NET applications.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "GitHub Actions for .NET - Full CI/CD Pipeline", "url": "https://www.youtube.com/watch?v=R5ppadIsGbA", "channel": "Nick Chapsas", "duration": "32:18" },
+            { "title": "CI/CD for ASP.NET Core with GitHub Actions", "url": "https://www.youtube.com/watch?v=gLRntOLHMSk", "channel": "IAmTimCorey", "duration": "55:44" },
+            { "title": "Deploy .NET Apps with GitHub Actions", "url": "https://www.youtube.com/watch?v=t3T2xo7KCLE", "channel": "dotnet", "duration": "28:30" }
+          ],
+          "resources": [
+            { "title": "GitHub Actions for .NET", "url": "https://learn.microsoft.com/en-us/dotnet/devops/github-actions-overview", "type": "official" },
+            { "title": "GitHub Actions Documentation", "url": "https://docs.github.com/en/actions", "type": "official" },
+            { "title": "Deploy ASP.NET Core to Azure with GitHub Actions", "url": "https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a typical CI/CD pipeline for an ASP.NET Core application using GitHub Actions?", "a": "A typical pipeline triggers on push to main and pull requests. The CI stage checks out code, sets up the .NET SDK with actions/setup-dotnet, restores NuGet packages, builds in Release configuration, runs unit tests with dotnet test, and optionally runs integration tests using service containers for databases. The CD stage builds a Docker image, pushes it to a container registry like GitHub Container Registry or Docker Hub, and deploys to the target environment using provider-specific actions or kubectl for Kubernetes. Artifacts like test results and code coverage reports are uploaded for review." },
+            { "q": "How do you manage secrets and environment variables in GitHub Actions?", "a": "Store sensitive values like connection strings, API keys, and deployment credentials as GitHub repository secrets under Settings > Secrets. Reference them in workflows using the ${{ secrets.MY_SECRET }} syntax. For non-sensitive environment-specific values, use GitHub environment variables or define them directly in the workflow YAML. Use GitHub environments to protect production deployments with required reviewers and wait timers. Never print secrets to logs — GitHub automatically masks known secret values, but be careful with indirect exposure through environment variable dumps or error messages." },
+            { "q": "How do you speed up .NET builds in GitHub Actions?", "a": "Cache NuGet packages using actions/cache with the path ~/.nuget/packages and a cache key based on a hash of all project files. This avoids re-downloading packages on every run. Use the --no-restore flag on dotnet build and dotnet test after a separate restore step to leverage the cache. Run tests in parallel with dotnet test using the --parallel flag. Use conditional steps with if: expressions to skip unnecessary jobs, such as skipping deployment on pull request branches. Consider using larger GitHub-hosted runners for compute-intensive builds or self-hosted runners for consistent performance." }
+          ],
+          "tips": [
+            "Cache NuGet packages with actions/cache using a key based on a hash of your .csproj files — this can cut build times by 50% or more.",
+            "Use GitHub environment protection rules with required reviewers for production deployments to prevent accidental releases."
+          ],
+          "subtopics": []
+        }
+      ]
+    }
+  ]
+}

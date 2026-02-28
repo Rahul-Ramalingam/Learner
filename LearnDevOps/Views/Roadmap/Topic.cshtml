@@ -1,0 +1,239 @@
+@model LearnDevOps.Services.RoadmapTopic
+@{
+    ViewData["Title"] = Model.Title + " — " + ViewBag.RoadmapTitle;
+    string slug      = ViewBag.Slug;
+    string colorHex  = ViewBag.ColorHex ?? "#58CC02";
+    string status    = ViewBag.Status ?? "not_started";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/roadmap.css" asp-append-version="true" />
+    <style>
+        .tp-page { max-width: 820px; margin: 0 auto; padding-bottom: 4rem; }
+
+        .tp-hero {
+            padding: 2rem 0 1.5rem;
+            border-bottom: 2px solid var(--dq-border, #e5e7eb);
+            margin-bottom: 2rem;
+            animation: dqFadeUp .38s ease both;
+        }
+        .tp-hero-back {
+            display: inline-flex; align-items: center; gap: .35rem;
+            color: var(--dq-text-muted); text-decoration: none;
+            font-size: .88rem; font-weight: 500; margin-bottom: 1rem;
+            transition: color .15s, transform .15s;
+        }
+        .tp-hero-back:hover { color: var(--dq-heading); transform: translateX(-3px); }
+
+        .tp-hero-meta {
+            display: flex; align-items: center; gap: .6rem;
+            margin-bottom: .6rem;
+        }
+        .tp-roadmap-badge {
+            font-size: .75rem; font-weight: 600; padding: .2rem .6rem;
+            border-radius: 6px; color: #fff;
+        }
+        .tp-optional-badge {
+            font-size: .72rem; font-weight: 600; padding: .2rem .55rem;
+            border-radius: 6px; background: var(--dq-bg); color: var(--dq-text-muted);
+            border: 1px solid var(--dq-border);
+        }
+
+        .tp-title {
+            font-size: 2rem; font-weight: 800; color: var(--dq-heading);
+            margin: 0 0 .75rem;
+        }
+        .tp-desc {
+            font-size: .96rem; color: var(--dq-text); line-height: 1.7;
+            max-width: 680px;
+        }
+        .tp-desc code {
+            background: var(--dq-bg); padding: .15rem .4rem;
+            border-radius: 4px; font-size: .84rem;
+        }
+
+        /* Status bar */
+        .tp-status-bar {
+            display: flex; align-items: center; gap: .6rem;
+            margin-top: 1.25rem; flex-wrap: wrap;
+        }
+        .tp-status-label { font-size: .82rem; color: var(--dq-text-muted); font-weight: 500; }
+        .tp-status-btn {
+            padding: .35rem .85rem; border-radius: 8px;
+            border: 1.5px solid var(--dq-border); background: transparent;
+            font-size: .82rem; font-weight: 600; cursor: pointer;
+            transition: all .15s ease; color: var(--dq-text-muted);
+        }
+        .tp-status-btn:hover { border-color: var(--dq-text-muted); }
+        .tp-status-btn--active-done    { border-color: var(--dq-green) !important; background: color-mix(in srgb, var(--dq-green) 12%, transparent) !important; color: var(--dq-green) !important; }
+        .tp-status-btn--active-progress{ border-color: #f59e0b !important; background: rgba(245,158,11,.1) !important; color: #f59e0b !important; }
+        .tp-status-btn--active-skip    { border-color: #94a3b8 !important; background: rgba(148,163,184,.1) !important; color: #94a3b8 !important; }
+
+        /* Content sections */
+        .tp-section { margin-bottom: 2rem; animation: dqUnitSlide .35s ease both; }
+        .tp-section:nth-child(1) { animation-delay: .05s; }
+        .tp-section:nth-child(2) { animation-delay: .10s; }
+        .tp-section:nth-child(3) { animation-delay: .15s; }
+        .tp-section:nth-child(4) { animation-delay: .20s; }
+
+        .tp-section-head {
+            display: flex; align-items: center; gap: .5rem;
+            font-size: 1.05rem; font-weight: 700; color: var(--dq-heading);
+            margin-bottom: .9rem; padding-bottom: .5rem;
+            border-bottom: 2px solid var(--dq-border);
+        }
+    </style>
+}
+
+<div class="container tp-page" style="--rm-track-color: @colorHex">
+
+    <!-- Hero -->
+    <div class="tp-hero">
+        <a href="/roadmap/@slug" class="tp-hero-back">
+            <i class="bi bi-arrow-left"></i> @ViewBag.RoadmapEmoji @ViewBag.RoadmapTitle
+        </a>
+        <div class="tp-hero-meta">
+            <span class="tp-roadmap-badge" style="background: @colorHex">@ViewBag.RoadmapTitle</span>
+            @if (Model.IsOptional)
+            {
+                <span class="tp-optional-badge">Optional</span>
+            }
+        </div>
+        <h1 class="tp-title">@Model.Title</h1>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p class="tp-desc">@Model.Description</p>
+        }
+
+        <!-- Status buttons -->
+        <div class="tp-status-bar" id="tpStatusBar" data-slug="@slug" data-topic-id="@Model.Id">
+            <span class="tp-status-label">Mark as:</span>
+            <button class="tp-status-btn @(status == "done"        ? "tp-status-btn--active-done"     : "")" data-status="done">✓ Done</button>
+            <button class="tp-status-btn @(status == "in_progress" ? "tp-status-btn--active-progress" : "")" data-status="in_progress">⏳ Learning</button>
+            <button class="tp-status-btn @(status == "skip"        ? "tp-status-btn--active-skip"     : "")" data-status="skip">Skip</button>
+        </div>
+    </div>
+
+    <!-- Learning Videos -->
+    @if (Model.YoutubeVideos?.Count > 0)
+    {
+        <div class="tp-section">
+            <div class="tp-section-head"><span>📹</span> Learning Videos</div>
+            <ul class="rm-video-list">
+                @foreach (var v in Model.YoutubeVideos)
+                {
+                    <li class="rm-video-item">
+                        <div class="rm-video-play">▶</div>
+                        <div class="rm-video-info">
+                            <div class="rm-video-title">
+                                <a href="@v.Url" target="_blank" rel="noopener">@v.Title</a>
+                            </div>
+                            <div class="rm-video-meta">@v.Channel@(string.IsNullOrEmpty(v.Duration) ? "" : " · " + v.Duration)</div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Interview Questions -->
+    @if (Model.InterviewQuestions?.Count > 0)
+    {
+        <div class="tp-section">
+            <div class="tp-section-head"><span>🎯</span> Interview Questions</div>
+            <div class="rm-qa-list">
+                @foreach (var qa in Model.InterviewQuestions)
+                {
+                    <div class="rm-qa-item">
+                        <button class="rm-qa-question">
+                            <span class="rm-qa-badge rm-qa-badge--q">Q</span>
+                            @qa.Q
+                            <span class="rm-qa-toggle">▼</span>
+                        </button>
+                        <div class="rm-qa-answer">
+                            <div class="rm-qa-answer-inner">
+                                <span class="rm-qa-badge rm-qa-badge--a">A</span> @qa.A
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Pro Tips -->
+    @if (Model.Tips?.Count > 0)
+    {
+        <div class="tp-section">
+            <div class="tp-section-head"><span>💡</span> Pro Tips</div>
+            <ul class="rm-tips-list">
+                @foreach (var tip in Model.Tips)
+                {
+                    <li class="rm-tip-item"><span class="rm-tip-icon">💡</span> @tip</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Resources -->
+    @if (Model.Resources?.Count > 0)
+    {
+        <div class="tp-section">
+            <div class="tp-section-head"><span>🔗</span> Resources</div>
+            <ul class="rm-resources-list">
+                @foreach (var r in Model.Resources)
+                {
+                    var icon = r.Type switch {
+                        "official" => "📖", "course" => "🎓",
+                        "tool"     => "🛠️", "video"  => "🎬",
+                        _          => "📰"
+                    };
+                    var typeClass = "rm-resource-type--" + (r.Type ?? "article");
+                    <li class="rm-resource-item">
+                        <span class="rm-resource-icon">@icon</span>
+                        <a href="@r.Url" target="_blank" rel="noopener" class="rm-resource-link">@r.Title</a>
+                        <span class="rm-resource-type @typeClass">@(r.Type ?? "article")</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var bar = document.getElementById('tpStatusBar');
+    if (!bar) return;
+    var slug    = bar.dataset.slug;
+    var topicId = bar.dataset.topicId;
+
+    // Q&A accordion
+    document.addEventListener('click', function (e) {
+        var q = e.target.closest('.rm-qa-question');
+        if (q) { q.closest('.rm-qa-item').classList.toggle('rm-qa-item--open'); return; }
+
+        var btn = e.target.closest('.tp-status-btn');
+        if (btn && bar.contains(btn)) {
+            var newStatus = btn.dataset.status;
+            fetch('/roadmap/' + encodeURIComponent(slug) + '/topic/' + encodeURIComponent(topicId) + '/status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (!res.success) return;
+                bar.querySelectorAll('.tp-status-btn').forEach(function (b) {
+                    b.classList.remove('tp-status-btn--active-done', 'tp-status-btn--active-progress', 'tp-status-btn--active-skip');
+                });
+                if (newStatus === 'done')        btn.classList.add('tp-status-btn--active-done');
+                else if (newStatus === 'in_progress') btn.classList.add('tp-status-btn--active-progress');
+                else if (newStatus === 'skip')   btn.classList.add('tp-status-btn--active-skip');
+            });
+        }
+    });
+}());
+</script>
+}

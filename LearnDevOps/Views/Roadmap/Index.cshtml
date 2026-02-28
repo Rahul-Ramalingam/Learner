@@ -1,0 +1,130 @@
+@model LearnDevOps.Services.RoadmapData
+@{
+    ViewData["Title"] = Model.Title;
+    var topicStatus = ViewBag.TopicStatus as Dictionary<string, string> ?? new Dictionary<string, string>();
+    var totalTopics = 0;
+    var doneTopics = 0;
+    foreach (var s in Model.Sections) {
+        totalTopics += CountTopics(s.Topics);
+        doneTopics += CountDone(s.Topics, Model.Slug, topicStatus);
+    }
+    var progressPct = totalTopics > 0 ? Math.Round((double)doneTopics / totalTopics * 100) : 0;
+}
+
+@functions {
+    int CountTopics(List<LearnDevOps.Services.RoadmapTopic> topics) {
+        int c = 0;
+        foreach (var t in topics) {
+            c++;
+            if (t.Subtopics?.Count > 0) c += CountTopics(t.Subtopics);
+        }
+        return c;
+    }
+
+    int CountDone(List<LearnDevOps.Services.RoadmapTopic> topics, string slug, Dictionary<string, string> status) {
+        int c = 0;
+        foreach (var t in topics) {
+            var key = slug + ":" + t.Id;
+            if (status.ContainsKey(key) && status[key] == "done") c++;
+            if (t.Subtopics?.Count > 0) c += CountDone(t.Subtopics, slug, status);
+        }
+        return c;
+    }
+
+    string GetTopicStatusClass(string topicId, string slug, Dictionary<string, string> status) {
+        var key = slug + ":" + topicId;
+        if (!status.ContainsKey(key)) return "";
+        return status[key] switch {
+            "done" => "rm-topic--done",
+            "in_progress" => "rm-topic--in-progress",
+            "skip" => "rm-topic--skip",
+            _ => ""
+        };
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/roadmap.css" asp-append-version="true" />
+}
+
+<div class="container" data-roadmap-slug="@Model.Slug" style="--rm-track-color: @Model.ColorHex">
+
+    <a asp-controller="Home" asp-action="Index" class="rm-back"><i class="bi bi-arrow-left"></i> Back to Tracks</a>
+
+    <!-- Hero -->
+    <div class="rm-hero">
+        <span class="rm-hero-emoji">@Model.Emoji</span>
+        <h1 class="rm-hero-title">@Model.Title</h1>
+        <p class="rm-hero-desc">@Model.Description</p>
+        <div class="rm-hero-stats">
+            <div class="rm-hero-stat">
+                <strong>@Model.Sections.Count</strong> Sections
+            </div>
+            <div class="rm-hero-stat">
+                <strong>@totalTopics</strong> Topics
+            </div>
+            <div class="rm-hero-stat">
+                <strong id="rmDoneCount">@doneTopics</strong> Completed
+            </div>
+        </div>
+    </div>
+
+    <!-- Overall Progress -->
+    <div class="rm-overall-progress">
+        <span id="rmProgressPct">@progressPct%</span>
+        <div class="rm-overall-progress-bar">
+            <div class="rm-overall-progress-fill" id="rmProgressFill"
+                 style="width: @progressPct%; background: @Model.ColorHex"></div>
+        </div>
+    </div>
+
+    <!-- Roadmap Tree -->
+    <div class="rm-tree">
+        @{ var sIdx = 0; }
+        @foreach (var sect in Model.Sections.OrderBy(s => s.Order))
+        {
+            sIdx++;
+            <div class="rm-section">
+                <div class="rm-section-header" style="background: @Model.ColorHex">
+                    <span class="rm-section-num">@sIdx</span>
+                    @sect.Title
+                </div>
+                <div class="rm-topics">
+                    @foreach (var topic in sect.Topics)
+                    {
+                        var statusCls = GetTopicStatusClass(topic.Id, Model.Slug, topicStatus);
+                        var optCls = topic.IsOptional ? "rm-topic--optional" : "";
+                        <div class="rm-topic @statusCls @optCls" data-topic-id="@topic.Id" title="@topic.Title">
+                            @topic.Title
+                            @if (topic.IsOptional)
+                            {
+                                <span class="rm-topic-badge">Optional</span>
+                            }
+                        </div>
+
+                        @* Render subtopics if present *@
+                        @if (topic.Subtopics?.Count > 0)
+                        {
+                            foreach (var sub in topic.Subtopics)
+                            {
+                                var subStatusCls = GetTopicStatusClass(sub.Id, Model.Slug, topicStatus);
+                                var subOptCls = sub.IsOptional ? "rm-topic--optional" : "";
+                                <div class="rm-topic @subStatusCls @subOptCls" data-topic-id="@sub.Id" title="@sub.Title">
+                                    @sub.Title
+                                    @if (sub.IsOptional)
+                                    {
+                                        <span class="rm-topic-badge">Optional</span>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/roadmap.js" asp-append-version="true"></script>
+}

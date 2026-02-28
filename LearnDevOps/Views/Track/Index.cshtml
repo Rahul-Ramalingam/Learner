@@ -1,0 +1,106 @@
+@model TrackViewModel
+@{
+    ViewData["Title"] = Model.Track.Name;
+}
+
+<div class="container py-4">
+    <!-- Track Header -->
+    <div class="dq-track-hero" style="--track-color: @Model.Track.ColorHex">
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <a asp-controller="Home" asp-action="Index" class="dq-back-link">← Back</a>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span style="font-size: 3rem">@Model.Track.Emoji</span>
+            <div>
+                <h1 class="dq-track-hero-title">@Model.Track.Name</h1>
+                <p class="dq-track-hero-desc mb-0">@Model.Track.Description</p>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.IsLocked)
+    {
+        <div class="alert dq-locked-alert text-center py-4 mt-4">
+            <div style="font-size: 3rem">🔒</div>
+            <h4>This track is locked</h4>
+            @if (Model.PrerequisiteTrackName != null)
+            {
+                <p class="mb-0">Complete lessons in <strong>@Model.PrerequisiteTrackName</strong> to unlock this track.</p>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Units & Lessons Skill Tree -->
+        <div class="dq-skill-tree mt-4">
+            @foreach (var unit in Model.Units)
+            {
+                <div class="dq-unit-section @(unit.IsUnlocked ? "" : "dq-unit-section--locked")">
+                    <div class="dq-unit-header">
+                        <span class="dq-unit-emoji">@unit.Unit.Emoji</span>
+                        <div>
+                            <h4 class="dq-unit-title">@unit.Unit.Title</h4>
+                            <p class="dq-unit-desc">@unit.Unit.Description</p>
+                        </div>
+                        <div class="ms-auto dq-unit-progress-wrap">
+                            <div class="dq-unit-progress-bar">
+                                <div class="dq-unit-progress-fill" style="width: @unit.UnitProgressPercent.ToString("F0")%"></div>
+                            </div>
+                            <span class="dq-unit-pct">@unit.UnitProgressPercent.ToString("F0")%</span>
+                        </div>
+                    </div>
+
+                    @if (!unit.IsUnlocked)
+                    {
+                        <div class="dq-unit-locked-msg">
+                            🔒 Complete the previous unit to unlock
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="dq-lesson-row">
+                            @foreach (var ls in unit.Lessons)
+                            {
+                                var lesson = ls.Lesson;
+                                var btnClass = ls.IsCompleted
+                                    ? "dq-lesson-bubble dq-lesson-bubble--done"
+                                    : ls.IsLocked
+                                        ? "dq-lesson-bubble dq-lesson-bubble--locked"
+                                        : "dq-lesson-bubble";
+
+                                <div class="dq-lesson-wrap">
+                                    @if (!ls.IsLocked)
+                                    {
+                                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
+                                           class="@btnClass" title="@lesson.Title">
+                                            <span class="dq-lesson-emoji">@lesson.Emoji</span>
+                                            @if (ls.IsPerfect)
+                                            {
+                                                <span class="dq-perfect-star">⭐</span>
+                                            }
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <div class="@btnClass" title="@lesson.Title">
+                                            <span class="dq-lesson-emoji">🔒</span>
+                                        </div>
+                                    }
+                                    <div class="dq-lesson-label">@lesson.Title</div>
+                                    @if (ls.IsCompleted)
+                                    {
+                                        <div class="dq-lesson-xp">+@ls.XpEarned XP</div>
+                                    }
+                                    else if (!ls.IsLocked)
+                                    {
+                                        <div class="dq-lesson-xp text-muted">@ls.QuestionCount Qs</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>

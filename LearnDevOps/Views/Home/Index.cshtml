@@ -1,0 +1,105 @@
+@model HomeIndexViewModel
+@inject LearnDevOps.Services.IRoadmapService RoadmapService
+@{
+    ViewData["Title"] = "Learn DevOps";
+    var roadmapSlugs = RoadmapService.GetAvailableSlugs();
+    // Map track slugs to roadmap slugs where they differ
+    var trackToRoadmap = new Dictionary<string, string>
+    {
+        { "docker", "docker" },
+        { "kubernetes", "kubernetes" },
+        { "dotnet", "aspnet-core" },
+        { "system-design", "system-design" }
+    };
+}
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h1 class="dq-hero-title">Master DevOps, One Lesson at a Time</h1>
+        <p class="dq-hero-sub">Bite-sized lessons, XP rewards, and streaks to keep you going.</p>
+    </div>
+
+    <div class="dq-track-grid">
+        @foreach (var item in Model.Tracks)
+        {
+            var track = item.Track;
+            var isLocked = item.IsLocked;
+            var pct = item.ProgressPercent;
+            var cardClass = isLocked ? "dq-track-card dq-track-card--locked" : "dq-track-card";
+
+            <div class="@cardClass" style="--track-color: @track.ColorHex">
+                @if (isLocked)
+                {
+                    <div class="dq-lock-overlay">
+                        <div class="dq-lock-icon">🔒</div>
+                        @if (item.PrerequisiteTrackName != null)
+                        {
+                            <div class="dq-lock-hint">Complete @item.RequiredPercent% of @item.PrerequisiteTrackName first</div>
+                        }
+                    </div>
+                }
+
+                <div class="dq-track-header">
+                    <span class="dq-track-emoji">@track.Emoji</span>
+                    <div>
+                        <h3 class="dq-track-name">@track.Name</h3>
+                        <span class="dq-track-meta">@item.TotalLessons lessons · @item.CompletedLessons done</span>
+                    </div>
+                    @if (item.IsComplete)
+                    {
+                        <span class="dq-complete-badge ms-auto">✅</span>
+                    }
+                </div>
+
+                <p class="dq-track-desc">@track.Description</p>
+
+                <div class="dq-progress-wrap">
+                    <div class="dq-progress-bar">
+                        <div class="dq-progress-fill" style="width: @pct.ToString("F0")%"></div>
+                    </div>
+                    <span class="dq-progress-pct">@pct.ToString("F0")%</span>
+                </div>
+
+                @if (!isLocked)
+                {
+                    <div class="dq-track-actions">
+                        <a asp-controller="Track" asp-action="Index" asp-route-slug="@track.Slug"
+                           class="dq-track-btn @(item.IsComplete ? "dq-track-btn--complete" : "")">
+                            @(item.CompletedLessons > 0 && !item.IsComplete ? "Continue →" : item.IsComplete ? "Review →" : "Start Learning →")
+                        </a>
+                        @if (trackToRoadmap.TryGetValue(track.Slug, out var rmSlug) && roadmapSlugs.Contains(rmSlug))
+                        {
+                            <a href="/roadmap/@rmSlug" class="dq-track-roadmap-link" title="View learning roadmap">
+                                <i class="bi bi-signpost-split-fill"></i> Roadmap
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <button class="dq-track-btn dq-track-btn--disabled" disabled>🔒 Locked</button>
+                }
+            </div>
+        }
+    </div>
+
+    @if (Model.TotalXp > 0)
+    {
+        <div class="text-center mt-5">
+            <div class="dq-global-stats">
+                <div class="dq-stat">
+                    <span class="dq-stat-value">@Model.TotalXp</span>
+                    <span class="dq-stat-label">Total XP</span>
+                </div>
+                <div class="dq-stat">
+                    <span class="dq-stat-value">@Model.TotalLessonsCompleted</span>
+                    <span class="dq-stat-label">Lessons Done</span>
+                </div>
+                <div class="dq-stat">
+                    <span class="dq-stat-value">@(Model.CurrentStreak > 0 ? "🔥 " + Model.CurrentStreak : "—")</span>
+                    <span class="dq-stat-label">Day Streak</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

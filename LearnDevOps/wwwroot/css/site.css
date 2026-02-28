@@ -1,0 +1,499 @@
+/* ============================================================
+   DevOps Quest — site.css  (base reset + layout + dark mode)
+   ============================================================ */
+
+/* ── Light mode variables (defaults) ───────────────────────── */
+:root {
+    --dq-green:      #58CC02;
+    --dq-green-d:    #4CAD02;
+    --dq-red:        #FF4B4B;
+    --dq-gold:       #FFD900;
+    --dq-blue:       #1CB0F6;
+    --dq-bg:         #F7F7F7;
+    --dq-card:       #FFFFFF;
+    --dq-nav:        #FFFFFF;
+    --dq-border:     #E5E5E5;
+    --dq-text:       #3C3C3C;
+    --dq-heading:    #1f2937;
+    --dq-text-muted: #777777;
+    --dq-muted:      #777777;
+    --dq-input:      #FFFFFF;
+    --dq-input-border: #E5E5E5;
+    --dq-radius:     14px;
+    --dq-shadow:     0 2px 12px rgba(0,0,0,.08);
+    --dq-code-bg:    #1e1e2e;
+    --dq-code-fg:    #cdd6f4;
+    --track-color:   #58CC02;
+}
+
+/* ── Dark mode variable overrides ───────────────────────────── */
+[data-theme="dark"] {
+    --dq-bg:           #111827;
+    --dq-card:         #1f2937;
+    --dq-nav:          #1a2332;
+    --dq-border:       #374151;
+    --dq-text:         #f3f4f6;
+    --dq-heading:      #ffffff;
+    --dq-text-muted:   #9ca3af;
+    --dq-muted:        #9ca3af;
+    --dq-input:        #273344;
+    --dq-input-border: #4b5563;
+    --dq-shadow:       0 2px 16px rgba(0,0,0,.45);
+    --dq-code-bg:      #0d1117;
+    --dq-code-fg:      #c9d1d9;
+    --dq-green:        #5de312;
+    --dq-green-d:      #4ec40f;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--dq-bg);
+    color: var(--dq-text);
+    transition: background .2s ease, color .2s ease;
+}
+
+* { box-sizing: border-box; }
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+.dq-navbar {
+    background: var(--dq-nav);
+    border-bottom: 2px solid var(--dq-border);
+    padding: .6rem 0;
+    transition: background .2s, border-color .2s;
+}
+
+.dq-brand {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--dq-text) !important;
+    text-decoration: none;
+    letter-spacing: -.5px;
+    transition: color .15s;
+}
+
+.dq-brand:hover { color: var(--dq-green) !important; }
+
+.dq-nav-link {
+    font-weight: 600;
+    color: var(--dq-muted) !important;
+    border-radius: 8px;
+    padding: .4rem .8rem !important;
+    transition: background .15s, color .15s;
+}
+
+.dq-nav-link:hover, .dq-nav-link.active {
+    background: rgba(88, 204, 2, .12);
+    color: var(--dq-green) !important;
+}
+
+/* ── Dark Mode Toggle Button ────────────────────────────────── */
+.dq-theme-toggle {
+    background: none;
+    border: 2px solid var(--dq-border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--dq-muted);
+    font-size: 1rem;
+    transition: border-color .15s, color .15s, background .15s, transform .2s;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.dq-theme-toggle:hover {
+    border-color: var(--dq-green);
+    color: var(--dq-green);
+    background: rgba(88, 204, 2, .08);
+    transform: rotate(22deg);
+}
+
+[data-theme="dark"] .dq-theme-toggle {
+    color: var(--dq-gold);
+}
+
+[data-theme="dark"] .dq-theme-toggle:hover {
+    border-color: var(--dq-gold);
+    color: var(--dq-gold);
+    background: rgba(255, 217, 0, .1);
+    transform: rotate(-22deg);
+}
+
+/* ── Dropdown menu (Roadmaps) ──────────────────────────────── */
+.dq-dropdown {
+    background: var(--dq-card);
+    border: 1px solid var(--dq-border);
+    border-radius: 10px;
+    box-shadow: var(--dq-shadow);
+    padding: .35rem 0;
+    min-width: 200px;
+}
+
+.dq-dropdown .dropdown-item {
+    color: var(--dq-text);
+    padding: .5rem 1rem;
+    font-weight: 500;
+    font-size: .9rem;
+    transition: background .12s ease, padding-left .15s ease;
+}
+
+.dq-dropdown .dropdown-item:hover,
+.dq-dropdown .dropdown-item:focus {
+    background: color-mix(in srgb, var(--dq-green) 10%, var(--dq-card));
+    color: var(--dq-green);
+    padding-left: 1.2rem;
+}
+
+[data-theme="dark"] .dq-dropdown {
+    background: var(--dq-card);
+    border-color: var(--dq-border);
+}
+
+/* ── XP Pill in Navbar ──────────────────────────────────────── */
+.dq-navbar-xp { font-size: .85rem; }
+
+.dq-streak-badge {
+    font-weight: 700;
+    color: #FF8C00;
+    background: rgba(255, 140, 0, .12);
+    padding: .2rem .6rem;
+    border-radius: 20px;
+}
+
+.dq-xp-pill {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(0,0,0,.04);
+    border: 1.5px solid var(--dq-border);
+    border-radius: 20px;
+    padding: .3rem .8rem;
+    transition: background .2s, border-color .2s;
+}
+
+[data-theme="dark"] .dq-xp-pill { background: rgba(255,255,255,.05); }
+
+.dq-xp-level { font-weight: 700; color: var(--dq-green); white-space: nowrap; }
+
+.dq-xp-bar-wrap {
+    width: 80px;
+    height: 8px;
+    background: var(--dq-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dq-xp-bar-fill {
+    height: 100%;
+    background: var(--dq-green);
+    border-radius: 4px;
+    transition: width .4s ease;
+}
+
+.dq-xp-total { color: var(--dq-muted); white-space: nowrap; }
+
+/* ── Main Content ───────────────────────────────────────────── */
+.dq-main-content {
+    min-height: calc(100vh - 68px);
+    padding-bottom: 3rem;
+}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.dq-hero-title {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -.5px;
+    color: var(--dq-text);
+    margin-bottom: .5rem;
+}
+
+.dq-hero-sub { font-size: 1.1rem; color: var(--dq-muted); }
+
+/* ── Track Grid ─────────────────────────────────────────────── */
+.dq-track-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+/* ── Track Card ─────────────────────────────────────────────── */
+.dq-track-card {
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-top: 5px solid var(--track-color);
+    border-radius: var(--dq-radius);
+    padding: 1.25rem;
+    box-shadow: var(--dq-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    position: relative;
+    transition: transform .15s, box-shadow .15s, background .2s, border-color .2s;
+}
+
+.dq-track-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+}
+
+[data-theme="dark"] .dq-track-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.5); }
+
+.dq-track-card--locked { opacity: .65; filter: grayscale(.3); }
+
+.dq-lock-overlay {
+    text-align: center;
+    padding: .5rem;
+    background: rgba(255,255,255,.06);
+    border-radius: 8px;
+    margin-bottom: .25rem;
+}
+
+[data-theme="dark"] .dq-lock-overlay { background: rgba(255,255,255,.04); }
+
+.dq-lock-icon  { font-size: 1.5rem; }
+.dq-lock-hint  { font-size: .8rem; color: var(--dq-muted); }
+
+.dq-track-header  { display: flex; align-items: flex-start; gap: .75rem; }
+.dq-track-emoji   { font-size: 2rem; line-height: 1; }
+.dq-track-name    { font-size: 1.05rem; font-weight: 800; margin: 0; color: var(--dq-text); }
+.dq-track-meta    { font-size: .78rem; color: var(--dq-muted); }
+.dq-complete-badge { font-size: 1.2rem; }
+.dq-track-desc    { font-size: .88rem; color: var(--dq-muted); margin: 0; flex: 1; }
+
+/* ── Progress Bar ───────────────────────────────────────────── */
+.dq-progress-wrap { display: flex; align-items: center; gap: .5rem; }
+
+.dq-progress-bar {
+    flex: 1;
+    height: 10px;
+    background: var(--dq-border);
+    border-radius: 5px;
+    overflow: hidden;
+    transition: background .2s;
+}
+
+.dq-progress-bar--lg { height: 14px; }
+
+.dq-progress-fill {
+    height: 100%;
+    background: var(--dq-green);
+    border-radius: 5px;
+    transition: width .4s ease;
+}
+
+.dq-progress-pct {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--dq-muted);
+    min-width: 30px;
+    text-align: right;
+}
+
+/* ── Track Button ───────────────────────────────────────────── */
+.dq-track-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--dq-green);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: .65rem 1rem;
+    border-radius: 10px;
+    border: none;
+    border-bottom: 3px solid var(--dq-green-d);
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter .15s, transform .1s;
+}
+
+.dq-track-btn:hover     { filter: brightness(.92); transform: translateY(-1px); }
+.dq-track-btn:active    { transform: translateY(0); }
+.dq-track-btn--disabled {
+    background: var(--dq-border) !important;
+    border-bottom-color: var(--dq-border) !important;
+    color: var(--dq-muted) !important;
+    cursor: not-allowed;
+}
+.dq-track-btn--complete { background: #1CB0F6; border-bottom-color: #1398d4; }
+
+.dq-track-actions {
+    display: flex;
+    gap: .5rem;
+    align-items: stretch;
+}
+
+.dq-track-actions .dq-track-btn {
+    flex: 1;
+}
+
+.dq-track-roadmap-link {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .5rem .85rem;
+    border-radius: var(--dq-radius);
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--dq-muted);
+    background: var(--dq-bg);
+    border: 2px solid var(--dq-border);
+    text-decoration: none;
+    transition: all .18s ease;
+    white-space: nowrap;
+}
+
+.dq-track-roadmap-link:hover {
+    color: var(--track-color, var(--dq-green));
+    border-color: var(--track-color, var(--dq-green));
+    background: color-mix(in srgb, var(--track-color, var(--dq-green)) 8%, var(--dq-bg));
+    transform: translateY(-1px);
+}
+
+/* ── Global Stats ───────────────────────────────────────────── */
+.dq-global-stats {
+    display: inline-flex;
+    gap: 2.5rem;
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-radius: 14px;
+    padding: 1rem 2rem;
+    box-shadow: var(--dq-shadow);
+    transition: background .2s, border-color .2s;
+}
+
+.dq-stat       { text-align: center; }
+.dq-stat-value { display: block; font-size: 1.6rem; font-weight: 900; color: var(--dq-text); }
+.dq-stat-label { font-size: .75rem; color: var(--dq-muted); text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── Back Link ──────────────────────────────────────────────── */
+.dq-back-link {
+    color: var(--dq-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: color .15s;
+}
+.dq-back-link:hover { color: var(--dq-green); }
+
+/* ── Primary / Secondary Buttons ───────────────────────────── */
+.dq-btn-primary {
+    display: inline-block;
+    background: var(--dq-green);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: .75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    border-bottom: 3px solid var(--dq-green-d);
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter .15s, transform .1s;
+    text-align: center;
+}
+.dq-btn-primary:hover    { filter: brightness(.92); transform: translateY(-1px); }
+.dq-btn-primary:active   { transform: translateY(0); }
+.dq-btn-primary:disabled { background: var(--dq-border); border-color: var(--dq-border); color: var(--dq-muted) !important; cursor: not-allowed; }
+
+.dq-btn-secondary {
+    display: inline-block;
+    background: var(--dq-card);
+    color: var(--dq-text) !important;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: .75rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid var(--dq-border);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color .15s, background .2s, color .2s;
+    text-align: center;
+}
+.dq-btn-secondary:hover { border-color: var(--dq-muted); }
+
+/* ============================================================
+   Animations & Micro-interactions — site.css
+   ============================================================ */
+
+html { scroll-behavior: smooth; }
+
+/* ── Page entrance fade-up ── */
+@keyframes dqFadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.dq-main-content { animation: dqFadeUp .38s ease both; }
+
+/* ── Hero text staggered entrance ── */
+.dq-hero-title   { animation: dqFadeUp .44s ease .04s both; }
+.dq-hero-sub     { animation: dqFadeUp .44s ease .11s both; }
+.dq-global-stats { animation: dqFadeUp .44s ease .18s both; }
+
+/* ── Track card staggered slide-up ── */
+@keyframes dqCardUp {
+    from { opacity: 0; transform: translateY(24px) scale(.96); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.dq-track-grid > .dq-track-card              { animation: dqCardUp .42s ease both; }
+.dq-track-grid > .dq-track-card:nth-child(1) { animation-delay: .05s; }
+.dq-track-grid > .dq-track-card:nth-child(2) { animation-delay: .12s; }
+.dq-track-grid > .dq-track-card:nth-child(3) { animation-delay: .19s; }
+.dq-track-grid > .dq-track-card:nth-child(4) { animation-delay: .26s; }
+.dq-track-grid > .dq-track-card:nth-child(5) { animation-delay: .33s; }
+.dq-track-grid > .dq-track-card:nth-child(6) { animation-delay: .40s; }
+
+/* ── Streak badge gentle pulse ── */
+@keyframes dqStreakPulse {
+    0%, 100% { transform: scale(1);    }
+    50%       { transform: scale(1.15); }
+}
+.dq-streak-badge { animation: dqStreakPulse 2.2s ease-in-out infinite; }
+
+/* ── XP level badge pop-in ── */
+@keyframes dqPopIn {
+    from { transform: scale(.65); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+.dq-xp-level { animation: dqPopIn .45s cubic-bezier(.34,1.56,.64,1) .22s both; }
+
+/* ── Back link slide on hover ── */
+.dq-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    transition: color .15s, transform .18s;
+}
+.dq-back-link:hover {
+    transform: translateX(-4px);
+    color: var(--dq-green) !important;
+}
+
+/* ── Button active press feel ── */
+.dq-btn-primary:active { transform: scale(.97) translateY(1px) !important; }
+
+/* ── Secondary button hover lift ── */
+.dq-btn-secondary       { transition: border-color .15s, background .2s, color .2s, transform .15s; }
+.dq-btn-secondary:hover { transform: translateY(-1px); }
+
+/* ── Nav link animated underline ── */
+.dq-nav-link { position: relative; }
+.dq-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: .8rem; right: .8rem;
+    height: 2px;
+    background: var(--dq-green);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transition: transform .2s ease;
+}
+.dq-nav-link.active::after,
+.dq-nav-link:hover::after { transform: scaleX(1); }

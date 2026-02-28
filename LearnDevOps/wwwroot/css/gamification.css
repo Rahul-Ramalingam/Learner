@@ -1,0 +1,537 @@
+/* ============================================================
+   DevOps Quest — gamification.css
+   Track skill tree, profile, achievements, complete screen
+   ============================================================ */
+
+/* ---- Track Hero ---- */
+.dq-track-hero {
+    background: linear-gradient(135deg, var(--track-color) 0%, color-mix(in srgb, var(--track-color) 60%, #fff) 100%);
+    color: #fff;
+    border-radius: var(--dq-radius);
+    padding: 2rem;
+    margin-bottom: .5rem;
+    box-shadow: var(--dq-shadow);
+}
+
+.dq-track-hero-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 0;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+.dq-track-hero-desc {
+    opacity: .9;
+    font-size: 1rem;
+}
+
+.dq-locked-alert {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: var(--dq-radius);
+}
+
+/* ---- Skill Tree ---- */
+.dq-skill-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dq-unit-section {
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-radius: var(--dq-radius);
+    padding: 1.25rem;
+    box-shadow: var(--dq-shadow);
+}
+
+.dq-unit-section--locked {
+    opacity: .6;
+}
+
+.dq-unit-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dq-unit-emoji { font-size: 1.75rem; line-height: 1; }
+
+.dq-unit-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 .15rem;
+}
+
+.dq-unit-desc { font-size: .85rem; color: var(--dq-muted); margin: 0; }
+
+.dq-unit-progress-wrap {
+    min-width: 100px;
+    text-align: right;
+}
+
+.dq-unit-progress-bar {
+    height: 8px;
+    background: #e8e8e8;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: .25rem;
+}
+
+.dq-unit-progress-fill {
+    height: 100%;
+    background: var(--dq-green);
+    border-radius: 4px;
+    transition: width .4s;
+}
+
+.dq-unit-pct { font-size: .75rem; color: var(--dq-muted); font-weight: 700; }
+
+.dq-unit-locked-msg {
+    text-align: center;
+    color: var(--dq-muted);
+    font-size: .9rem;
+    padding: .75rem 0;
+}
+
+/* ---- Lesson Bubbles ---- */
+.dq-lesson-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: .5rem;
+}
+
+.dq-lesson-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25rem;
+    min-width: 72px;
+}
+
+.dq-lesson-bubble {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    background: #fff;
+    border: 3px solid var(--dq-green);
+    text-decoration: none;
+    position: relative;
+    box-shadow: 0 3px 0 var(--dq-green-d);
+    transition: transform .15s, box-shadow .15s;
+    cursor: pointer;
+}
+
+.dq-lesson-bubble:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 var(--dq-green-d);
+}
+
+.dq-lesson-bubble:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 var(--dq-green-d);
+}
+
+.dq-lesson-bubble--done {
+    background: var(--dq-green);
+    border-color: var(--dq-green-d);
+    box-shadow: 0 3px 0 var(--dq-green-d);
+}
+
+.dq-lesson-bubble--locked {
+    background: #e8e8e8;
+    border-color: #ccc;
+    box-shadow: 0 3px 0 #bbb;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.dq-lesson-emoji { pointer-events: none; }
+
+.dq-perfect-star {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: .85rem;
+}
+
+.dq-lesson-label {
+    font-size: .72rem;
+    font-weight: 600;
+    text-align: center;
+    max-width: 72px;
+    color: var(--dq-text);
+    line-height: 1.2;
+}
+
+.dq-lesson-xp {
+    font-size: .68rem;
+    color: var(--dq-green);
+    font-weight: 700;
+}
+
+/* ---- Lesson Start Card ---- */
+.dq-lesson-start-card {
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-top: 6px solid var(--track-color);
+    border-radius: var(--dq-radius);
+    padding: 2rem;
+    box-shadow: var(--dq-shadow);
+}
+
+.dq-lesson-start-emoji { font-size: 4rem; margin-bottom: .5rem; }
+
+.dq-lesson-start-title {
+    font-size: 1.7rem;
+    font-weight: 900;
+    margin-bottom: .25rem;
+}
+
+.dq-lesson-start-meta {
+    color: var(--dq-muted);
+    margin-bottom: 1.5rem;
+}
+
+.dq-already-done-alert {
+    background: #f0fde8;
+    border: 2px solid var(--dq-green);
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.dq-lives-preview { font-size: 1.3rem; }
+
+/* ---- Complete Screen ---- */
+.dq-complete-card {
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-radius: var(--dq-radius);
+    padding: 2rem;
+    box-shadow: var(--dq-shadow);
+}
+
+.dq-complete-card--success { border-top: 6px solid var(--dq-green); }
+.dq-complete-card--fail    { border-top: 6px solid var(--dq-red); }
+
+.dq-complete-icon { font-size: 4rem; margin-bottom: .5rem; }
+
+.dq-complete-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.dq-perfect-badge {
+    background: linear-gradient(135deg, #FFD900, #FF8C00);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: .4rem 1rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.dq-xp-reward {
+    background: linear-gradient(135deg, var(--dq-green), #4CAD02);
+    color: #fff;
+    border-radius: 16px;
+    padding: 1rem;
+    display: inline-block;
+    min-width: 180px;
+}
+
+.dq-xp-reward-amount {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.dq-xp-reward-label { font-size: .85rem; opacity: .85; }
+
+.dq-stat-card {
+    background: #f8f8f8;
+    border-radius: 12px;
+    padding: .75rem;
+    border: 2px solid var(--dq-border);
+}
+
+.dq-stat-val { font-size: 1.4rem; font-weight: 800; }
+.dq-stat-lbl { font-size: .72rem; color: var(--dq-muted); text-transform: uppercase; }
+
+.dq-levelup-banner {
+    background: linear-gradient(135deg, #FFD900, #FF8C00);
+    color: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1rem;
+    box-shadow: 0 3px 12px rgba(255, 140, 0, .3);
+}
+
+.dq-achievements-earned {
+    background: #fffbf0;
+    border: 2px solid var(--dq-gold);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: left;
+}
+
+/* ---- Achievement Items ---- */
+.dq-achievement-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-left: 4px solid var(--badge-color, #ccc);
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    margin-bottom: .5rem;
+}
+
+.dq-achievement-item--earned { background: #f0fde8; border-color: var(--dq-green); border-left-color: var(--badge-color, var(--dq-green)); }
+.dq-achievement-item--locked { opacity: .65; }
+
+.dq-ach-emoji { font-size: 1.5rem; flex-shrink: 0; }
+.dq-ach-title { font-weight: 700; font-size: .9rem; }
+.dq-ach-desc  { font-size: .78rem; color: var(--dq-muted); }
+.dq-ach-check { font-size: 1rem; }
+
+/* ---- Profile ---- */
+.dq-profile-header {
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-radius: var(--dq-radius);
+    padding: 2rem;
+    box-shadow: var(--dq-shadow);
+}
+
+.dq-profile-avatar {
+    font-size: 4rem;
+    margin-bottom: .5rem;
+}
+
+.dq-profile-level-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin: 0;
+}
+
+.dq-profile-level {
+    color: var(--dq-green);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.dq-profile-xp-wrap {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.dq-profile-stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.dq-section-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--dq-text);
+}
+
+.dq-track-stat-card {
+    background: var(--dq-card);
+    border: 2px solid var(--dq-border);
+    border-left: 5px solid var(--track-color);
+    border-radius: 12px;
+    padding: .9rem 1rem;
+    margin-bottom: .75rem;
+    box-shadow: var(--dq-shadow);
+}
+
+.dq-track-stat-name { font-weight: 700; font-size: .95rem; }
+.dq-track-stat-xp   { font-weight: 800; color: var(--dq-green); font-size: 1rem; }
+
+/* ============================================================
+   Dark mode overrides — gamification.css
+   ============================================================ */
+
+[data-theme="dark"] .dq-locked-alert {
+    background: #2a2000;
+    border-color: #856404;
+    color: var(--dq-text);
+}
+
+[data-theme="dark"] .dq-unit-progress-bar {
+    background: var(--dq-border);
+}
+
+[data-theme="dark"] .dq-lesson-bubble {
+    background: var(--dq-card);
+}
+
+[data-theme="dark"] .dq-lesson-bubble--locked {
+    background: #1f2937;
+    border-color: #4b5563;
+    box-shadow: 0 3px 0 #374151;
+}
+
+[data-theme="dark"] .dq-stat-card {
+    background: rgba(0,0,0,.25);
+    border-color: var(--dq-border);
+    color: var(--dq-text);
+}
+
+[data-theme="dark"] .dq-achievements-earned {
+    background: rgba(255,217,0,.05);
+    border-color: var(--dq-gold);
+}
+
+[data-theme="dark"] .dq-achievement-item--earned {
+    background: rgba(93,227,18,.08);
+    border-color: var(--dq-green);
+}
+
+[data-theme="dark"] .dq-already-done-alert {
+    background: rgba(93,227,18,.08);
+    border-color: var(--dq-green);
+    color: var(--dq-text);
+}
+
+/* ============================================================
+   Animations — gamification.css
+   ============================================================ */
+
+/* ── Unit sections slide in from left, staggered ── */
+@keyframes dqUnitSlide {
+    from { opacity: 0; transform: translateX(-22px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+.dq-skill-tree > .dq-unit-section              { animation: dqUnitSlide .38s ease both; }
+.dq-skill-tree > .dq-unit-section:nth-child(1) { animation-delay: .06s; }
+.dq-skill-tree > .dq-unit-section:nth-child(2) { animation-delay: .15s; }
+.dq-skill-tree > .dq-unit-section:nth-child(3) { animation-delay: .24s; }
+.dq-skill-tree > .dq-unit-section:nth-child(4) { animation-delay: .33s; }
+.dq-skill-tree > .dq-unit-section:nth-child(5) { animation-delay: .42s; }
+.dq-skill-tree > .dq-unit-section:nth-child(6) { animation-delay: .51s; }
+
+/* ── Lesson bubble bounce entrance ── */
+@keyframes dqBubbleIn {
+    from { opacity: 0; transform: scale(.55) translateY(12px); }
+    to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+.dq-lesson-row .dq-lesson-wrap                  { animation: dqBubbleIn .32s cubic-bezier(.34,1.56,.64,1) both; }
+.dq-lesson-row .dq-lesson-wrap:nth-child(1)     { animation-delay: .18s; }
+.dq-lesson-row .dq-lesson-wrap:nth-child(2)     { animation-delay: .26s; }
+.dq-lesson-row .dq-lesson-wrap:nth-child(3)     { animation-delay: .34s; }
+.dq-lesson-row .dq-lesson-wrap:nth-child(4)     { animation-delay: .42s; }
+
+/* ── Lesson bubble enhanced hover & active ── */
+.dq-lesson-bubble:not(.dq-lesson-bubble--locked) {
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .2s ease;
+}
+.dq-lesson-bubble:not(.dq-lesson-bubble--locked):hover {
+    transform: translateY(-7px) scale(1.1);
+    box-shadow: 0 12px 0 var(--dq-green-d), 0 0 20px rgba(88,204,2,.28);
+}
+.dq-lesson-bubble:not(.dq-lesson-bubble--locked):active {
+    transform: translateY(2px) scale(.95);
+    box-shadow: 0 2px 0 var(--dq-green-d);
+}
+
+/* ── Completed bubble glow pulse ── */
+@keyframes dqDoneGlow {
+    0%, 100% { box-shadow: 0 3px 0 var(--dq-green-d); }
+    50%       { box-shadow: 0 3px 0 var(--dq-green-d), 0 0 18px rgba(88,204,2,.45); }
+}
+.dq-lesson-bubble--done { animation: dqDoneGlow 3s ease-in-out infinite; }
+
+/* ── Track hero slide down ── */
+@keyframes dqHeroSlide {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.dq-track-hero { animation: dqHeroSlide .4s ease both; }
+
+/* ── Lesson start card bounce-in ── */
+@keyframes dqBounceIn {
+    0%   { opacity: 0; transform: scale(.87) translateY(18px); }
+    62%  { opacity: 1; transform: scale(1.04) translateY(-4px); }
+    80%  { transform: scale(.98) translateY(2px); }
+    100% { transform: scale(1)   translateY(0); }
+}
+.dq-lesson-start-card { animation: dqBounceIn .52s cubic-bezier(.34,1.2,.64,1) .05s both; }
+
+/* ── Complete card bounce-in ── */
+.dq-complete-card { animation: dqBounceIn .55s cubic-bezier(.34,1.2,.64,1) .05s both; }
+
+/* ── XP reward badge spin-pop ── */
+@keyframes dqXpSpin {
+    0%   { opacity: 0; transform: scale(.45) rotate(-12deg); }
+    70%  { transform: scale(1.08) rotate(3deg); }
+    100% { opacity: 1; transform: scale(1)    rotate(0deg); }
+}
+.dq-xp-reward { animation: dqXpSpin .62s cubic-bezier(.34,1.56,.64,1) .28s both; }
+
+/* ── Level-up banner wiggle ── */
+@keyframes dqWiggle {
+    0%, 100% { transform: rotate(0deg)   scale(1);    }
+    20%       { transform: rotate(-1.5deg) scale(1.02); }
+    40%       { transform: rotate(1.5deg)  scale(1.02); }
+    60%       { transform: rotate(-.8deg)  scale(1.01); }
+    80%       { transform: rotate(.8deg)   scale(1.01); }
+}
+.dq-levelup-banner { animation: dqWiggle .55s ease .8s both; }
+
+/* ── Perfect badge sparkle ── */
+@keyframes dqSparkle {
+    0%, 100% { filter: brightness(1); }
+    50%       { filter: brightness(1.25) drop-shadow(0 0 8px rgba(255,217,0,.6)); }
+}
+.dq-perfect-badge { animation: dqSparkle 2s ease-in-out infinite; }
+
+/* ── Achievement items slide in ── */
+@keyframes dqAchSlide {
+    from { opacity: 0; transform: translateX(18px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+.dq-achievements-earned .dq-achievement-item:nth-child(1) { animation: dqAchSlide .32s ease .62s both; }
+.dq-achievements-earned .dq-achievement-item:nth-child(2) { animation: dqAchSlide .32s ease .74s both; }
+.dq-achievements-earned .dq-achievement-item:nth-child(3) { animation: dqAchSlide .32s ease .86s both; }
+
+/* ── Complete stat cards pop-up ── */
+@keyframes dqStatPop {
+    from { opacity: 0; transform: translateY(14px) scale(.9); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.dq-complete-card .dq-stat-card:nth-child(1) { animation: dqStatPop .32s ease .38s both; }
+.dq-complete-card .dq-stat-card:nth-child(2) { animation: dqStatPop .32s ease .48s both; }
+.dq-complete-card .dq-stat-card:nth-child(3) { animation: dqStatPop .32s ease .58s both; }
+
+/* ── Profile header slide down ── */
+@keyframes dqProfileSlide {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.dq-profile-header { animation: dqProfileSlide .42s ease .04s both; }
+
+/* ── Track stat cards stagger ── */
+.dq-track-stat-card              { animation: dqCardUp .38s ease both; }
+.dq-track-stat-card:nth-child(1) { animation-delay: .07s; }
+.dq-track-stat-card:nth-child(2) { animation-delay: .15s; }
+.dq-track-stat-card:nth-child(3) { animation-delay: .23s; }
+.dq-track-stat-card:nth-child(4) { animation-delay: .31s; }
+.dq-track-stat-card:nth-child(5) { animation-delay: .39s; }
+.dq-track-stat-card:nth-child(6) { animation-delay: .47s; }

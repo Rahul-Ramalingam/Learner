@@ -1,0 +1,855 @@
+{
+  "slug": "docker",
+  "title": "Docker Roadmap",
+  "description": "Master containerization from basics to production deployment. Learn to build, ship, and run applications anywhere with Docker.",
+  "emoji": "🐳",
+  "colorHex": "#0db7ed",
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "order": 1,
+      "topics": [
+        {
+          "id": "what-are-containers",
+          "title": "What are Containers",
+          "description": "Containers are lightweight, standalone executable packages that include everything needed to run a piece of software — code, runtime, system tools, libraries, and settings. Unlike virtual machines, containers share the host OS kernel, making them extremely efficient and fast to start.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "What are Containers?", "url": "https://www.youtube.com/watch?v=EnJ7qX9fkcU", "channel": "VMware", "duration": "5:12" },
+            { "title": "Containers Explained", "url": "https://www.youtube.com/watch?v=0qotVMX-J5s", "channel": "IBM Technology", "duration": "8:43" },
+            { "title": "What is a Container?", "url": "https://www.youtube.com/watch?v=GeqaTjKMWeY", "channel": "Fireship", "duration": "2:12" }
+          ],
+          "resources": [
+            { "title": "Docker Overview", "url": "https://docs.docker.com/get-started/overview/", "type": "official" },
+            { "title": "What is a Container? - Docker Docs", "url": "https://www.docker.com/resources/what-container/", "type": "official" },
+            { "title": "Containers vs VMs - Atlassian", "url": "https://www.atlassian.com/microservices/cloud-computing/containers-vs-vms", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a container and how does it differ from a virtual machine?", "a": "A container is a lightweight, isolated environment that packages an application with its dependencies. Unlike VMs which include a full guest OS, containers share the host OS kernel, making them smaller (MBs vs GBs), faster to start (seconds vs minutes), and more resource-efficient." },
+            { "q": "What problem do containers solve?", "a": "Containers solve the 'it works on my machine' problem by ensuring consistent environments across development, testing, and production. They also enable microservices architecture, improve resource utilization, and simplify deployment and scaling." },
+            { "q": "Can you run Windows containers on Linux or vice versa?", "a": "Linux containers require a Linux kernel and cannot natively run on Windows without a VM layer (like WSL2). Windows containers require a Windows kernel. Docker Desktop uses lightweight VMs to enable cross-platform container execution." }
+          ],
+          "tips": [
+            "Think of containers as isolated processes, not lightweight VMs — they share the host kernel.",
+            "Start with simple single-container apps before moving to multi-container orchestration."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "bare-metal-vs-vm-vs-container",
+          "title": "Bare Metal vs VM vs Container",
+          "description": "Understanding the evolution from bare metal servers to virtual machines to containers is crucial for grasping why containers exist. Each layer of abstraction trades some performance for greater flexibility, isolation, and resource efficiency.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Virtual Machines vs Containers", "url": "https://www.youtube.com/watch?v=eyNBf1sqdBQ", "channel": "IBM Technology", "duration": "8:16" },
+            { "title": "VM vs Docker", "url": "https://www.youtube.com/watch?v=5GanJdbHlAA", "channel": "NetworkChuck", "duration": "15:22" },
+            { "title": "Containers vs VMs", "url": "https://www.youtube.com/watch?v=cjXI-yxqGTI", "channel": "IBM Technology", "duration": "8:52" }
+          ],
+          "resources": [
+            { "title": "Containers vs VMs - Microsoft", "url": "https://learn.microsoft.com/en-us/virtualization/windowscontainers/about/containers-vs-vm", "type": "official" },
+            { "title": "Containers vs VMs - Google Cloud", "url": "https://cloud.google.com/learn/what-are-containers", "type": "article" },
+            { "title": "Docker vs Virtual Machines - freeCodeCamp", "url": "https://www.freecodecamp.org/news/docker-vs-vm-key-differences-you-should-know/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the key differences between containers and VMs?", "a": "VMs virtualize hardware and run a full guest OS on a hypervisor, providing strong isolation but with significant overhead (GBs of storage, minutes to boot). Containers virtualize the OS, sharing the host kernel, providing process-level isolation with minimal overhead (MBs, seconds to start)." },
+            { "q": "When would you choose VMs over containers?", "a": "Choose VMs when you need full OS-level isolation (different OS kernels), strong security boundaries between tenants, or when running legacy applications that require specific OS configurations. VMs also provide hardware-level isolation needed for compliance in some industries." },
+            { "q": "Can containers and VMs coexist?", "a": "Absolutely. Many production environments run containers inside VMs for an extra layer of security. Cloud providers run Kubernetes nodes on VMs, and Docker Desktop on Windows/Mac uses a lightweight VM to provide a Linux kernel for containers." }
+          ],
+          "tips": [
+            "In production, containers often run inside VMs — it's not an either/or choice.",
+            "VMs provide stronger security isolation; containers provide faster deployment and better resource usage."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "docker-and-oci",
+          "title": "Docker and OCI",
+          "description": "The Open Container Initiative (OCI) defines industry standards for container image formats and runtimes. While Docker popularized containers, OCI ensures interoperability so images built with Docker work with other container runtimes like Podman, containerd, and CRI-O.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker vs Containerd vs CRI-O", "url": "https://www.youtube.com/watch?v=7czLREFkuPo", "channel": "KodeKloud", "duration": "10:08" },
+            { "title": "OCI and Container Standards", "url": "https://www.youtube.com/watch?v=Utf-A4rODH8", "channel": "Bret Fisher", "duration": "9:48" },
+            { "title": "Docker vs Podman", "url": "https://www.youtube.com/watch?v=Xx588nbshlM", "channel": "TechWorld with Nana", "duration": "12:18" }
+          ],
+          "resources": [
+            { "title": "Open Container Initiative", "url": "https://opencontainers.org/", "type": "official" },
+            { "title": "OCI Image Specification", "url": "https://github.com/opencontainers/image-spec", "type": "official" },
+            { "title": "Docker and OCI - Docker Blog", "url": "https://www.docker.com/blog/demystifying-open-container-initiative-oci-specifications/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the OCI and why is it important?", "a": "The Open Container Initiative (OCI) is a Linux Foundation project that defines open standards for container image formats and runtimes. It ensures that container images are portable across different container runtimes (Docker, Podman, containerd), preventing vendor lock-in." },
+            { "q": "What is the difference between Docker and containerd?", "a": "Docker is a complete platform with CLI, daemon, build tools, and networking. containerd is a core container runtime extracted from Docker that manages the container lifecycle. Kubernetes uses containerd directly, bypassing Docker's extra layers." },
+            { "q": "What are the main OCI specifications?", "a": "The two main specs are: 1) Image Spec - defines how container images are built and stored, 2) Runtime Spec - defines how containers are configured, executed, and managed. There's also a Distribution Spec for pushing/pulling images." }
+          ],
+          "tips": [
+            "Docker images are OCI-compliant — they work with Podman, containerd, and other OCI runtimes.",
+            "Kubernetes dropped Docker as a runtime in v1.24 but still uses Docker-built images via containerd."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "underlying-tech",
+      "title": "Underlying Technologies",
+      "order": 2,
+      "topics": [
+        {
+          "id": "namespaces",
+          "title": "Namespaces",
+          "description": "Linux namespaces are the core technology that provides container isolation. They partition kernel resources so that one set of processes sees one set of resources while another set of processes sees a different set. Docker uses PID, NET, MNT, UTS, IPC, and USER namespaces.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "How Containers Work - Namespaces", "url": "https://www.youtube.com/watch?v=8fi7uSYlOdc", "channel": "LiveOverflow", "duration": "10:42" },
+            { "title": "Linux Namespaces Explained", "url": "https://www.youtube.com/watch?v=-YnMr1lj4Z8", "channel": "Hussein Nasser", "duration": "18:22" },
+            { "title": "Containers From Scratch", "url": "https://www.youtube.com/watch?v=_TsSmSu57Zo", "channel": "Liz Rice", "duration": "35:40" }
+          ],
+          "resources": [
+            { "title": "Linux Namespaces - man7", "url": "https://man7.org/linux/man-pages/man7/namespaces.7.html", "type": "official" },
+            { "title": "Docker and Linux Namespaces", "url": "https://docs.docker.com/engine/security/#linux-namespaces", "type": "official" },
+            { "title": "Understanding Namespaces - nginx", "url": "https://www.nginx.com/blog/what-are-namespaces-cgroups-how-do-they-work/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What Linux namespaces does Docker use?", "a": "Docker uses 6 namespaces: PID (process isolation), NET (network isolation), MNT (filesystem mount points), UTS (hostname/domain), IPC (inter-process communication), and USER (user/group ID mapping). Each provides a separate view of a specific kernel resource." },
+            { "q": "What is PID namespace isolation?", "a": "PID namespace gives each container its own process ID space. The first process in a container gets PID 1, just like init on the host. Processes inside a container cannot see or signal processes in other containers or the host." },
+            { "q": "How do network namespaces work in Docker?", "a": "Each container gets its own network namespace with its own network interfaces, IP addresses, routing tables, and port space. Docker creates virtual ethernet pairs (veth) to connect container namespaces to the host bridge network." }
+          ],
+          "tips": [
+            "Understanding namespaces helps you debug container networking and process issues.",
+            "You can inspect a container's namespaces using 'ls -la /proc/<PID>/ns/' on the host."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "cgroups",
+          "title": "cgroups",
+          "description": "Control Groups (cgroups) limit, account for, and isolate the resource usage (CPU, memory, disk I/O, network) of a collection of processes. While namespaces provide isolation, cgroups provide resource management — ensuring one container cannot starve others of resources.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "cgroups Explained", "url": "https://www.youtube.com/watch?v=el7768BNUPw", "channel": "Hussein Nasser", "duration": "14:35" },
+            { "title": "Understanding cgroups", "url": "https://www.youtube.com/watch?v=zMJD8PJKoYQ", "channel": "Bret Fisher", "duration": "6:45" },
+            { "title": "Linux cgroups", "url": "https://www.youtube.com/watch?v=SYDEy4_4MaI", "channel": "Learn Linux TV", "duration": "11:28" }
+          ],
+          "resources": [
+            { "title": "cgroups v2 - kernel.org", "url": "https://docs.kernel.org/admin-guide/cgroup-v2.html", "type": "official" },
+            { "title": "Docker Resource Constraints", "url": "https://docs.docker.com/engine/containers/resource_constraints/", "type": "official" },
+            { "title": "Control Groups - Red Hat", "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/resource_management_guide/chap-introduction_to_control_groups", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are cgroups and why are they important for containers?", "a": "cgroups (Control Groups) are a Linux kernel feature that limits and monitors resource usage (CPU, memory, I/O) for groups of processes. They prevent a single container from consuming all host resources, enabling fair multi-tenancy and preventing noisy-neighbor problems." },
+            { "q": "What is the difference between cgroups v1 and v2?", "a": "cgroups v1 uses a per-resource hierarchy where each resource controller has its own tree. cgroups v2 uses a unified hierarchy with a single tree, providing simpler management, better resource distribution, and features like pressure stall information (PSI)." },
+            { "q": "How does Docker use cgroups for memory limits?", "a": "Docker uses cgroups to set memory limits via --memory flag. When a container exceeds its memory limit, the OOM killer terminates processes. You can also set memory reservations (soft limits) and swap limits for more nuanced control." }
+          ],
+          "tips": [
+            "Always set memory and CPU limits in production to prevent runaway containers.",
+            "Use 'docker stats' to monitor real-time resource usage per container."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "union-filesystems",
+          "title": "Union Filesystems",
+          "description": "Union filesystems (UnionFS) allow files and directories from separate file systems to be overlaid, forming a single coherent file system. Docker uses overlay2 (the default storage driver) to create layered images where each Dockerfile instruction creates a new read-only layer, with a thin writable layer on top for the running container.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Image Layers Explained", "url": "https://www.youtube.com/watch?v=FCeOCaoxdYo", "channel": "TechWorld with Nana", "duration": "6:22" },
+            { "title": "How Docker Images Work", "url": "https://www.youtube.com/watch?v=mVKeBqYPnE4", "channel": "Bret Fisher", "duration": "8:14" },
+            { "title": "Docker Storage Deep Dive", "url": "https://www.youtube.com/watch?v=9ohkRCFO7EE", "channel": "KodeKloud", "duration": "9:16" }
+          ],
+          "resources": [
+            { "title": "Docker Storage Drivers", "url": "https://docs.docker.com/engine/storage/drivers/", "type": "official" },
+            { "title": "OverlayFS - Docker Docs", "url": "https://docs.docker.com/engine/storage/drivers/overlayfs-driver/", "type": "official" },
+            { "title": "Docker Layers Explained - blog", "url": "https://jvns.ca/blog/2019/11/18/how-containers-work--overlayfs/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a union filesystem and why does Docker use it?", "a": "A union filesystem overlays multiple directories into a single view. Docker uses it to create layered images where each Dockerfile instruction creates a new read-only layer. This enables image sharing (common layers are stored once), efficient storage, and fast container startup since only a thin writable layer is added." },
+            { "q": "What is the difference between image layers and container layers?", "a": "Image layers are read-only and created during docker build (each Dockerfile instruction = one layer). The container layer is a thin writable layer added on top when a container starts. Changes in a running container only affect this writable layer, leaving the image unchanged." },
+            { "q": "What is copy-on-write in Docker?", "a": "Copy-on-write (CoW) means when a container modifies a file from a read-only image layer, the file is first copied to the writable container layer, then modified there. The original image layer remains untouched, enabling multiple containers to share the same base image efficiently." }
+          ],
+          "tips": [
+            "Keep image layers small and ordered from least-changing to most-changing for better cache usage.",
+            "Use 'docker history <image>' to inspect individual layers and their sizes."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "installation",
+      "title": "Installation & Setup",
+      "order": 3,
+      "topics": [
+        {
+          "id": "docker-desktop",
+          "title": "Docker Desktop",
+          "description": "Docker Desktop is the easiest way to get started with Docker on Windows and macOS. It includes Docker Engine, Docker CLI, Docker Compose, Kubernetes, and a GUI dashboard. On Windows it uses WSL2 or Hyper-V backend, on macOS it uses a lightweight Linux VM.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Desktop Installation", "url": "https://www.youtube.com/watch?v=wH9XesmPUOk", "channel": "KodeKloud", "duration": "11:25" },
+            { "title": "Install Docker on Windows", "url": "https://www.youtube.com/watch?v=ZyBBv1JmnWQ", "channel": "TechWorld with Nana", "duration": "14:20" },
+            { "title": "Docker in 100 Seconds", "url": "https://www.youtube.com/watch?v=Gjnup-PuquQ", "channel": "Fireship", "duration": "2:08" }
+          ],
+          "resources": [
+            { "title": "Install Docker Desktop", "url": "https://docs.docker.com/desktop/", "type": "official" },
+            { "title": "Docker Desktop for Windows", "url": "https://docs.docker.com/desktop/install/windows-install/", "type": "official" },
+            { "title": "Docker Desktop for Mac", "url": "https://docs.docker.com/desktop/install/mac-install/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Docker Desktop and what does it include?", "a": "Docker Desktop is a one-click-install application for Mac and Windows that provides Docker Engine, Docker CLI, Docker Compose, a Kubernetes cluster, Docker Scout, and a graphical dashboard for managing containers, images, and volumes." },
+            { "q": "How does Docker Desktop work on Windows?", "a": "On Windows, Docker Desktop uses WSL2 (Windows Subsystem for Linux 2) as its default backend, running a real Linux kernel in a lightweight VM. It can also use the Hyper-V backend. This allows running Linux containers natively on Windows." },
+            { "q": "Is Docker Desktop free for all use?", "a": "Docker Desktop is free for personal use, education, open source projects, and small businesses (under 250 employees AND under $10M revenue). Larger organizations require a paid subscription (Pro, Team, or Business)." }
+          ],
+          "tips": [
+            "Enable WSL2 integration on Windows for the best performance and Linux compatibility.",
+            "Allocate appropriate memory in Docker Desktop settings — default 2GB may be too low for multi-container setups."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "docker-cli-basics",
+          "title": "Docker CLI Basics",
+          "description": "The Docker CLI is your primary tool for interacting with the Docker daemon. Master the essential commands: docker run, docker ps, docker images, docker build, docker exec, docker logs, and docker stop. These form the foundation for all Docker workflows.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=pTFZFxd4hOI", "channel": "Programming with Mosh", "duration": "58:32" },
+            { "title": "Docker Crash Course", "url": "https://www.youtube.com/watch?v=pg19Z8LL06w", "channel": "TechWorld with Nana", "duration": "1:06:19" },
+            { "title": "Essential Docker Commands", "url": "https://www.youtube.com/watch?v=xGn7cFR3ARU", "channel": "NetworkChuck", "duration": "17:33" }
+          ],
+          "resources": [
+            { "title": "Docker CLI Reference", "url": "https://docs.docker.com/reference/cli/docker/", "type": "official" },
+            { "title": "Docker Run Reference", "url": "https://docs.docker.com/reference/cli/docker/container/run/", "type": "official" },
+            { "title": "Docker Cheat Sheet", "url": "https://dockerlabs.collabnix.com/docker/cheatsheet/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between 'docker run' and 'docker start'?", "a": "'docker run' creates a NEW container from an image and starts it. 'docker start' restarts an existing STOPPED container. 'docker run' is essentially 'docker create' + 'docker start' combined." },
+            { "q": "How do you view logs of a running container?", "a": "Use 'docker logs <container>' to view stdout/stderr output. Add '-f' to follow/stream logs in real-time, '--tail N' to see the last N lines, and '--since' to filter by time." },
+            { "q": "What does 'docker exec -it' do?", "a": "It executes a new command inside a running container interactively. '-i' keeps STDIN open for interactive input, '-t' allocates a pseudo-TTY for terminal output. Commonly used as 'docker exec -it <container> /bin/bash' to get a shell inside a container." }
+          ],
+          "tips": [
+            "Use 'docker system prune' regularly to clean up unused containers, images, networks, and volumes.",
+            "Add '--rm' flag to 'docker run' for throwaway containers that auto-remove when stopped."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "docker-basics",
+      "title": "Docker Basics",
+      "order": 4,
+      "topics": [
+        {
+          "id": "docker-images",
+          "title": "Docker Images",
+          "description": "A Docker image is a read-only template containing instructions for creating a container. Images are built from Dockerfiles and consist of layers. Each layer represents an instruction in the Dockerfile. Images are stored in registries and can be tagged with versions for identification.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Images Deep Dive", "url": "https://www.youtube.com/watch?v=QBOcKdh-fwQ", "channel": "TechWorld with Nana", "duration": "14:35" },
+            { "title": "Understanding Docker Images", "url": "https://www.youtube.com/watch?v=l4gQCwLr2FY", "channel": "KodeKloud", "duration": "8:43" },
+            { "title": "Docker Tutorial - Images", "url": "https://www.youtube.com/watch?v=3c-iBn73dDE", "channel": "TechWorld with Nana", "duration": "22:11" }
+          ],
+          "resources": [
+            { "title": "Docker Images - Docs", "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/", "type": "official" },
+            { "title": "Image Management CLI", "url": "https://docs.docker.com/reference/cli/docker/image/", "type": "official" },
+            { "title": "Best Practices for Images", "url": "https://docs.docker.com/build/building/best-practices/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a Docker image?", "a": "A Docker image is a lightweight, immutable, read-only template used to create containers. It contains the application code, runtime, libraries, environment variables, and configuration files. Images are built in layers, where each layer represents a Dockerfile instruction." },
+            { "q": "What is the difference between a Docker image and a container?", "a": "An image is a read-only blueprint/template, while a container is a running instance of that image. You can create many containers from one image. The image is like a class, the container is like an object instance." },
+            { "q": "How does Docker image tagging work?", "a": "Tags identify specific versions of an image. Format: 'repository:tag' (e.g., 'nginx:1.25-alpine'). 'latest' is the default tag if none specified. Tags are mutable — they can point to different image digests over time. Use specific version tags in production, not 'latest'." }
+          ],
+          "tips": [
+            "Always use specific image tags in production Dockerfiles (e.g., 'node:20-alpine' not 'node:latest').",
+            "Use Alpine-based images when possible — they're 5-10x smaller than Ubuntu-based ones."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "docker-containers",
+          "title": "Containers",
+          "description": "A Docker container is a runnable instance of an image. You can create, start, stop, move, or delete containers using the Docker CLI. Containers are isolated from each other and the host by default, but you can configure networking, storage, and other settings.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Containers Tutorial", "url": "https://www.youtube.com/watch?v=gAkwW2tuIqE", "channel": "Fireship", "duration": "12:15" },
+            { "title": "Docker Container Lifecycle", "url": "https://www.youtube.com/watch?v=Rv3DAJbDrS0", "channel": "KodeKloud", "duration": "7:22" },
+            { "title": "Managing Docker Containers", "url": "https://www.youtube.com/watch?v=y0GGQ2F2tvs", "channel": "Bret Fisher", "duration": "18:10" }
+          ],
+          "resources": [
+            { "title": "Docker Container - Docs", "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/", "type": "official" },
+            { "title": "Container CLI Reference", "url": "https://docs.docker.com/reference/cli/docker/container/", "type": "official" },
+            { "title": "Docker Getting Started Guide", "url": "https://docs.docker.com/get-started/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What happens when you run 'docker run nginx'?", "a": "Docker: 1) Checks for the nginx image locally, 2) Pulls it from Docker Hub if not found, 3) Creates a new container from the image, 4) Allocates a read-write filesystem layer, 5) Creates a network interface and assigns an IP, 6) Starts the container and runs the default command (nginx)." },
+            { "q": "What is the difference between docker stop and docker kill?", "a": "'docker stop' sends SIGTERM first, allowing graceful shutdown (default 10s timeout), then SIGKILL. 'docker kill' sends SIGKILL immediately, forcefully terminating the process. Always prefer 'docker stop' to allow applications to clean up resources." },
+            { "q": "What are the different container states?", "a": "Containers can be in these states: Created (created but not started), Running (actively executing), Paused (frozen), Stopped/Exited (finished execution), Dead (failed to stop cleanly), and Restarting (being restarted by restart policy)." }
+          ],
+          "tips": [
+            "Use 'docker run -d' for detached mode — the container runs in the background.",
+            "Name your containers with '--name' for easier management instead of using container IDs."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "docker-architecture",
+          "title": "Docker Architecture",
+          "description": "Docker uses a client-server architecture. The Docker client talks to the Docker daemon which does the heavy lifting of building, running, and managing containers. The client and daemon communicate via REST API over UNIX sockets or a network interface.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Architecture Explained", "url": "https://www.youtube.com/watch?v=rOTqprHv1YE", "channel": "TechWorld with Nana", "duration": "10:37" },
+            { "title": "How Docker Works", "url": "https://www.youtube.com/watch?v=iX0HbrfRyvc", "channel": "Fireship", "duration": "8:22" },
+            { "title": "Docker Internals", "url": "https://www.youtube.com/watch?v=WwmxcjkEL9E", "channel": "KodeKloud", "duration": "12:55" }
+          ],
+          "resources": [
+            { "title": "Docker Architecture - Docs", "url": "https://docs.docker.com/get-started/docker-overview/#docker-architecture", "type": "official" },
+            { "title": "Docker Engine Overview", "url": "https://docs.docker.com/engine/", "type": "official" },
+            { "title": "Understanding Docker Architecture", "url": "https://docs.docker.com/get-started/overview/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "Explain Docker's client-server architecture.", "a": "Docker Client (CLI) sends commands to the Docker Daemon (dockerd) via REST API. The daemon manages Docker objects (images, containers, networks, volumes). The Docker Registry (Hub) stores images. The client can connect to local or remote daemons." },
+            { "q": "What is the Docker daemon (dockerd)?", "a": "The Docker daemon is a background service that manages Docker objects. It listens for API requests and handles building images, running containers, managing networks and volumes. It can also communicate with other daemons for swarm services." },
+            { "q": "What is a Docker registry?", "a": "A Docker registry stores Docker images. Docker Hub is the default public registry. You can also run private registries (Amazon ECR, Azure ACR, Harbor). When you 'docker pull', it downloads from a registry; 'docker push' uploads to one." }
+          ],
+          "tips": [
+            "The Docker CLI and daemon don't have to run on the same machine — use DOCKER_HOST for remote management.",
+            "Use Docker contexts to easily switch between local, remote, and cloud Docker environments."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "dockerfile",
+      "title": "Dockerfile",
+      "order": 5,
+      "topics": [
+        {
+          "id": "dockerfile-basics",
+          "title": "FROM, WORKDIR, COPY, ADD",
+          "description": "FROM sets the base image for your build. WORKDIR sets the working directory inside the container. COPY copies files from host to container. ADD is similar but also supports URLs and auto-extraction of archives. Prefer COPY over ADD for transparency.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Dockerfile Tutorial", "url": "https://www.youtube.com/watch?v=WmcdMiyqfZs", "channel": "TechWorld with Nana", "duration": "16:28" },
+            { "title": "Writing Dockerfiles", "url": "https://www.youtube.com/watch?v=LQjaJINkQXY", "channel": "KodeKloud", "duration": "14:11" },
+            { "title": "Build Your Own Docker Image", "url": "https://www.youtube.com/watch?v=SnSH8Ht3MIc", "channel": "NetworkChuck", "duration": "19:22" }
+          ],
+          "resources": [
+            { "title": "Dockerfile Reference", "url": "https://docs.docker.com/reference/dockerfile/", "type": "official" },
+            { "title": "Build with Docker", "url": "https://docs.docker.com/build/", "type": "official" },
+            { "title": "Dockerfile Best Practices", "url": "https://docs.docker.com/build/building/best-practices/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between COPY and ADD in a Dockerfile?", "a": "Both copy files into the image. COPY only copies local files/directories. ADD has extra features: it can download from URLs and auto-extract compressed archives (.tar, .gz). Best practice is to use COPY unless you specifically need ADD's extra features, as COPY is more transparent." },
+            { "q": "Why should you use a specific base image tag in FROM?", "a": "Using 'FROM node:latest' means your build may break unexpectedly when the latest tag updates. Using 'FROM node:20.11-alpine' pins to a specific version, ensuring reproducible builds across time and environments." },
+            { "q": "What does WORKDIR do and why is it preferred over RUN cd?", "a": "WORKDIR sets the working directory for subsequent instructions (RUN, CMD, ENTRYPOINT, COPY, ADD). Unlike 'RUN cd /app', WORKDIR persists across layers and creates the directory if it doesn't exist. It also makes the Dockerfile more readable." }
+          ],
+          "tips": [
+            "Place COPY for dependency files (package.json) before COPY for source code to leverage build cache.",
+            "Use .dockerignore to exclude unnecessary files (node_modules, .git, tests) from the build context."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "run-cmd-entrypoint",
+          "title": "RUN vs CMD vs ENTRYPOINT",
+          "description": "RUN executes commands during image build and creates new layers. CMD sets the default command to run when a container starts (can be overridden). ENTRYPOINT configures the container to run as an executable (harder to override). Understanding the interaction between CMD and ENTRYPOINT is crucial.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "RUN vs CMD vs ENTRYPOINT", "url": "https://www.youtube.com/watch?v=U1P7bqVM7tM", "channel": "KodeKloud", "duration": "8:34" },
+            { "title": "Dockerfile CMD vs ENTRYPOINT", "url": "https://www.youtube.com/watch?v=lGvA9sOFyMY", "channel": "Bret Fisher", "duration": "7:21" },
+            { "title": "Docker RUN CMD ENTRYPOINT Explained", "url": "https://www.youtube.com/watch?v=J0NuOlA2xDI", "channel": "TechWorld with Nana", "duration": "12:16" }
+          ],
+          "resources": [
+            { "title": "CMD vs ENTRYPOINT", "url": "https://docs.docker.com/reference/dockerfile/#cmd", "type": "official" },
+            { "title": "ENTRYPOINT Reference", "url": "https://docs.docker.com/reference/dockerfile/#entrypoint", "type": "official" },
+            { "title": "Shell vs Exec Form", "url": "https://docs.docker.com/reference/dockerfile/#shell-and-exec-form", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between RUN, CMD, and ENTRYPOINT?", "a": "RUN executes during build time, creating image layers (e.g., installing packages). CMD sets the default command at runtime, easily overridden by docker run arguments. ENTRYPOINT sets the main executable — CMD arguments are appended to it. Use ENTRYPOINT for the main process, CMD for default arguments." },
+            { "q": "What is the difference between shell form and exec form?", "a": "Shell form (CMD npm start) runs via /bin/sh -c, which means signals aren't passed to the process properly. Exec form (CMD [\"npm\", \"start\"]) runs the process directly as PID 1, receiving signals correctly. Always use exec form for CMD and ENTRYPOINT in production." },
+            { "q": "Can you have multiple CMD instructions in a Dockerfile?", "a": "You can write multiple CMD instructions, but only the LAST one takes effect. Each CMD overwrites the previous. If you need to run multiple processes, use a process manager, a shell script as the entrypoint, or separate containers." }
+          ],
+          "tips": [
+            "Always use exec form (JSON array) for CMD and ENTRYPOINT to properly handle signals.",
+            "Combine ENTRYPOINT for the executable and CMD for default arguments that users can override."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "multi-stage-builds",
+          "title": "Multi-stage Builds",
+          "description": "Multi-stage builds use multiple FROM statements in a single Dockerfile. Each FROM starts a new build stage. You can selectively copy artifacts from one stage to another, leaving behind build tools and intermediate files. This dramatically reduces final image size.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Multi-stage Docker Builds", "url": "https://www.youtube.com/watch?v=zpkqNPwEzac", "channel": "TechWorld with Nana", "duration": "8:37" },
+            { "title": "Docker Multi-stage Builds", "url": "https://www.youtube.com/watch?v=2lQ7WrwpZfI", "channel": "Bret Fisher", "duration": "6:33" },
+            { "title": "Optimize Docker Images", "url": "https://www.youtube.com/watch?v=_nMpMIcMCOQ", "channel": "KodeKloud", "duration": "10:44" }
+          ],
+          "resources": [
+            { "title": "Multi-stage Builds - Docker Docs", "url": "https://docs.docker.com/build/building/multi-stage/", "type": "official" },
+            { "title": "Optimizing Builds", "url": "https://docs.docker.com/build/building/best-practices/#use-multi-stage-builds", "type": "official" },
+            { "title": "Multi-stage Build Examples", "url": "https://docs.docker.com/build/building/multi-stage/#use-multi-stage-builds", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are multi-stage builds and why use them?", "a": "Multi-stage builds use multiple FROM instructions in one Dockerfile. Each FROM starts a new stage. You can copy artifacts from build stages to the final stage, excluding build tools, source code, and temp files. This reduces image size by 10-100x (e.g., Go app: 1GB build stage -> 15MB final image)." },
+            { "q": "How do you reference a stage in multi-stage builds?", "a": "Name stages with 'FROM node:20 AS builder'. Then reference with 'COPY --from=builder /app/dist ./dist'. You can also use numeric indices (COPY --from=0) but named stages are more readable and maintainable." },
+            { "q": "Can you target a specific build stage?", "a": "Yes, use 'docker build --target builder .' to stop at the 'builder' stage. This is useful in development where you want the stage with dev dependencies, while production builds use the final minimal stage." }
+          ],
+          "tips": [
+            "Use multi-stage builds for compiled languages (Go, Java, .NET, Rust) to separate build from runtime.",
+            "Name your build stages ('AS builder') for clarity and to use --target for debugging."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "build-cache-optimization",
+          "title": "Build Cache & Optimization",
+          "description": "Docker caches each layer during builds. If a layer hasn't changed, Docker reuses the cached version. Optimizing layer order — placing rarely-changing instructions first and frequently-changing ones last — dramatically speeds up builds. Understanding cache invalidation is key to efficient Docker workflows.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Build Cache", "url": "https://www.youtube.com/watch?v=_nMpMIcMCOQ", "channel": "KodeKloud", "duration": "10:44" },
+            { "title": "Optimizing Docker Builds", "url": "https://www.youtube.com/watch?v=Ny3_F_7YQOQ", "channel": "Bret Fisher", "duration": "11:18" },
+            { "title": "Docker Image Optimization", "url": "https://www.youtube.com/watch?v=vlS5EiapiII", "channel": "DevOps Toolkit", "duration": "13:25" }
+          ],
+          "resources": [
+            { "title": "Build Cache - Docker Docs", "url": "https://docs.docker.com/build/cache/", "type": "official" },
+            { "title": "Optimize Build Cache", "url": "https://docs.docker.com/build/cache/optimize/", "type": "official" },
+            { "title": "Dockerfile Best Practices", "url": "https://docs.docker.com/build/building/best-practices/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does Docker build cache work?", "a": "Docker checks each instruction against cached layers. If the instruction and its inputs (files for COPY/ADD) haven't changed, the cached layer is reused. Once a cache miss occurs, all subsequent layers are rebuilt. This is why instruction order matters." },
+            { "q": "How do you optimize a Dockerfile for faster builds?", "a": "1) Order layers from least to most frequently changing. 2) Copy dependency files first, install deps, then copy source. 3) Use multi-stage builds. 4) Combine RUN commands with && to reduce layers. 5) Use .dockerignore. 6) Use smaller base images (Alpine)." },
+            { "q": "What invalidates the Docker build cache?", "a": "A cache miss occurs when: the instruction itself changes, file contents change (for COPY/ADD), or any previous layer was rebuilt. RUN commands are invalidated only if the command string changes — Docker doesn't check if the output would be different." }
+          ],
+          "tips": [
+            "Copy package.json and install dependencies BEFORE copying source code — this caches the expensive install step.",
+            "Use BuildKit (DOCKER_BUILDKIT=1) for faster parallel builds, better caching, and secret management."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "docker-volumes",
+      "title": "Docker Volumes",
+      "order": 6,
+      "topics": [
+        {
+          "id": "volume-types",
+          "title": "Volume Types",
+          "description": "Docker offers three types of mounts: Named volumes (managed by Docker, stored in Docker's storage area), Bind mounts (map a host directory into the container), and tmpfs mounts (stored in host memory only, never written to disk). Each serves different use cases.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Volumes Explained", "url": "https://www.youtube.com/watch?v=p2PH_YPCsis", "channel": "TechWorld with Nana", "duration": "13:42" },
+            { "title": "Docker Volumes Tutorial", "url": "https://www.youtube.com/watch?v=SBUCYJgg4Mk", "channel": "KodeKloud", "duration": "11:16" },
+            { "title": "Understanding Docker Volumes", "url": "https://www.youtube.com/watch?v=OrQLrqQm4M0", "channel": "Bret Fisher", "duration": "8:22" }
+          ],
+          "resources": [
+            { "title": "Docker Volumes", "url": "https://docs.docker.com/engine/storage/volumes/", "type": "official" },
+            { "title": "Bind Mounts", "url": "https://docs.docker.com/engine/storage/bind-mounts/", "type": "official" },
+            { "title": "Storage Overview", "url": "https://docs.docker.com/engine/storage/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the different types of Docker volumes?", "a": "Named volumes: managed by Docker, best for persistent data (databases). Bind mounts: mount a host path into a container, best for development (live code reload). tmpfs: stored in host memory only, best for sensitive data that shouldn't persist to disk." },
+            { "q": "When would you use a bind mount vs a named volume?", "a": "Bind mounts: development (mount source code for hot reload), sharing config files. Named volumes: production (database data, persistent app data) because Docker manages them, they work across platforms, and they're portable." },
+            { "q": "How do Docker volumes persist data beyond container lifecycle?", "a": "Named volumes exist independently of containers. Creating a container with '-v mydata:/data' mounts the volume. If the container is removed, the volume remains. New containers can mount the same volume to access the data. Use 'docker volume ls' to see all volumes." }
+          ],
+          "tips": [
+            "Use named volumes for databases in production — they survive container removal and are managed by Docker.",
+            "Use bind mounts in development to mount source code for hot reload without rebuilding the image."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "docker-networking",
+      "title": "Docker Networking",
+      "order": 7,
+      "topics": [
+        {
+          "id": "bridge-network",
+          "title": "Bridge Network",
+          "description": "Bridge is the default Docker network driver. When you start a container without specifying a network, it attaches to the default bridge. Custom bridge networks provide automatic DNS resolution between containers (by name), better isolation, and are the recommended approach for multi-container apps.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Networking Explained", "url": "https://www.youtube.com/watch?v=bKFMS5C4CG0", "channel": "TechWorld with Nana", "duration": "15:12" },
+            { "title": "Docker Networks Tutorial", "url": "https://www.youtube.com/watch?v=OU6xOM0SE4o", "channel": "KodeKloud", "duration": "10:44" },
+            { "title": "Docker Networking Deep Dive", "url": "https://www.youtube.com/watch?v=Yr6-2ddhLVo", "channel": "NetworkChuck", "duration": "20:14" }
+          ],
+          "resources": [
+            { "title": "Docker Networking Overview", "url": "https://docs.docker.com/engine/network/", "type": "official" },
+            { "title": "Bridge Network Driver", "url": "https://docs.docker.com/engine/network/drivers/bridge/", "type": "official" },
+            { "title": "Container Networking", "url": "https://docs.docker.com/engine/network/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a Docker bridge network?", "a": "A bridge network creates a software bridge on the host, allowing containers on the same bridge to communicate while isolating them from other containers. Docker creates a default bridge (docker0), but custom bridges are preferred because they provide DNS-based container discovery." },
+            { "q": "Why should you use custom bridge networks instead of the default bridge?", "a": "Custom bridge networks provide: 1) Automatic DNS resolution (containers can reach each other by name), 2) Better isolation, 3) On-the-fly connect/disconnect, 4) Configurable options. The default bridge requires --link (deprecated) or IP addresses for inter-container communication." },
+            { "q": "How do you expose a container port to the host?", "a": "Use the -p flag: 'docker run -p 8080:80 nginx' maps host port 8080 to container port 80. The format is '-p hostPort:containerPort'. Use '-P' to publish all exposed ports to random host ports." }
+          ],
+          "tips": [
+            "Always create custom bridge networks for multi-container apps — containers can reference each other by name.",
+            "Use 'docker network inspect <network>' to debug connectivity issues."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "host-overlay-none",
+          "title": "Host, Overlay & None Networks",
+          "description": "Host network removes network isolation — the container uses the host's networking directly. Overlay networks span multiple Docker hosts for Swarm/multi-host communication. None disables all networking. Each driver serves specific architectural needs.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Network Types", "url": "https://www.youtube.com/watch?v=bKFMS5C4CG0", "channel": "TechWorld with Nana", "duration": "15:12" },
+            { "title": "Docker Network Drivers", "url": "https://www.youtube.com/watch?v=Yr6-2ddhLVo", "channel": "NetworkChuck", "duration": "20:14" },
+            { "title": "Overlay Network Explained", "url": "https://www.youtube.com/watch?v=OU6xOM0SE4o", "channel": "KodeKloud", "duration": "10:44" }
+          ],
+          "resources": [
+            { "title": "Host Network Driver", "url": "https://docs.docker.com/engine/network/drivers/host/", "type": "official" },
+            { "title": "Overlay Network Driver", "url": "https://docs.docker.com/engine/network/drivers/overlay/", "type": "official" },
+            { "title": "Network Drivers", "url": "https://docs.docker.com/engine/network/drivers/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "When would you use host networking?", "a": "Host networking is used when you need maximum network performance (no NAT overhead), when the container needs to access host network services directly, or for network monitoring tools. It removes the network isolation between container and host." },
+            { "q": "What is an overlay network?", "a": "An overlay network creates a distributed network spanning multiple Docker daemon hosts. It's used in Docker Swarm for service-to-service communication across nodes. Overlay uses VXLAN to encapsulate traffic, creating a virtual L2 network over L3 infrastructure." },
+            { "q": "What is the none network driver?", "a": "The none driver disables all networking for a container. The container only has a loopback interface. Used for security-sensitive containers that should have no network access, or for containers that handle their own networking." }
+          ],
+          "tips": [
+            "Host network mode only works on Linux — on Docker Desktop (Mac/Windows), the host is the VM, not your machine.",
+            "Use overlay networks with Docker Swarm or when containers on different hosts need to communicate."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "docker-compose",
+      "title": "Docker Compose",
+      "order": 8,
+      "topics": [
+        {
+          "id": "compose-file-structure",
+          "title": "Compose File Structure",
+          "description": "Docker Compose uses a YAML file (compose.yaml or docker-compose.yml) to define multi-container applications. The file specifies services, networks, volumes, and their relationships. Compose v2 is the modern version, invoked as 'docker compose' (with a space, not hyphen).",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Compose Tutorial", "url": "https://www.youtube.com/watch?v=HG6yIjZapSA", "channel": "TechWorld with Nana", "duration": "19:33" },
+            { "title": "Docker Compose in 12 Minutes", "url": "https://www.youtube.com/watch?v=Qw9zlE3t8Ko", "channel": "NetworkChuck", "duration": "12:10" },
+            { "title": "Docker Compose Crash Course", "url": "https://www.youtube.com/watch?v=SXwC9fSwct8", "channel": "Traversy Media", "duration": "28:44" }
+          ],
+          "resources": [
+            { "title": "Docker Compose Overview", "url": "https://docs.docker.com/compose/", "type": "official" },
+            { "title": "Compose File Reference", "url": "https://docs.docker.com/reference/compose-file/", "type": "official" },
+            { "title": "Docker Compose Quickstart", "url": "https://docs.docker.com/compose/gettingstarted/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Docker Compose and when would you use it?", "a": "Docker Compose is a tool for defining and running multi-container Docker applications. You describe your app's services, networks, and volumes in a YAML file, then spin everything up with 'docker compose up'. Use it for local development, CI/CD, and simple production deployments." },
+            { "q": "What is the difference between docker-compose v1 and v2?", "a": "docker-compose v1 was a Python tool using 'docker-compose' (hyphen). v2 is a Go plugin integrated into Docker CLI, invoked as 'docker compose' (space). v2 is faster, supports profiles, uses BuildKit by default, and is the maintained version." },
+            { "q": "What does 'docker compose up -d' do?", "a": "It starts all services defined in the compose file in detached mode (background). It builds images if needed, creates networks and volumes, and starts containers in the correct order based on depends_on. Add '--build' to force rebuilding images." }
+          ],
+          "tips": [
+            "Use 'docker compose up --build' during development to ensure images are rebuilt with latest code changes.",
+            "Name your compose file 'compose.yaml' (the modern convention) or 'docker-compose.yml' (legacy but widely used)."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "compose-services-networks",
+          "title": "Services, Networks & Depends On",
+          "description": "Services are the core building blocks of a Compose application — each service defines a container configuration. Networks enable service-to-service communication. depends_on controls startup order. Health checks ensure dependent services are truly ready, not just started.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Compose Multi-Container", "url": "https://www.youtube.com/watch?v=HG6yIjZapSA", "channel": "TechWorld with Nana", "duration": "19:33" },
+            { "title": "Docker Compose Networking", "url": "https://www.youtube.com/watch?v=Qw9zlE3t8Ko", "channel": "NetworkChuck", "duration": "12:10" },
+            { "title": "Compose Advanced Features", "url": "https://www.youtube.com/watch?v=SXwC9fSwct8", "channel": "Traversy Media", "duration": "28:44" }
+          ],
+          "resources": [
+            { "title": "Compose Services", "url": "https://docs.docker.com/reference/compose-file/services/", "type": "official" },
+            { "title": "Compose Networking", "url": "https://docs.docker.com/compose/how-tos/networking/", "type": "official" },
+            { "title": "depends_on Reference", "url": "https://docs.docker.com/reference/compose-file/services/#depends_on", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does networking work in Docker Compose?", "a": "Compose automatically creates a default network for your app. All services can reach each other by their service name as hostname. You can define custom networks for isolation — a service only communicates with services on the same network." },
+            { "q": "What is depends_on and what are its limitations?", "a": "depends_on controls container startup order. However, it only waits for the container to start, not for the service inside to be ready. Use 'condition: service_healthy' with healthchecks to wait until a service is truly ready to accept connections." },
+            { "q": "How do you pass environment variables in Compose?", "a": "Three ways: 1) Direct in compose file: 'environment: - DB_HOST=postgres', 2) From .env file: 'env_file: .env', 3) Variable substitution: 'image: myapp:${VERSION:-latest}'. The .env file in the compose directory is automatically loaded for variable substitution." }
+          ],
+          "tips": [
+            "Use depends_on with 'condition: service_healthy' for proper service ordering, not just startup order.",
+            "Put sensitive data in .env files and add .env to .gitignore — never commit secrets."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "container-registries",
+      "title": "Container Registries",
+      "order": 9,
+      "topics": [
+        {
+          "id": "docker-hub",
+          "title": "Docker Hub",
+          "description": "Docker Hub is the world's largest container image library and community. It hosts official images (verified by Docker), community images, and private repositories. Docker Hub provides automated builds, vulnerability scanning, and team management features.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Hub Tutorial", "url": "https://www.youtube.com/watch?v=iqqDU2crIEQ", "channel": "TechWorld with Nana", "duration": "8:34" },
+            { "title": "Push Images to Docker Hub", "url": "https://www.youtube.com/watch?v=EIHY_CY5J0w", "channel": "KodeKloud", "duration": "7:22" },
+            { "title": "Docker Registry Explained", "url": "https://www.youtube.com/watch?v=76-u_MFmGHw", "channel": "Bret Fisher", "duration": "9:15" }
+          ],
+          "resources": [
+            { "title": "Docker Hub", "url": "https://hub.docker.com/", "type": "official" },
+            { "title": "Docker Hub Quickstart", "url": "https://docs.docker.com/docker-hub/quickstart/", "type": "official" },
+            { "title": "Official Images", "url": "https://docs.docker.com/trusted-content/official-images/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Docker Hub?", "a": "Docker Hub is Docker's official cloud-based registry for storing and distributing container images. It hosts official images (nginx, postgres, node), verified publisher images, and allows users to push their own public or private images." },
+            { "q": "How do you push an image to Docker Hub?", "a": "1) Login: 'docker login', 2) Tag image: 'docker tag myapp:latest username/myapp:v1', 3) Push: 'docker push username/myapp:v1'. The tag must include your Docker Hub username or organization as the repository namespace." },
+            { "q": "What are Docker Hub rate limits?", "a": "Anonymous users: 100 pulls per 6 hours. Authenticated free users: 200 pulls per 6 hours. Pro/Team/Business subscribers: unlimited pulls. Use 'docker login' in CI/CD to avoid hitting rate limits." }
+          ],
+          "tips": [
+            "Always pull from official images (verified by Docker) or verified publishers for security.",
+            "Use personal access tokens instead of passwords for Docker Hub authentication in CI/CD."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "cloud-registries",
+          "title": "Cloud Registries (ECR/ACR/GCR)",
+          "description": "Major cloud providers offer managed container registries: Amazon ECR, Azure Container Registry (ACR), and Google Container Registry (GCR/Artifact Registry). These integrate with their respective cloud platforms for IAM, scanning, and deployment pipelines.",
+          "isOptional": true,
+          "youtubeVideos": [
+            { "title": "AWS ECR Tutorial", "url": "https://www.youtube.com/watch?v=e-xTOL1kf0I", "channel": "TechWorld with Nana", "duration": "9:22" },
+            { "title": "Azure Container Registry", "url": "https://www.youtube.com/watch?v=hCMcQrOhLqA", "channel": "Microsoft Azure", "duration": "6:48" },
+            { "title": "Google Artifact Registry", "url": "https://www.youtube.com/watch?v=yLAKOx0a1xE", "channel": "Google Cloud", "duration": "4:55" }
+          ],
+          "resources": [
+            { "title": "Amazon ECR", "url": "https://aws.amazon.com/ecr/", "type": "official" },
+            { "title": "Azure Container Registry", "url": "https://azure.microsoft.com/en-us/products/container-registry/", "type": "official" },
+            { "title": "Google Artifact Registry", "url": "https://cloud.google.com/artifact-registry", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the advantages of cloud registries over Docker Hub?", "a": "Cloud registries offer: tight IAM integration with the cloud platform, private by default, vulnerability scanning, geo-replication for faster pulls, direct integration with CI/CD and orchestrators (EKS, AKS, GKE), and no pull rate limits within the cloud provider." },
+            { "q": "How does authentication work with ECR?", "a": "ECR uses IAM-based authentication. You get a 12-hour token via 'aws ecr get-login-password' and pipe it to 'docker login'. AWS CLI and SDKs can handle this automatically. EC2 instances with proper IAM roles can pull without explicit login." },
+            { "q": "What is image vulnerability scanning?", "a": "Registry scanners analyze image layers for known CVEs (Common Vulnerabilities and Exposures). ECR uses Amazon Inspector, ACR uses Microsoft Defender, GCR uses Container Analysis. They report severity levels and recommend fixes." }
+          ],
+          "tips": [
+            "Use cloud registries when deploying to the same cloud — pulls are faster and often free within the network.",
+            "Set up lifecycle policies to automatically clean up old/untagged images and reduce storage costs."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "production-containers",
+      "title": "Running Containers in Production",
+      "order": 10,
+      "topics": [
+        {
+          "id": "container-logging",
+          "title": "Container Logging",
+          "description": "Docker captures stdout and stderr from containers and makes them available via 'docker logs'. For production, you should configure logging drivers (json-file, syslog, fluentd, awslogs) to send logs to centralized logging systems. Applications should log to stdout, not to files inside the container.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Logging Best Practices", "url": "https://www.youtube.com/watch?v=MWdVXCJoHIE", "channel": "TechWorld with Nana", "duration": "11:27" },
+            { "title": "Container Logging Explained", "url": "https://www.youtube.com/watch?v=lB6cKjF6XZ0", "channel": "Bret Fisher", "duration": "7:15" },
+            { "title": "Docker Logging Drivers", "url": "https://www.youtube.com/watch?v=SYDEy4_4MaI", "channel": "KodeKloud", "duration": "8:30" }
+          ],
+          "resources": [
+            { "title": "Docker Logging", "url": "https://docs.docker.com/engine/logging/", "type": "official" },
+            { "title": "Logging Drivers", "url": "https://docs.docker.com/engine/logging/configure/", "type": "official" },
+            { "title": "View Container Logs", "url": "https://docs.docker.com/reference/cli/docker/container/logs/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does Docker logging work?", "a": "Docker captures stdout and stderr from the container's PID 1 process. The logging driver determines where these logs go — default is json-file (stored on disk). Applications in containers should write to stdout/stderr, not to log files, following the 12-factor app methodology." },
+            { "q": "What logging drivers does Docker support?", "a": "Docker supports: json-file (default, local JSON), syslog, journald, fluentd, awslogs (CloudWatch), splunk, gcplogs, and more. Set with '--log-driver'. Each driver has specific options for formatting, rotation, and remote endpoints." },
+            { "q": "How do you prevent Docker logs from filling up disk?", "a": "Configure log rotation in daemon.json: set 'max-size' (e.g., '10m') and 'max-file' (e.g., '3') for the json-file driver. Or use a remote logging driver (fluentd, awslogs) to send logs off-host entirely." }
+          ],
+          "tips": [
+            "Always configure log rotation in production — default json-file driver will fill your disk without limits.",
+            "Applications should log to stdout/stderr, never to files inside the container."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "resource-limits",
+          "title": "Resource Limits (CPU/Memory)",
+          "description": "Docker uses cgroups to enforce resource constraints on containers. Setting CPU and memory limits prevents a single container from consuming all host resources, which is critical in production multi-tenant environments. Always set limits in production.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Resource Limits", "url": "https://www.youtube.com/watch?v=el7768BNUPw", "channel": "Hussein Nasser", "duration": "14:35" },
+            { "title": "Docker CPU and Memory", "url": "https://www.youtube.com/watch?v=SYDEy4_4MaI", "channel": "KodeKloud", "duration": "11:28" },
+            { "title": "Container Resource Management", "url": "https://www.youtube.com/watch?v=y0GGQ2F2tvs", "channel": "Bret Fisher", "duration": "18:10" }
+          ],
+          "resources": [
+            { "title": "Resource Constraints", "url": "https://docs.docker.com/engine/containers/resource_constraints/", "type": "official" },
+            { "title": "Runtime Options", "url": "https://docs.docker.com/reference/cli/docker/container/run/#memory", "type": "official" },
+            { "title": "Container Resource Management", "url": "https://docs.docker.com/config/containers/resource_constraints/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do you set memory limits for a container?", "a": "Use '--memory' (or '-m') flag: 'docker run -m 512m myapp' limits to 512MB. You can also set '--memory-swap' (total memory+swap) and '--memory-reservation' (soft limit). If a container exceeds its memory limit, the OOM killer terminates it." },
+            { "q": "How do you set CPU limits for a container?", "a": "Use '--cpus' to limit CPU cores: 'docker run --cpus 0.5 myapp' gives half a CPU. '--cpu-shares' sets relative weight (default 1024). '--cpuset-cpus' pins to specific cores. Use '--cpus' for most use cases." },
+            { "q": "What happens when a container exceeds its memory limit?", "a": "The Linux kernel's OOM killer terminates the container's main process. The container exits with code 137 (128 + SIGKILL=9). Docker's restart policy then determines if the container restarts. Always set memory limits slightly above actual usage to prevent unexpected OOM kills." }
+          ],
+          "tips": [
+            "Always set both CPU and memory limits in production — an unbounded container can starve the host.",
+            "Use 'docker stats' to monitor real-time resource usage and set limits based on actual consumption patterns."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "restart-policies",
+          "title": "Restart Policies",
+          "description": "Restart policies tell Docker what to do when a container exits. Options include: no (default), always, unless-stopped, and on-failure. Using appropriate restart policies is essential for container resilience in production.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Restart Policies", "url": "https://www.youtube.com/watch?v=SYDEy4_4MaI", "channel": "KodeKloud", "duration": "6:45" },
+            { "title": "Docker Production Best Practices", "url": "https://www.youtube.com/watch?v=8vXoMqWgbQq", "channel": "Bret Fisher", "duration": "12:33" },
+            { "title": "Container Restart Policies", "url": "https://www.youtube.com/watch?v=y0GGQ2F2tvs", "channel": "Bret Fisher", "duration": "18:10" }
+          ],
+          "resources": [
+            { "title": "Restart Policies", "url": "https://docs.docker.com/engine/containers/start-containers-automatically/", "type": "official" },
+            { "title": "Docker Run Restart", "url": "https://docs.docker.com/reference/cli/docker/container/run/#restart", "type": "official" },
+            { "title": "Production Docker Tips", "url": "https://docs.docker.com/develop/dev-best-practices/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What restart policies does Docker support?", "a": "Four policies: 'no' (never restart, default), 'always' (always restart regardless of exit code), 'unless-stopped' (like always but not after manual docker stop), 'on-failure[:max-retries]' (restart only on non-zero exit code, with optional retry limit)." },
+            { "q": "What is the difference between 'always' and 'unless-stopped'?", "a": "'always' restarts the container even after 'docker stop' and Docker daemon restart. 'unless-stopped' does not restart containers that were manually stopped, even after daemon restart. Use 'unless-stopped' for most production workloads." },
+            { "q": "How does Docker Compose handle restart policies?", "a": "Set 'restart: unless-stopped' or 'restart: on-failure:5' in your compose service definition. Compose also supports 'restart: always' and 'restart: no'. Note that 'docker compose stop' will stop all services regardless of restart policy." }
+          ],
+          "tips": [
+            "Use 'unless-stopped' in production — it auto-recovers from crashes and daemon restarts but respects manual stops.",
+            "Combine restart policies with health checks for robust self-healing containers."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "container-security",
+      "title": "Container Security",
+      "order": 11,
+      "topics": [
+        {
+          "id": "image-security-scanning",
+          "title": "Image Security & Scanning",
+          "description": "Container images can contain vulnerable packages, misconfigurations, and even malware. Image scanning tools (Docker Scout, Trivy, Snyk, Grype) analyze images for known CVEs. Security best practices include using minimal base images, running as non-root, and keeping images updated.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Container Security Essentials", "url": "https://www.youtube.com/watch?v=mRzGxZiNBPo", "channel": "TechWorld with Nana", "duration": "14:22" },
+            { "title": "Docker Security Best Practices", "url": "https://www.youtube.com/watch?v=JE2PJbbpjsM", "channel": "Bret Fisher", "duration": "11:48" },
+            { "title": "Scanning Docker Images", "url": "https://www.youtube.com/watch?v=TU0aYn3xjCo", "channel": "KodeKloud", "duration": "9:37" }
+          ],
+          "resources": [
+            { "title": "Docker Security", "url": "https://docs.docker.com/engine/security/", "type": "official" },
+            { "title": "Docker Scout", "url": "https://docs.docker.com/scout/", "type": "official" },
+            { "title": "Trivy - Vulnerability Scanner", "url": "https://trivy.dev/", "type": "tool" },
+            { "title": "Snyk Container", "url": "https://snyk.io/product/container-vulnerability-management/", "type": "tool" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do you secure Docker images?", "a": "1) Use minimal base images (Alpine, distroless). 2) Run as non-root user (USER directive). 3) Scan for vulnerabilities regularly. 4) Don't store secrets in images. 5) Use multi-stage builds to exclude build tools. 6) Pin base image versions. 7) Use .dockerignore to exclude sensitive files." },
+            { "q": "What tools can you use to scan Docker images?", "a": "Docker Scout (built into Docker Desktop), Trivy (open source, fast), Snyk Container, Grype, Clair, and cloud registry scanners (ECR Inspector, ACR Defender). These scan image layers against CVE databases and report vulnerabilities with severity ratings." },
+            { "q": "Why should containers run as non-root?", "a": "Running as root inside a container is risky because container escapes could give root access to the host. Use the USER directive to switch to a non-root user. Many official images (node, python) support this with pre-created users." }
+          ],
+          "tips": [
+            "Use 'distroless' or 'scratch' base images for production — they have zero unnecessary packages and minimal attack surface.",
+            "Integrate image scanning into your CI/CD pipeline to catch vulnerabilities before deployment."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "secrets-management",
+          "title": "Secrets Management",
+          "description": "Never hardcode secrets in Docker images or environment variables visible in docker inspect. Docker Swarm has built-in secrets management. For standalone Docker, use mounted secret files, BuildKit secret mounts during build, or external tools like HashiCorp Vault.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker Secrets Explained", "url": "https://www.youtube.com/watch?v=JE2PJbbpjsM", "channel": "Bret Fisher", "duration": "11:48" },
+            { "title": "Managing Secrets in Docker", "url": "https://www.youtube.com/watch?v=TU0aYn3xjCo", "channel": "KodeKloud", "duration": "9:37" },
+            { "title": "Docker BuildKit Secrets", "url": "https://www.youtube.com/watch?v=mRzGxZiNBPo", "channel": "TechWorld with Nana", "duration": "14:22" }
+          ],
+          "resources": [
+            { "title": "Docker Secrets", "url": "https://docs.docker.com/engine/swarm/secrets/", "type": "official" },
+            { "title": "BuildKit Secret Mounts", "url": "https://docs.docker.com/build/building/secrets/", "type": "official" },
+            { "title": "HashiCorp Vault", "url": "https://www.vaultproject.io/", "type": "tool" }
+          ],
+          "interviewQuestions": [
+            { "q": "Why shouldn't you put secrets in environment variables?", "a": "Environment variables are visible in 'docker inspect', process listings (/proc/*/environ), and child processes. They may leak into logs and error reports. Use mounted secret files, Docker secrets (Swarm), or external secret managers for sensitive data." },
+            { "q": "How does Docker Swarm handle secrets?", "a": "Swarm secrets are encrypted at rest and in transit. They're mounted as files in /run/secrets/ inside containers. Only services granted access can read them. Secrets are never stored in images or sent to nodes that don't need them." },
+            { "q": "How do you handle secrets during docker build?", "a": "Use BuildKit secret mounts: 'RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install'. The secret is available during the build step but never written to any image layer. Pass it with 'docker build --secret id=npmrc,src=.npmrc'." }
+          ],
+          "tips": [
+            "Use BuildKit's --mount=type=secret for build-time secrets — they never appear in image layers.",
+            "Never use ARG for secrets — build args are visible in image history with 'docker history'."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "developer-experience",
+      "title": "Developer Experience",
+      "order": 12,
+      "topics": [
+        {
+          "id": "hot-reloading",
+          "title": "Hot Reloading in Containers",
+          "description": "Hot reloading enables seeing code changes instantly without rebuilding the Docker image. This is achieved by bind-mounting your source code into the container and using framework-specific watchers (nodemon, dotnet watch, webpack dev server). This makes Docker viable for daily development workflows.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Docker for Development", "url": "https://www.youtube.com/watch?v=6JKJBqaMhXk", "channel": "Bret Fisher", "duration": "12:44" },
+            { "title": "Dev Containers in VS Code", "url": "https://www.youtube.com/watch?v=b1RavPr_wSc", "channel": "Visual Studio Code", "duration": "8:22" },
+            { "title": "Docker Development Workflow", "url": "https://www.youtube.com/watch?v=Gjnup-PuquQ", "channel": "Fireship", "duration": "2:08" }
+          ],
+          "resources": [
+            { "title": "Development Best Practices", "url": "https://docs.docker.com/develop/", "type": "official" },
+            { "title": "Dev Containers", "url": "https://containers.dev/", "type": "official" },
+            { "title": "Docker Compose for Dev", "url": "https://docs.docker.com/compose/how-tos/environment-variables/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How do you set up hot reloading with Docker?", "a": "Use bind mounts to mount source code: 'docker run -v ./src:/app/src myapp'. Then use a file watcher in the container (nodemon for Node.js, dotnet watch for .NET, air for Go). In Compose, define volumes under the service for the same effect." },
+            { "q": "What are Dev Containers?", "a": "Dev Containers (devcontainers) are Docker containers configured as full development environments. VS Code, JetBrains, and GitHub Codespaces support them. A devcontainer.json file defines the container, extensions, settings, and port forwards, ensuring identical dev environments for all team members." },
+            { "q": "How do you handle node_modules in Docker development?", "a": "The anonymous volume trick: mount your source code but create a separate volume for node_modules. In Compose: 'volumes: [./:/app, /app/node_modules]'. The second mount creates an anonymous volume that prevents the host's node_modules from overriding the container's." }
+          ],
+          "tips": [
+            "Use separate Dockerfiles for development (with dev tools, debugger) and production (minimal, optimized).",
+            "Dev Containers in VS Code give you a consistent, containerized development environment with one click."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "orchestration-intro",
+      "title": "Container Orchestration Intro",
+      "order": 13,
+      "topics": [
+        {
+          "id": "why-orchestration",
+          "title": "Why Orchestration",
+          "description": "Container orchestration automates deployment, scaling, networking, and management of containerized applications across multiple hosts. As your application grows beyond a single host, you need orchestration to handle service discovery, load balancing, rolling updates, self-healing, and resource management.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Container Orchestration Explained", "url": "https://www.youtube.com/watch?v=kBF6Bvth0zg", "channel": "IBM Technology", "duration": "8:55" },
+            { "title": "Kubernetes vs Docker Swarm", "url": "https://www.youtube.com/watch?v=9_s3h_GVzZc", "channel": "TechWorld with Nana", "duration": "13:47" },
+            { "title": "Why You Need Kubernetes", "url": "https://www.youtube.com/watch?v=VnvRFRk_51k", "channel": "Fireship", "duration": "5:18" }
+          ],
+          "resources": [
+            { "title": "Docker Swarm Overview", "url": "https://docs.docker.com/engine/swarm/", "type": "official" },
+            { "title": "Kubernetes Overview", "url": "https://kubernetes.io/docs/concepts/overview/", "type": "official" },
+            { "title": "Container Orchestration - Red Hat", "url": "https://www.redhat.com/en/topics/containers/what-is-container-orchestration", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What problems does container orchestration solve?", "a": "Orchestration automates: deployment across multiple hosts, horizontal scaling, load balancing, service discovery, rolling updates with zero downtime, self-healing (restarting failed containers), secret and config management, and resource allocation." },
+            { "q": "What is the difference between Docker Swarm and Kubernetes?", "a": "Docker Swarm: simpler, built into Docker, good for small-medium deployments. Kubernetes: more complex but more powerful, industry standard, massive ecosystem, supports any OCI runtime. Swarm is easier to learn; K8s is more feature-rich and scalable." },
+            { "q": "When should you use orchestration vs simple Docker Compose?", "a": "Use Compose for single-host development and simple production. Use orchestration when you need: multi-host deployment, automatic scaling, high availability, rolling updates, or when managing many services. The threshold is typically when you outgrow a single server." }
+          ],
+          "tips": [
+            "Start with Docker Compose, then graduate to Swarm or Kubernetes as your needs grow.",
+            "Learn Kubernetes — it has become the industry standard for container orchestration."
+          ],
+          "subtopics": []
+        }
+      ]
+    }
+  ]
+}

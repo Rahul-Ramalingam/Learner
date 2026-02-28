@@ -1,0 +1,757 @@
+{
+  "slug": "kubernetes",
+  "title": "Kubernetes Roadmap",
+  "description": "Master container orchestration from fundamentals to advanced cluster management. Learn to deploy, scale, and manage containerized applications at scale.",
+  "emoji": "☸️",
+  "colorHex": "#326ce5",
+  "sections": [
+    {
+      "id": "k8s-introduction",
+      "title": "Introduction",
+      "order": 1,
+      "topics": [
+        {
+          "id": "what-is-kubernetes",
+          "title": "What is Kubernetes",
+          "description": "Kubernetes (K8s) is an open-source container orchestration platform originally developed by Google and now maintained by CNCF. It automates deployment, scaling, and management of containerized applications across clusters of machines, providing declarative configuration and self-healing capabilities.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Kubernetes Explained in 100 Seconds", "url": "https://www.youtube.com/watch?v=PziYflu8cB8", "channel": "Fireship", "duration": "2:30" },
+            { "title": "Kubernetes Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=X48VuDVv0do", "channel": "TechWorld with Nana", "duration": "3:36:28" },
+            { "title": "What is Kubernetes?", "url": "https://www.youtube.com/watch?v=VnvRFRk_51k", "channel": "IBM Technology", "duration": "10:05" }
+          ],
+          "resources": [
+            { "title": "Kubernetes Overview", "url": "https://kubernetes.io/docs/concepts/overview/", "type": "official" },
+            { "title": "What is Kubernetes? - CNCF", "url": "https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/", "type": "official" },
+            { "title": "Kubernetes Basics Tutorial", "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Kubernetes and why is it used?", "a": "Kubernetes is a container orchestration platform that automates deployment, scaling, load balancing, and management of containerized apps across clusters. It provides self-healing, rolling updates, service discovery, and declarative configuration. It's used because manually managing containers across multiple hosts doesn't scale." },
+            { "q": "What are the key features of Kubernetes?", "a": "Self-healing (restarts failed containers), horizontal scaling, service discovery and load balancing, automated rollouts and rollbacks, secret and configuration management, storage orchestration, batch execution, and declarative desired-state management." },
+            { "q": "What is the difference between Kubernetes and Docker?", "a": "Docker is a container runtime for building and running individual containers. Kubernetes is an orchestrator that manages many containers across multiple hosts. Docker creates containers; Kubernetes decides where they run, scales them, and keeps them healthy. They complement each other." }
+          ],
+          "tips": [
+            "Kubernetes has a steep learning curve — start with understanding Pods, Deployments, and Services before diving deeper.",
+            "Use managed Kubernetes services (EKS, AKS, GKE) in production to avoid managing the control plane yourself."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "k8s-architecture",
+          "title": "K8s Architecture",
+          "description": "Kubernetes follows a master-worker architecture. The Control Plane (master) components include the API Server, etcd, Scheduler, and Controller Manager. Worker Nodes run the kubelet, kube-proxy, and container runtime. All communication flows through the API Server.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Kubernetes Architecture Explained", "url": "https://www.youtube.com/watch?v=8C_SCDbUJTg", "channel": "TechWorld with Nana", "duration": "18:44" },
+            { "title": "K8s Architecture Deep Dive", "url": "https://www.youtube.com/watch?v=umXEmn3cMWY", "channel": "KodeKloud", "duration": "22:17" },
+            { "title": "How Kubernetes Works", "url": "https://www.youtube.com/watch?v=daVUONZqn88", "channel": "ByteByteGo", "duration": "7:14" }
+          ],
+          "resources": [
+            { "title": "Kubernetes Components", "url": "https://kubernetes.io/docs/concepts/overview/components/", "type": "official" },
+            { "title": "K8s Architecture", "url": "https://kubernetes.io/docs/concepts/architecture/", "type": "official" },
+            { "title": "Cluster Architecture", "url": "https://kubernetes.io/docs/concepts/architecture/control-plane-node-communication/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "Explain the Kubernetes control plane components.", "a": "API Server: front-end for K8s API, all communication goes through it. etcd: distributed key-value store for all cluster data. Scheduler: assigns Pods to Nodes based on resource availability. Controller Manager: runs controllers (Deployment, ReplicaSet, Node) that maintain desired state." },
+            { "q": "What runs on each worker node?", "a": "kubelet: agent that ensures containers are running in Pods as expected. kube-proxy: network proxy that maintains network rules for Pod communication. Container Runtime: actually runs containers (containerd, CRI-O). Each node registers itself with the control plane." },
+            { "q": "What is etcd and why is it critical?", "a": "etcd is a distributed, consistent key-value store that stores ALL Kubernetes cluster state — Pod specs, ConfigMaps, Secrets, service accounts, RBAC rules. If etcd is lost, the entire cluster state is lost. It must be backed up regularly and run with odd numbers of replicas (3 or 5) for consensus." }
+          ],
+          "tips": [
+            "The API Server is the single point of entry — everything (kubectl, controllers, kubelet) communicates through it.",
+            "Always back up etcd in production — it holds the entire cluster state."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-setup",
+      "title": "Setting Up Kubernetes",
+      "order": 2,
+      "topics": [
+        {
+          "id": "minikube-kind",
+          "title": "minikube & kind",
+          "description": "minikube creates a single-node Kubernetes cluster locally, perfect for learning and development. kind (Kubernetes IN Docker) runs K8s clusters inside Docker containers, making it fast to create and destroy clusters. Both are essential for local development and CI testing.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Minikube Tutorial", "url": "https://www.youtube.com/watch?v=E2pP1MOfo3g", "channel": "TechWorld with Nana", "duration": "14:22" },
+            { "title": "kind - K8s in Docker", "url": "https://www.youtube.com/watch?v=m-IlbCfhUQE", "channel": "That DevOps Guy", "duration": "12:37" },
+            { "title": "Local Kubernetes Options", "url": "https://www.youtube.com/watch?v=PnFPbY7l_dk", "channel": "DevOps Toolkit", "duration": "16:33" }
+          ],
+          "resources": [
+            { "title": "minikube Docs", "url": "https://minikube.sigs.k8s.io/docs/start/", "type": "official" },
+            { "title": "kind Docs", "url": "https://kind.sigs.k8s.io/", "type": "official" },
+            { "title": "Install Tools", "url": "https://kubernetes.io/docs/tasks/tools/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is minikube and when would you use it?", "a": "minikube is a tool that creates a single-node Kubernetes cluster on your local machine (via VM or container). It supports addons like dashboard, ingress, and metrics-server. Use it for learning K8s, local development, and testing K8s manifests before deploying to a real cluster." },
+            { "q": "What is kind and how does it differ from minikube?", "a": "kind runs Kubernetes clusters using Docker containers as nodes. It's faster to create/destroy than minikube, supports multi-node clusters, and is ideal for CI pipelines. minikube provides more features (addons, dashboard) and is better for interactive development." },
+            { "q": "What other local K8s options exist?", "a": "k3s (lightweight K8s by Rancher), k3d (k3s in Docker), Docker Desktop's built-in K8s, MicroK8s (by Canonical). k3s is popular for edge/IoT and resource-constrained environments. Docker Desktop K8s is the simplest but least configurable." }
+          ],
+          "tips": [
+            "Start with minikube for learning — it has the best documentation and addon support.",
+            "Use kind for CI/CD pipelines — it's faster to create and doesn't need a VM."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "managed-k8s",
+          "title": "Managed K8s (EKS/AKS/GKE)",
+          "description": "Managed Kubernetes services handle the control plane for you. Amazon EKS, Azure AKS, and Google GKE manage the API server, etcd, scheduler, and controllers. You only manage worker nodes and your workloads, significantly reducing operational overhead.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "EKS vs AKS vs GKE", "url": "https://www.youtube.com/watch?v=2vMEQ5zs1ko", "channel": "TechWorld with Nana", "duration": "18:55" },
+            { "title": "AWS EKS Tutorial", "url": "https://www.youtube.com/watch?v=p6xDCz00TxU", "channel": "TechWorld with Nana", "duration": "26:15" },
+            { "title": "Azure AKS Tutorial", "url": "https://www.youtube.com/watch?v=NpT9RraqKdY", "channel": "Microsoft Azure", "duration": "13:44" }
+          ],
+          "resources": [
+            { "title": "Amazon EKS", "url": "https://aws.amazon.com/eks/", "type": "official" },
+            { "title": "Azure AKS", "url": "https://azure.microsoft.com/en-us/products/kubernetes-service/", "type": "official" },
+            { "title": "Google GKE", "url": "https://cloud.google.com/kubernetes-engine", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are managed Kubernetes services?", "a": "Managed K8s services (EKS, AKS, GKE) handle the control plane — API server, etcd, scheduler, controller manager are fully managed by the cloud provider. You only manage worker nodes and workloads, reducing operational burden and providing SLA-backed uptime." },
+            { "q": "How do you choose between EKS, AKS, and GKE?", "a": "Choose based on your cloud ecosystem: EKS for AWS-centric orgs (IAM, VPC integration), AKS for Azure/.NET shops (free control plane, Azure AD integration), GKE for Google Cloud (most mature, Autopilot mode, best ML/AI support). GKE is generally considered the most developer-friendly." },
+            { "q": "What is GKE Autopilot?", "a": "GKE Autopilot is a fully managed mode where Google manages both the control plane AND worker nodes. You only define your workloads, and GKE provisions/scales nodes automatically. You pay per Pod resource request, not per node. It enforces security best practices automatically." }
+          ],
+          "tips": [
+            "Use managed K8s in production — managing the control plane yourself is complex and error-prone.",
+            "GKE Autopilot or AWS Fargate on EKS eliminates node management entirely."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "kubectl",
+      "title": "kubectl CLI",
+      "order": 3,
+      "topics": [
+        {
+          "id": "kubectl-basics",
+          "title": "kubectl Basics",
+          "description": "kubectl is the command-line tool for interacting with Kubernetes clusters. It communicates with the API server to manage resources. Master essential commands: get, describe, create, apply, delete, logs, exec, and port-forward. kubectl is your primary interface to Kubernetes.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "kubectl Tutorial", "url": "https://www.youtube.com/watch?v=feLpGydQVio", "channel": "TechWorld with Nana", "duration": "14:08" },
+            { "title": "kubectl Commands", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "kubectl Mastery", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "kubectl Reference", "url": "https://kubernetes.io/docs/reference/kubectl/", "type": "official" },
+            { "title": "kubectl Cheat Sheet", "url": "https://kubernetes.io/docs/reference/kubectl/cheatsheet/", "type": "official" },
+            { "title": "kubectl Overview", "url": "https://kubernetes.io/docs/reference/kubectl/overview/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the most important kubectl commands?", "a": "kubectl get (list resources), describe (detailed info), apply -f (create/update from YAML), delete, logs (container logs), exec -it (run command in container), port-forward (tunnel to pod), scale (change replicas), rollout (manage deployments)." },
+            { "q": "What is the difference between kubectl create and kubectl apply?", "a": "kubectl create is imperative — it creates a resource and fails if it already exists. kubectl apply is declarative — it creates if not exists, updates if exists, and tracks changes for future updates. Apply is preferred for production as it supports GitOps workflows." },
+            { "q": "How do you debug a failing Pod?", "a": "1) kubectl describe pod <name> — check Events section for errors. 2) kubectl logs <pod> — check application logs. 3) kubectl logs <pod> --previous — check logs from crashed container. 4) kubectl exec -it <pod> -- sh — get a shell inside. 5) kubectl get events — check cluster events." }
+          ],
+          "tips": [
+            "Set up kubectl aliases: alias k=kubectl, alias kgp='kubectl get pods' — you'll use these hundreds of times.",
+            "Use 'kubectl explain <resource>' to see the YAML spec for any resource without Googling."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "imperative-vs-declarative",
+          "title": "Imperative vs Declarative",
+          "description": "Imperative management tells K8s exactly what to do (kubectl create, kubectl scale). Declarative management defines the desired state in YAML files and lets K8s figure out how to get there (kubectl apply). Declarative is the recommended approach for production as it's version-controllable and reproducible.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Imperative vs Declarative K8s", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "channel": "KodeKloud", "duration": "8:14" },
+            { "title": "K8s YAML Explained", "url": "https://www.youtube.com/watch?v=qmDzcu5uY1I", "channel": "TechWorld with Nana", "duration": "22:15" },
+            { "title": "Writing K8s Manifests", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Object Management", "url": "https://kubernetes.io/docs/concepts/overview/working-with-objects/object-management/", "type": "official" },
+            { "title": "Declarative Management", "url": "https://kubernetes.io/docs/tasks/manage-kubernetes-objects/declarative-config/", "type": "official" },
+            { "title": "K8s YAML Reference", "url": "https://kubernetes.io/docs/reference/kubernetes-api/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between imperative and declarative management?", "a": "Imperative: direct commands (kubectl create deployment nginx --image=nginx). Declarative: define desired state in YAML, apply with kubectl apply -f. Declarative is preferred because YAML files can be version-controlled, reviewed, and consistently reproduced across environments." },
+            { "q": "Why is declarative management preferred?", "a": "Declarative YAML: 1) Can be stored in Git (GitOps), 2) Enables code review for infrastructure changes, 3) Is idempotent (apply multiple times safely), 4) Documents current state, 5) Supports rollbacks via git revert, 6) Works with CI/CD pipelines." },
+            { "q": "What are the four required fields in every K8s YAML?", "a": "apiVersion (API group and version, e.g., apps/v1), kind (resource type, e.g., Deployment), metadata (name, namespace, labels), and spec (desired state — different for each resource type). These four fields are the minimum for any Kubernetes resource definition." }
+          ],
+          "tips": [
+            "Use 'kubectl create ... --dry-run=client -o yaml' to generate YAML templates quickly.",
+            "Store all K8s YAML in Git — treat infrastructure as code."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-pods",
+      "title": "Pods",
+      "order": 4,
+      "topics": [
+        {
+          "id": "pod-concepts",
+          "title": "Pod Concepts & Lifecycle",
+          "description": "A Pod is the smallest deployable unit in Kubernetes — it represents one or more containers that share networking and storage. Pods are ephemeral and can be terminated at any time. Understanding Pod phases (Pending, Running, Succeeded, Failed, Unknown) and lifecycle hooks is fundamental to K8s.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Kubernetes Pods Explained", "url": "https://www.youtube.com/watch?v=5cNrTU6o3Fw", "channel": "TechWorld with Nana", "duration": "12:55" },
+            { "title": "Pod Lifecycle", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Understanding K8s Pods", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Pods - K8s Docs", "url": "https://kubernetes.io/docs/concepts/workloads/pods/", "type": "official" },
+            { "title": "Pod Lifecycle", "url": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/", "type": "official" },
+            { "title": "Pod Overview", "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/explore/explore-intro/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a Pod in Kubernetes?", "a": "A Pod is the smallest deployable unit — a wrapper around one or more containers that share the same network namespace (same IP, localhost communication), storage volumes, and lifecycle. Pods are ephemeral — they can be created, destroyed, and replaced at any time." },
+            { "q": "What are the Pod phases?", "a": "Pending (scheduled but containers not yet running), Running (at least one container running), Succeeded (all containers completed successfully), Failed (at least one container terminated with error), Unknown (pod state can't be determined, usually node communication issue)." },
+            { "q": "Why should you never create naked Pods?", "a": "Naked Pods (created directly, not through a controller) won't be rescheduled if a node fails. Always use controllers like Deployments, StatefulSets, or DaemonSets which create Pods and ensure the desired number are always running, even after failures." }
+          ],
+          "tips": [
+            "Never create standalone Pods in production — always use Deployments or other controllers.",
+            "Use init containers for setup tasks that must complete before the main container starts."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "multi-container-pods",
+          "title": "Multi-container Pods",
+          "description": "Multi-container Pods group tightly coupled containers that share resources. Common patterns include: Sidecar (helper that enhances the main container), Ambassador (proxy for external communication), and Adapter (transforms output for consumption). Containers in a Pod share localhost and volumes.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Multi-container Pods", "url": "https://www.youtube.com/watch?v=40bfIGiMnUE", "channel": "KodeKloud", "duration": "11:44" },
+            { "title": "Sidecar Pattern", "url": "https://www.youtube.com/watch?v=5cNrTU6o3Fw", "channel": "TechWorld with Nana", "duration": "12:55" },
+            { "title": "Init Containers Explained", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "8:22" }
+          ],
+          "resources": [
+            { "title": "Init Containers", "url": "https://kubernetes.io/docs/concepts/workloads/pods/init-containers/", "type": "official" },
+            { "title": "Sidecar Containers", "url": "https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/", "type": "official" },
+            { "title": "Multi-container Design Patterns", "url": "https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the multi-container Pod patterns?", "a": "Sidecar: helper process alongside main container (log shipper, config reloader, service mesh proxy). Ambassador: proxy that simplifies external service access. Adapter: transforms main container output into a standard format. Init Container: runs setup tasks before main containers start." },
+            { "q": "When would you use init containers?", "a": "Use init containers for: 1) Waiting for a dependent service to be ready, 2) Downloading config/secrets at startup, 3) Database migrations before app starts, 4) Registering with a service registry. Init containers run sequentially and must complete before main containers start." },
+            { "q": "How do containers in a Pod communicate?", "a": "Containers in the same Pod share the network namespace — they communicate via localhost on different ports. They can also share data through mounted volumes. This is different from inter-Pod communication which uses Service resources or Pod IPs." }
+          ],
+          "tips": [
+            "The sidecar pattern is the most common — used by Istio/Envoy for service mesh proxying.",
+            "Init containers are perfect for 'wait-for' logic — wait for a database to be ready before starting the app."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-workloads",
+      "title": "Workloads",
+      "order": 5,
+      "topics": [
+        {
+          "id": "deployments",
+          "title": "Deployments & ReplicaSets",
+          "description": "Deployments are the most common workload resource. They manage ReplicaSets, which in turn manage Pod replicas. Deployments provide declarative updates, rolling updates, rollbacks, and scaling. They ensure the desired number of Pod replicas are always running.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Deployments Explained", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "Deployments Deep Dive", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Rolling Updates", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Deployments", "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "type": "official" },
+            { "title": "ReplicaSets", "url": "https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/", "type": "official" },
+            { "title": "Rolling Updates", "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a Deployment in Kubernetes?", "a": "A Deployment manages ReplicaSets and provides declarative updates for Pods. It ensures a specified number of replicas are running, handles rolling updates (gradually replacing old Pods with new ones), supports rollbacks, and maintains the desired state automatically." },
+            { "q": "How do rolling updates work?", "a": "Rolling updates gradually replace old Pods with new ones. K8s creates a new ReplicaSet, scales it up while scaling down the old one. maxSurge controls how many extra Pods can exist (default 25%), maxUnavailable controls how many can be unavailable (default 25%). Zero-downtime is maintained throughout." },
+            { "q": "How do you rollback a Deployment?", "a": "Use 'kubectl rollout undo deployment/myapp' to rollback to the previous version. Use '--to-revision=N' for a specific revision. Check history with 'kubectl rollout history deployment/myapp'. K8s keeps revision history controlled by revisionHistoryLimit (default 10)." }
+          ],
+          "tips": [
+            "Always set resource requests and limits in Deployment Pod specs for proper scheduling and stability.",
+            "Use 'kubectl rollout status' to monitor deployments and 'kubectl rollout undo' for quick rollbacks."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "statefulsets",
+          "title": "StatefulSets",
+          "description": "StatefulSets manage stateful applications that need stable network identities, persistent storage, and ordered deployment/scaling. Unlike Deployments, StatefulSet Pods get predictable names (pod-0, pod-1) and stable persistent volumes. Used for databases, message queues, and distributed systems.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "StatefulSets Explained", "url": "https://www.youtube.com/watch?v=pPQKAR1pA9U", "channel": "TechWorld with Nana", "duration": "16:18" },
+            { "title": "StatefulSets Tutorial", "url": "https://www.youtube.com/watch?v=Vrxr-7rjkvM", "channel": "KodeKloud", "duration": "14:55" },
+            { "title": "When to Use StatefulSets", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "11:33" }
+          ],
+          "resources": [
+            { "title": "StatefulSets", "url": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/", "type": "official" },
+            { "title": "StatefulSet Basics", "url": "https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/", "type": "official" },
+            { "title": "Running Databases on K8s", "url": "https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a StatefulSet and when do you use it?", "a": "StatefulSets manage stateful applications requiring: stable unique network IDs (pod-0, pod-1), stable persistent storage per Pod, ordered graceful deployment/scaling/deletion. Use for databases (MySQL, PostgreSQL), message brokers (Kafka), and distributed systems (ZooKeeper, etcd)." },
+            { "q": "How do StatefulSets differ from Deployments?", "a": "Deployments: Pods are interchangeable, random names, shared storage. StatefulSets: Pods have ordinal indices (0,1,2), stable DNS names, each Pod gets its own PVC, ordered creation/deletion, and headless Service for individual Pod addressing." },
+            { "q": "What is a headless Service and why do StatefulSets need it?", "a": "A headless Service (clusterIP: None) doesn't load balance. Instead, it creates DNS records for each Pod (pod-0.service.namespace.svc.cluster.local). StatefulSets need this for stable network identity — each Pod has a predictable DNS name that persists across restarts." }
+          ],
+          "tips": [
+            "Use Deployments for stateless apps, StatefulSets for stateful apps — don't over-use StatefulSets.",
+            "Consider using operators (CloudNativePG, Strimzi) for complex stateful workloads like databases and Kafka."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "daemonsets-jobs",
+          "title": "DaemonSets, Jobs & CronJobs",
+          "description": "DaemonSets ensure a Pod runs on every (or selected) node — used for monitoring agents, log collectors, and storage daemons. Jobs run Pods to completion (batch processing). CronJobs schedule Jobs on a cron schedule (periodic tasks like backups and reports).",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "DaemonSets Explained", "url": "https://www.youtube.com/watch?v=Vrxr-7rjkvM", "channel": "KodeKloud", "duration": "14:55" },
+            { "title": "Jobs and CronJobs", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "K8s Workload Types", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "DaemonSets", "url": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/", "type": "official" },
+            { "title": "Jobs", "url": "https://kubernetes.io/docs/concepts/workloads/controllers/job/", "type": "official" },
+            { "title": "CronJobs", "url": "https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is a DaemonSet?", "a": "A DaemonSet ensures that a copy of a Pod runs on every node (or a subset via nodeSelector/affinity). When nodes are added, Pods are added. When removed, Pods are garbage collected. Used for: node monitoring (Prometheus node-exporter), log collection (Fluentd), storage (Ceph), networking (kube-proxy)." },
+            { "q": "What is the difference between a Job and a CronJob?", "a": "A Job creates Pods that run to completion — it ensures a specified number of Pods successfully terminate. A CronJob creates Jobs on a time-based schedule (cron syntax). Jobs are for one-time batch tasks; CronJobs are for recurring scheduled tasks." },
+            { "q": "How do you handle Job failures?", "a": "Jobs have backoffLimit (max retries, default 6) and activeDeadlineSeconds (timeout). Failed Pods are retried with exponential backoff. Set restartPolicy to Never (create new Pod on failure) or OnFailure (restart container in same Pod). Use ttlSecondsAfterFinished to auto-cleanup completed Jobs." }
+          ],
+          "tips": [
+            "Use DaemonSets for anything that needs to run on every node — monitoring, logging, security agents.",
+            "Set ttlSecondsAfterFinished on Jobs to automatically clean up completed Job Pods."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-services",
+      "title": "Services & Networking",
+      "order": 6,
+      "topics": [
+        {
+          "id": "service-types",
+          "title": "ClusterIP, NodePort & LoadBalancer",
+          "description": "Kubernetes Services provide stable networking for ephemeral Pods. ClusterIP (default) exposes internally. NodePort opens a port on every node. LoadBalancer provisions a cloud load balancer. Services use label selectors to route traffic to the right Pods.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Services Explained", "url": "https://www.youtube.com/watch?v=T4Z7visMM4E", "channel": "TechWorld with Nana", "duration": "18:37" },
+            { "title": "Services Deep Dive", "url": "https://www.youtube.com/watch?v=Vrxr-7rjkvM", "channel": "KodeKloud", "duration": "14:55" },
+            { "title": "Kubernetes Networking", "url": "https://www.youtube.com/watch?v=5cNrTU6o3Fw", "channel": "TechWorld with Nana", "duration": "12:55" }
+          ],
+          "resources": [
+            { "title": "Services", "url": "https://kubernetes.io/docs/concepts/services-networking/service/", "type": "official" },
+            { "title": "Service Types", "url": "https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types", "type": "official" },
+            { "title": "Connecting Applications", "url": "https://kubernetes.io/docs/tutorials/services/connect-applications-service/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the different Service types in Kubernetes?", "a": "ClusterIP: internal-only, gets a cluster-internal IP. NodePort: exposes on a static port (30000-32767) on every node. LoadBalancer: provisions external cloud LB (ELB, ALB, etc.). ExternalName: maps to a DNS name (CNAME). Most apps use ClusterIP internally + Ingress for external access." },
+            { "q": "How does a Service discover Pods?", "a": "Services use label selectors to find Pods. A Service with selector 'app: web' routes traffic to all Pods with that label. When Pods are created/destroyed, Endpoints are automatically updated. kube-proxy programs iptables/IPVS rules for load balancing." },
+            { "q": "When would you use NodePort vs LoadBalancer?", "a": "NodePort: on-prem clusters without cloud LB, development, direct node access needed. LoadBalancer: production on cloud providers, creates an external-facing LB automatically. In practice, most production setups use Ingress controllers instead of individual LoadBalancer Services." }
+          ],
+          "tips": [
+            "Use ClusterIP for internal services + Ingress for external access — don't create a LoadBalancer per service.",
+            "Services provide stable DNS: <service>.<namespace>.svc.cluster.local"
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "ingress",
+          "title": "Ingress Controllers",
+          "description": "Ingress manages external HTTP/HTTPS access to services. It provides URL-based routing, SSL termination, name-based virtual hosting, and path-based routing. An Ingress Controller (nginx, Traefik, HAProxy) is required to fulfill Ingress resources.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Ingress Explained", "url": "https://www.youtube.com/watch?v=80Ew_fsV4rM", "channel": "TechWorld with Nana", "duration": "21:14" },
+            { "title": "Ingress Controllers", "url": "https://www.youtube.com/watch?v=T4Z7visMM4E", "channel": "TechWorld with Nana", "duration": "18:37" },
+            { "title": "NGINX Ingress Setup", "url": "https://www.youtube.com/watch?v=Vrxr-7rjkvM", "channel": "KodeKloud", "duration": "14:55" }
+          ],
+          "resources": [
+            { "title": "Ingress", "url": "https://kubernetes.io/docs/concepts/services-networking/ingress/", "type": "official" },
+            { "title": "Ingress Controllers", "url": "https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/", "type": "official" },
+            { "title": "NGINX Ingress Controller", "url": "https://kubernetes.github.io/ingress-nginx/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Ingress in Kubernetes?", "a": "Ingress is an API object that manages external HTTP/HTTPS access to services. It provides URL routing (path-based, host-based), SSL/TLS termination, and load balancing. An Ingress Controller must be installed to implement the Ingress rules." },
+            { "q": "What is the difference between Ingress and a LoadBalancer Service?", "a": "LoadBalancer creates one LB per service (expensive, one IP per service). Ingress uses one LB for many services, routing based on host/path (cost-effective, single IP). Ingress also provides SSL termination, URL rewriting, and rate limiting." },
+            { "q": "What Ingress Controllers are available?", "a": "NGINX Ingress Controller (most popular), Traefik (auto-discovery, Let's Encrypt), HAProxy, AWS ALB Ingress Controller, Istio Gateway, Kong, Contour. Choose based on features needed — NGINX for simplicity, Traefik for auto-configuration, Istio for service mesh integration." }
+          ],
+          "tips": [
+            "Use cert-manager with Ingress for automatic Let's Encrypt SSL certificate management.",
+            "NGINX Ingress Controller is the most widely used and well-documented option."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "network-policies",
+          "title": "Network Policies",
+          "description": "Network Policies control traffic flow between Pods at the IP/port level — like firewall rules for Kubernetes. By default, all Pods can communicate freely. Network Policies restrict this, allowing only specified traffic. A CNI plugin that supports Network Policies (Calico, Cilium) is required.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Network Policies", "url": "https://www.youtube.com/watch?v=Vrxr-7rjkvM", "channel": "KodeKloud", "duration": "14:55" },
+            { "title": "Network Policies Explained", "url": "https://www.youtube.com/watch?v=T4Z7visMM4E", "channel": "TechWorld with Nana", "duration": "18:37" },
+            { "title": "K8s Security - Network Policies", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Network Policies", "url": "https://kubernetes.io/docs/concepts/services-networking/network-policies/", "type": "official" },
+            { "title": "Network Policy Recipes", "url": "https://github.com/ahmetb/kubernetes-network-policy-recipes", "type": "article" },
+            { "title": "Calico Network Policies", "url": "https://docs.tigera.io/calico/latest/network-policy/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are Network Policies?", "a": "Network Policies are K8s resources that control Pod-to-Pod traffic. They specify which Pods can communicate, on which ports, and in which direction (ingress/egress). Without Network Policies, all Pods can talk to all other Pods. They're like firewall rules at the Pod level." },
+            { "q": "What is the default network behavior without Network Policies?", "a": "By default, Kubernetes allows all ingress and egress traffic between all Pods — a flat network with no restrictions. Once you apply a Network Policy to a Pod, only traffic explicitly allowed by policies is permitted. This is a deny-all-by-default model per selected Pod." },
+            { "q": "Do all CNI plugins support Network Policies?", "a": "No. flannel does not support Network Policies. Calico, Cilium, Weave Net, and Canal do. When choosing a CNI plugin, verify Network Policy support if you need traffic control. Cilium is gaining popularity for its eBPF-based performance and observability." }
+          ],
+          "tips": [
+            "Start with a deny-all default policy, then explicitly allow required traffic — defense in depth.",
+            "Use Calico or Cilium CNI plugins — they have the most complete Network Policy support."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-config",
+      "title": "Configuration",
+      "order": 7,
+      "topics": [
+        {
+          "id": "configmaps-secrets",
+          "title": "ConfigMaps & Secrets",
+          "description": "ConfigMaps store non-confidential configuration data as key-value pairs. Secrets store sensitive data (passwords, tokens, keys) in base64-encoded format. Both can be injected into Pods as environment variables or mounted as files. Secrets should be encrypted at rest in etcd.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "ConfigMaps & Secrets", "url": "https://www.youtube.com/watch?v=FAnQTgr04mU", "channel": "TechWorld with Nana", "duration": "18:12" },
+            { "title": "K8s Secrets Explained", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "K8s Configuration", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "ConfigMaps", "url": "https://kubernetes.io/docs/concepts/configuration/configmap/", "type": "official" },
+            { "title": "Secrets", "url": "https://kubernetes.io/docs/concepts/configuration/secret/", "type": "official" },
+            { "title": "Encrypt Secrets at Rest", "url": "https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between ConfigMaps and Secrets?", "a": "ConfigMaps store non-sensitive config (app settings, feature flags). Secrets store sensitive data (passwords, API keys, TLS certs). Secrets are base64-encoded (not encrypted by default!) and can be encrypted at rest in etcd. Both can be mounted as files or environment variables." },
+            { "q": "Are Kubernetes Secrets actually secure?", "a": "By default, Secrets are only base64-encoded — NOT encrypted. They're stored in etcd in plain text unless you enable encryption at rest. Anyone with API access can read them. For true security: enable etcd encryption, use RBAC to restrict access, and consider external secret managers (Vault, AWS Secrets Manager)." },
+            { "q": "How do you inject config into Pods?", "a": "Two methods: 1) Environment variables: envFrom/env referencing ConfigMap/Secret keys. 2) Volume mounts: mount ConfigMap/Secret as files in the container. File mounts auto-update when the ConfigMap changes (with delay); env vars don't update without Pod restart." }
+          ],
+          "tips": [
+            "Never store secrets in Git — use sealed-secrets, external-secrets operator, or vault-injector.",
+            "Mount ConfigMaps as files rather than env vars if you need automatic updates without Pod restarts."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "resource-requests-limits",
+          "title": "Resource Requests & Limits",
+          "description": "Resource requests define the minimum resources a Pod needs (used for scheduling). Limits define the maximum resources a Pod can use. Setting appropriate requests and limits is critical for cluster stability, efficient scheduling, and preventing noisy-neighbor problems.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Resource Management", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Requests and Limits", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "K8s Resource Limits", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Resource Management", "url": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/", "type": "official" },
+            { "title": "LimitRanges", "url": "https://kubernetes.io/docs/concepts/policy/limit-range/", "type": "official" },
+            { "title": "Resource Quotas", "url": "https://kubernetes.io/docs/concepts/policy/resource-quotas/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is the difference between resource requests and limits?", "a": "Requests: minimum guaranteed resources for scheduling (scheduler places Pod on node with enough free resources). Limits: maximum resources a container can use (enforced at runtime). CPU is throttled when limit is hit; memory exceeding limit causes OOM kill." },
+            { "q": "What happens if you don't set resource requests?", "a": "Without requests, the scheduler can't properly plan Pod placement, leading to overcommitted nodes. Pods may be evicted under pressure. Best practice: always set requests based on actual usage, and limits 2-3x the request to handle spikes." },
+            { "q": "What are QoS classes and how are they determined?", "a": "Guaranteed: requests == limits for all containers (highest priority, last to be evicted). Burstable: requests < limits or only requests set (medium priority). BestEffort: no requests or limits set (lowest priority, first to be evicted under pressure)." }
+          ],
+          "tips": [
+            "Set requests based on p50 usage and limits based on p99 — use VPA recommendations for guidance.",
+            "Always set requests for production Pods — Pods without requests are BestEffort and get evicted first."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-storage",
+      "title": "Storage",
+      "order": 8,
+      "topics": [
+        {
+          "id": "pv-pvc",
+          "title": "PV, PVC & Storage Classes",
+          "description": "Persistent Volumes (PV) represent physical storage. Persistent Volume Claims (PVC) are requests for storage by Pods. StorageClasses enable dynamic provisioning — PVCs trigger automatic PV creation. This abstraction separates storage management from application development.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Volumes Explained", "url": "https://www.youtube.com/watch?v=0swOh5C3OVM", "channel": "TechWorld with Nana", "duration": "20:45" },
+            { "title": "Persistent Volumes", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "K8s Storage Deep Dive", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Persistent Volumes", "url": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/", "type": "official" },
+            { "title": "Storage Classes", "url": "https://kubernetes.io/docs/concepts/storage/storage-classes/", "type": "official" },
+            { "title": "Volume Types", "url": "https://kubernetes.io/docs/concepts/storage/volumes/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "Explain the PV/PVC/StorageClass relationship.", "a": "PV: represents actual storage (disk, NFS share). PVC: a request for storage by a Pod (size, access mode). StorageClass: defines a 'class' of storage with a provisioner. With dynamic provisioning, creating a PVC with a StorageClass automatically creates a PV. PVCs are bound to PVs." },
+            { "q": "What are access modes for Persistent Volumes?", "a": "ReadWriteOnce (RWO): mounted read-write by a single node. ReadOnlyMany (ROX): mounted read-only by many nodes. ReadWriteMany (RWX): mounted read-write by many nodes. ReadWriteOncePod (RWOP): mounted read-write by a single Pod. RWO is most common; RWX requires NFS or distributed storage." },
+            { "q": "What happens when a PVC is deleted?", "a": "Depends on the reclaim policy: Retain (PV is not deleted, manual cleanup needed), Delete (PV and underlying storage are deleted), Recycle (deprecated, basic scrub). Default for dynamic provisioning is Delete. Use Retain for production data you can't afford to lose." }
+          ],
+          "tips": [
+            "Use StorageClasses with dynamic provisioning — no need to pre-create PVs manually.",
+            "Set reclaimPolicy: Retain for production databases to prevent accidental data loss."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-scheduling",
+      "title": "Scheduling",
+      "order": 9,
+      "topics": [
+        {
+          "id": "affinity-taints",
+          "title": "Affinity, Taints & Tolerations",
+          "description": "Node selectors, affinity/anti-affinity, and taints/tolerations control where Pods are scheduled. Affinity attracts Pods to certain nodes. Anti-affinity repels Pods from each other (spread across nodes). Taints on nodes repel Pods unless they have matching tolerations.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Taints and Tolerations", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Node Affinity Explained", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "K8s Scheduling", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Taints and Tolerations", "url": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/", "type": "official" },
+            { "title": "Node Affinity", "url": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity", "type": "official" },
+            { "title": "Pod Topology Spread", "url": "https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are taints and tolerations?", "a": "Taints are applied to nodes to repel Pods (node says 'don't schedule here'). Tolerations are applied to Pods to allow scheduling on tainted nodes (Pod says 'I can tolerate this taint'). Effects: NoSchedule (hard), PreferNoSchedule (soft), NoExecute (evict existing pods too)." },
+            { "q": "What is the difference between node affinity and taints?", "a": "Node affinity is Pod-centric: 'I want to run on GPU nodes'. Taints are Node-centric: 'Only special Pods can run here'. Use together: taint GPU nodes so only Pods with tolerations AND affinity for GPU run there." },
+            { "q": "How do you spread Pods across availability zones?", "a": "Use Pod topology spread constraints (topologySpreadConstraints) or Pod anti-affinity. Topology spread distributes Pods evenly across topology domains (zones, nodes). Anti-affinity says 'don't schedule me with other Pods of the same type on the same node/zone'." }
+          ],
+          "tips": [
+            "Use Pod anti-affinity to spread replicas across nodes for high availability.",
+            "Combine taints + node affinity for dedicated node pools (GPU nodes, high-memory nodes)."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-security",
+      "title": "Security",
+      "order": 10,
+      "topics": [
+        {
+          "id": "rbac",
+          "title": "RBAC",
+          "description": "Role-Based Access Control (RBAC) regulates access to Kubernetes resources based on roles. Roles define permissions (verbs on resources), RoleBindings grant those roles to users/groups/service accounts. ClusterRoles and ClusterRoleBindings apply cluster-wide.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s RBAC Explained", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "RBAC Tutorial", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "Kubernetes Security", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "RBAC Authorization", "url": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/", "type": "official" },
+            { "title": "Using RBAC", "url": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole", "type": "official" },
+            { "title": "K8s Security Best Practices", "url": "https://kubernetes.io/docs/concepts/security/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is RBAC in Kubernetes?", "a": "RBAC controls who can do what in a K8s cluster. It uses Roles (permissions in a namespace), ClusterRoles (cluster-wide permissions), RoleBindings (assign Role to user in namespace), and ClusterRoleBindings (assign ClusterRole cluster-wide). Permissions are additive — there's no deny rule." },
+            { "q": "What is the difference between Role and ClusterRole?", "a": "Role: permissions scoped to a specific namespace (e.g., list pods in 'production' namespace). ClusterRole: permissions across all namespaces or for cluster-scoped resources (nodes, PVs, namespaces). ClusterRoles can be bound per-namespace with RoleBindings for reuse." },
+            { "q": "What is the principle of least privilege in K8s RBAC?", "a": "Grant only the minimum permissions needed. Don't give cluster-admin to developers. Use namespace-scoped Roles where possible. Avoid wildcards (*) in resource/verb lists. Audit permissions regularly. Use 'kubectl auth can-i' to verify what a user can do." }
+          ],
+          "tips": [
+            "Use 'kubectl auth can-i --list' to audit what a user can do — essential for security reviews.",
+            "Never give cluster-admin to applications — create specific ServiceAccounts with minimal permissions."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-autoscaling",
+      "title": "Autoscaling",
+      "order": 11,
+      "topics": [
+        {
+          "id": "hpa-vpa",
+          "title": "HPA & VPA",
+          "description": "Horizontal Pod Autoscaler (HPA) automatically scales the number of Pod replicas based on CPU/memory usage or custom metrics. Vertical Pod Autoscaler (VPA) adjusts resource requests/limits for Pods. Cluster Autoscaler adds/removes nodes based on pending Pods.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Autoscaling Explained", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "HPA Tutorial", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "K8s Autoscaling Deep Dive", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Horizontal Pod Autoscaler", "url": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/", "type": "official" },
+            { "title": "VPA", "url": "https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler", "type": "official" },
+            { "title": "Cluster Autoscaler", "url": "https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does the Horizontal Pod Autoscaler work?", "a": "HPA monitors Pod metrics (CPU, memory, custom) via metrics server. When average utilization exceeds the target (e.g., 70% CPU), it increases replicas. When below target, it decreases. It checks every 15 seconds by default and has cooldown periods to prevent flapping." },
+            { "q": "What is the difference between HPA and VPA?", "a": "HPA scales horizontally — adds/removes Pod replicas. VPA scales vertically — adjusts resource requests/limits of existing Pods (may require restart). HPA is more common and safer. Don't use HPA and VPA on the same metric — they conflict." },
+            { "q": "What is KEDA?", "a": "KEDA (Kubernetes Event-Driven Autoscaling) extends HPA with event-driven scaling. It can scale based on external metrics: queue length (RabbitMQ, Kafka), HTTP requests, cron schedules, database queries, and 50+ scalers. It can scale to zero, which HPA can't." }
+          ],
+          "tips": [
+            "Set HPA target CPU utilization to 60-80% — too low wastes resources, too high can't handle spikes.",
+            "Use KEDA for event-driven workloads — it supports scaling to zero and many external metrics sources."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-observability",
+      "title": "Observability",
+      "order": 12,
+      "topics": [
+        {
+          "id": "health-probes",
+          "title": "Health Probes",
+          "description": "Kubernetes uses three types of probes to determine container health: Liveness (restart if unhealthy), Readiness (remove from Service if not ready), and Startup (delay other probes until app starts). Probes can use HTTP, TCP, gRPC, or command checks.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Health Probes", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "Liveness and Readiness", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "K8s Probes Explained", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Configure Probes", "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/", "type": "official" },
+            { "title": "Pod Lifecycle Probes", "url": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes", "type": "official" },
+            { "title": "Health Check Best Practices", "url": "https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are the three types of K8s probes?", "a": "Liveness: checks if container is alive, restarts if failing (detects deadlocks). Readiness: checks if container can serve traffic, removes from Service endpoints if failing (warm-up, dependency down). Startup: delays liveness/readiness checks for slow-starting apps (legacy apps, large datasets)." },
+            { "q": "What happens if a readiness probe fails?", "a": "The Pod is removed from the Service's endpoints — it stops receiving traffic. The Pod is NOT restarted (that's liveness probe's job). Once readiness passes again, the Pod is added back. This prevents sending traffic to Pods that aren't ready." },
+            { "q": "How should you configure probe timings?", "a": "initialDelaySeconds: time before first probe (give app time to start). periodSeconds: check interval (10-30s typical). timeoutSeconds: probe timeout. failureThreshold: consecutive failures before action. successThreshold: consecutive successes to mark as healthy. Start with conservative values and tune." }
+          ],
+          "tips": [
+            "Always configure both liveness and readiness probes for production workloads.",
+            "Don't make liveness probes check dependencies — if your DB is down, restarting your app won't fix it."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "monitoring-prometheus",
+          "title": "Monitoring (Prometheus/Grafana)",
+          "description": "Prometheus is the standard for Kubernetes monitoring — it scrapes metrics from targets, stores time-series data, and supports alerting via Alertmanager. Grafana provides visualization dashboards. The kube-prometheus-stack Helm chart deploys the complete monitoring stack.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Prometheus & Grafana on K8s", "url": "https://www.youtube.com/watch?v=QoDqxm7ybLc", "channel": "TechWorld with Nana", "duration": "25:33" },
+            { "title": "K8s Monitoring Setup", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Prometheus Tutorial", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Prometheus", "url": "https://prometheus.io/docs/introduction/overview/", "type": "official" },
+            { "title": "Grafana", "url": "https://grafana.com/docs/grafana/latest/", "type": "official" },
+            { "title": "kube-prometheus-stack", "url": "https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack", "type": "tool" }
+          ],
+          "interviewQuestions": [
+            { "q": "How does Prometheus monitoring work in Kubernetes?", "a": "Prometheus uses a pull model — it scrapes metrics endpoints (/metrics) from Pods, Services, and nodes at configured intervals. Service discovery automatically finds targets via K8s API. Metrics are stored as time-series. AlertManager handles alerts. Grafana visualizes dashboards." },
+            { "q": "What K8s metrics should you monitor?", "a": "Node level: CPU, memory, disk, network. Pod level: CPU/memory usage vs requests/limits, restarts, OOM kills. Application: request rate, error rate, latency (RED method). Cluster: API server latency, etcd health, scheduling latency, Pod pending count." },
+            { "q": "What is the USE and RED method?", "a": "USE (for infrastructure): Utilization, Saturation, Errors — per resource (CPU, memory, disk, network). RED (for services): Rate (requests/sec), Errors (failed requests), Duration (latency). Together they provide comprehensive observability." }
+          ],
+          "tips": [
+            "Install kube-prometheus-stack via Helm — it deploys Prometheus, Grafana, Alertmanager, and pre-configured dashboards.",
+            "Monitor the four golden signals: latency, traffic, errors, and saturation."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-helm",
+      "title": "Helm",
+      "order": 13,
+      "topics": [
+        {
+          "id": "helm-basics",
+          "title": "Helm Charts & Repositories",
+          "description": "Helm is the package manager for Kubernetes. Charts are packages of pre-configured K8s resources. Helm uses templating (Go templates) to parameterize YAML manifests with values files. This enables reusable, shareable, and configurable K8s deployments.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "Helm Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=-ykwb1d0DXU", "channel": "TechWorld with Nana", "duration": "23:44" },
+            { "title": "Helm Charts Explained", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Helm 3 Deep Dive", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Helm Docs", "url": "https://helm.sh/docs/", "type": "official" },
+            { "title": "Artifact Hub", "url": "https://artifacthub.io/", "type": "tool" },
+            { "title": "Chart Development Guide", "url": "https://helm.sh/docs/chart_template_guide/", "type": "official" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is Helm and why use it?", "a": "Helm is K8s's package manager. Charts are packages of templated K8s YAML manifests. Benefits: 1) Parameterized configs (values.yaml), 2) Versioned releases with rollback, 3) Dependency management, 4) Reusable across environments (dev/staging/prod), 5) Huge ecosystem of community charts." },
+            { "q": "What is a Helm chart structure?", "a": "Chart.yaml (metadata, version, dependencies), values.yaml (default configuration), templates/ (Go-templated K8s YAML), charts/ (dependency charts), templates/NOTES.txt (post-install instructions). Templates use {{ .Values.key }} syntax to inject values." },
+            { "q": "How do you manage Helm releases?", "a": "helm install (deploy), helm upgrade (update), helm rollback (revert), helm uninstall (remove), helm list (show releases), helm history (show revisions). Each install/upgrade creates a new revision. Releases are namespaced and stored as K8s secrets." }
+          ],
+          "tips": [
+            "Use 'helm template' to preview rendered YAML before installing — catch errors early.",
+            "Create a values-prod.yaml and values-dev.yaml for environment-specific overrides."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "k8s-advanced",
+      "title": "Advanced Topics",
+      "order": 14,
+      "topics": [
+        {
+          "id": "crds-operators",
+          "title": "CRDs & Operators",
+          "description": "Custom Resource Definitions (CRDs) extend the Kubernetes API with your own resource types. Operators are controllers that use CRDs to manage complex applications (databases, message queues) using K8s-native patterns. They encode operational knowledge into software.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "K8s Operators Explained", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "CRDs Tutorial", "url": "https://www.youtube.com/watch?v=azuwXALfyRg", "channel": "KodeKloud", "duration": "19:33" },
+            { "title": "Building K8s Operators", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "Custom Resources", "url": "https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/", "type": "official" },
+            { "title": "Operator Pattern", "url": "https://kubernetes.io/docs/concepts/extend-kubernetes/operator/", "type": "official" },
+            { "title": "OperatorHub", "url": "https://operatorhub.io/", "type": "tool" }
+          ],
+          "interviewQuestions": [
+            { "q": "What are CRDs?", "a": "Custom Resource Definitions extend the K8s API with new resource types. Once you create a CRD (e.g., kind: PostgresCluster), you can use kubectl to create, get, and delete instances just like built-in resources. CRDs are the foundation for the Operator pattern." },
+            { "q": "What is the Operator pattern?", "a": "An Operator is a custom controller that watches CRDs and automates complex application lifecycle management. It encodes human operational knowledge (backup, failover, scaling, upgrades) into software. Examples: CloudNativePG (PostgreSQL), Strimzi (Kafka), cert-manager (TLS)." },
+            { "q": "When should you use an Operator vs Helm?", "a": "Helm: deployment and configuration of applications (install once, upgrade periodically). Operators: ongoing management of stateful/complex applications (automated backups, failover, scaling, self-healing). Operators are ideal for databases, message queues, and distributed systems." }
+          ],
+          "tips": [
+            "Check OperatorHub.io before building your own — there are operators for most popular applications.",
+            "Use Operator SDK or Kubebuilder if you need to build a custom operator."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "gitops",
+          "title": "GitOps (ArgoCD/Flux)",
+          "description": "GitOps uses Git as the single source of truth for declarative infrastructure. Changes are made via pull requests, and a GitOps tool (ArgoCD, Flux) automatically syncs the cluster state with the Git repository. This provides audit trails, easy rollbacks, and secure deployments.",
+          "isOptional": false,
+          "youtubeVideos": [
+            { "title": "ArgoCD Tutorial", "url": "https://www.youtube.com/watch?v=MeU5_k9ssrs", "channel": "TechWorld with Nana", "duration": "28:33" },
+            { "title": "GitOps Explained", "url": "https://www.youtube.com/watch?v=EQNO_kM96Mo", "channel": "TechWorld with Nana", "duration": "15:22" },
+            { "title": "Flux CD Tutorial", "url": "https://www.youtube.com/watch?v=oXVrhdqv7mw", "channel": "That DevOps Guy", "duration": "16:22" }
+          ],
+          "resources": [
+            { "title": "ArgoCD", "url": "https://argo-cd.readthedocs.io/en/stable/", "type": "official" },
+            { "title": "Flux CD", "url": "https://fluxcd.io/docs/", "type": "official" },
+            { "title": "GitOps Principles", "url": "https://opengitops.dev/", "type": "article" }
+          ],
+          "interviewQuestions": [
+            { "q": "What is GitOps?", "a": "GitOps is a methodology where Git is the single source of truth for infrastructure and application config. A GitOps operator (ArgoCD/Flux) continuously monitors a Git repo and ensures the cluster state matches the repo. Changes go through PRs with reviews, creating an audit trail." },
+            { "q": "What is the difference between ArgoCD and Flux?", "a": "ArgoCD: has a Web UI, application-centric model, supports multi-cluster, great for teams that want visual management. Flux: Git-centric, CLI-driven, native Helm/Kustomize support, lighter weight. Both are CNCF graduated projects. ArgoCD is more popular for enterprise use." },
+            { "q": "What are the benefits of GitOps over kubectl apply?", "a": "1) Git as audit log (who changed what, when, why), 2) Easy rollbacks (git revert), 3) PR-based reviews for infra changes, 4) Drift detection (cluster matches Git), 5) Self-healing (auto-reconcile), 6) No direct kubectl access needed, 7) Consistent multi-environment deployment." }
+          ],
+          "tips": [
+            "Start with ArgoCD — it has an excellent Web UI and is the most widely adopted GitOps tool.",
+            "Separate app code repos from GitOps config repos for clean separation of concerns."
+          ],
+          "subtopics": []
+        }
+      ]
+    }
+  ]
+}

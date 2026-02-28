@@ -1,0 +1,70 @@
+@model LessonPlayViewModel
+@{
+    ViewData["Title"] = Model.Lesson.Title;
+    Layout = "_LayoutLesson";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/lesson.css" asp-append-version="true" />
+}
+
+<!-- Lesson Header -->
+<div class="dq-lesson-header" style="--track-color: @Model.Track.ColorHex">
+    <div class="container d-flex align-items-center gap-3">
+        <form asp-controller="Lesson" asp-action="Abandon" asp-route-id="@Model.Lesson.Id"
+              method="post" class="d-inline" id="abandonForm">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="dq-abandon-btn" title="Quit lesson">✕</button>
+        </form>
+
+        <div class="dq-lesson-progress flex-grow-1">
+            <div class="dq-lesson-progress-bar">
+                <div class="dq-lesson-progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="dq-hearts" id="livesDisplay">
+            @for (int i = 0; i < Model.LessonSession.LivesRemaining; i++) { <span class="dq-heart">❤️</span> }
+            @for (int i = Model.LessonSession.LivesRemaining; i < 3; i++) { <span class="dq-heart dq-heart--lost">🖤</span> }
+        </div>
+    </div>
+</div>
+
+<!-- Question Area -->
+<div class="dq-question-area container" id="questionArea">
+    <div class="dq-loading text-center py-5">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="mt-2 text-muted">Loading question...</div>
+    </div>
+</div>
+
+<!-- Check / Continue Button -->
+<div class="dq-action-bar" id="actionBar" style="display: none">
+    <div class="container">
+        <button id="checkBtn" class="dq-btn-primary w-100" disabled>Check</button>
+    </div>
+</div>
+
+<!-- Feedback Banner -->
+<div class="dq-feedback-banner" id="feedbackBanner" style="display: none">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3">
+            <span class="dq-feedback-icon" id="feedbackIcon"></span>
+            <div>
+                <div class="dq-feedback-label" id="feedbackLabel"></div>
+                <div class="dq-feedback-explanation" id="feedbackExplanation"></div>
+            </div>
+        </div>
+        <button id="continueBtn" class="dq-btn-continue mt-3 w-100">Continue</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const LESSON_ID = @Model.Lesson.Id;
+        const TOTAL_QUESTIONS = @Model.TotalQuestions;
+    </script>
+    <script src="~/js/lesson-player.js" asp-append-version="true"></script>
+}

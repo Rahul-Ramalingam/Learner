@@ -1,0 +1,118 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container py-4">
+
+    <!-- Profile Header -->
+    <div class="dq-profile-header text-center mb-5">
+        <div class="dq-profile-avatar">🧑‍💻</div>
+        <h2 class="dq-profile-level-title">@Model.LevelTitle</h2>
+        <div class="dq-profile-level">Level @Model.Progress.Level</div>
+
+        <div class="dq-profile-xp-wrap mt-3">
+            <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>@Model.XpAtStartOfLevel XP</span>
+                <span>@Model.Progress.TotalXp / @Model.XpForNextLevel XP</span>
+            </div>
+            <div class="dq-progress-bar dq-progress-bar--lg">
+                <div class="dq-progress-fill" style="width: @Model.LevelProgressPercent.ToString("F0")%"></div>
+            </div>
+        </div>
+
+        <div class="dq-profile-stats-row mt-4">
+            <div class="dq-stat">
+                <span class="dq-stat-value">@Model.Progress.TotalXp</span>
+                <span class="dq-stat-label">Total XP</span>
+            </div>
+            <div class="dq-stat">
+                <span class="dq-stat-value">@Model.TotalLessonsCompleted</span>
+                <span class="dq-stat-label">Lessons Done</span>
+            </div>
+            <div class="dq-stat">
+                <span class="dq-stat-value">@Model.TotalPerfectLessons</span>
+                <span class="dq-stat-label">Perfect</span>
+            </div>
+            <div class="dq-stat">
+                <span class="dq-stat-value">@(Model.Progress.CurrentStreak > 0 ? "🔥 " + Model.Progress.CurrentStreak : "—")</span>
+                <span class="dq-stat-label">Day Streak</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Track Progress Column -->
+        <div class="col-lg-7">
+            <h4 class="dq-section-title mb-3">Track Progress</h4>
+            @foreach (var stat in Model.TrackStats)
+            {
+                <div class="dq-track-stat-card" style="--track-color: @stat.Track.ColorHex">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <span style="font-size: 1.5rem">@stat.Track.Emoji</span>
+                        <div class="flex-grow-1">
+                            <div class="dq-track-stat-name">@stat.Track.Name</div>
+                            <div class="small text-muted">
+                                @stat.CompletedLessons / @stat.TotalLessons lessons
+                                @if (stat.PerfectLessons > 0)
+                                {
+                                    <span class="ms-2">⭐ @stat.PerfectLessons perfect</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="dq-track-stat-xp">@stat.XpEarned XP</div>
+                            @if (stat.IsComplete)
+                            {
+                                <span class="badge bg-success">Complete ✅</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="dq-progress-bar">
+                        <div class="dq-progress-fill" style="width: @stat.CompletionPercent.ToString("F0")%"></div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Achievements Column -->
+        <div class="col-lg-5">
+            <h4 class="dq-section-title mb-3">Achievements (@Model.EarnedAchievements.Count / @(Model.EarnedAchievements.Count + Model.LockedAchievements.Count))</h4>
+
+            @foreach (var a in Model.EarnedAchievements)
+            {
+                <div class="dq-achievement-item dq-achievement-item--earned" style="--badge-color: @a.BadgeColorHex">
+                    <span class="dq-ach-emoji">@a.Emoji</span>
+                    <div>
+                        <div class="dq-ach-title">@a.Title</div>
+                        <div class="dq-ach-desc">@a.Description</div>
+                    </div>
+                    <span class="dq-ach-check ms-auto">✅</span>
+                </div>
+            }
+
+            @foreach (var a in Model.LockedAchievements)
+            {
+                <div class="dq-achievement-item dq-achievement-item--locked">
+                    <span class="dq-ach-emoji" style="filter: grayscale(1) opacity(.4)">@a.Emoji</span>
+                    <div>
+                        <div class="dq-ach-title text-muted">@a.Title</div>
+                        <div class="dq-ach-desc text-muted">@a.Description</div>
+                    </div>
+                    <span class="ms-auto text-muted">🔒</span>
+                </div>
+            }
+
+            <!-- Reset Button -->
+            <div class="mt-5 text-center">
+                <form asp-controller="Profile" asp-action="Reset" method="post"
+                      onsubmit="return confirm('Reset all progress? This cannot be undone.')">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        🗑️ Reset All Progress
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,660 @@
+{
+  "slug": "system-design",
+  "title": "System Design Roadmap",
+  "description": "Master system design from fundamentals to designing large-scale distributed systems for interviews and real-world applications.",
+  "emoji": "🏗️",
+  "colorHex": "#6C5CE7",
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "order": 1,
+      "topics": [
+        {
+          "id": "what-is-system-design",
+          "title": "What is System Design?",
+          "description": "System design is the process of defining the architecture, components, modules, interfaces, and data for a system to satisfy specified requirements. It involves making high-level decisions about how different parts of a system interact.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "What is System Design?",
+              "url": "https://www.youtube.com/watch?v=MbjObHmDbZo",
+              "channel": "ByteByteGo",
+              "duration": "6:10"
+            },
+            {
+              "title": "System Design Introduction",
+              "url": "https://www.youtube.com/watch?v=FSR1s2b-l_I",
+              "channel": "Gaurav Sen",
+              "duration": "8:25"
+            }
+          ],
+          "resources": [
+            {
+              "title": "System Design Roadmap",
+              "url": "https://roadmap.sh/system-design",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What is system design?",
+              "a": "The process of defining architecture and modules for a scalable system."
+            }
+          ],
+          "tips": [
+            "Always clarify requirements first."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "how-to-approach",
+          "title": "How to approach System Design?",
+          "description": "A systematic approach to solving system design problems includes gathering requirements, estimating scale, designing the high-level architecture, diving into core components, and addressing bottlenecks.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "How to approach System Design Interviews",
+              "url": "https://www.youtube.com/watch?v=bUHFg8CZFws",
+              "channel": "Gaurav Sen",
+              "duration": "14:20"
+            }
+          ],
+          "resources": [
+            {
+              "title": "System Design Interview Framework",
+              "url": "https://bytebytego.com/",
+              "type": "course"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What are the steps in a system design interview?",
+              "a": "Understand requirements, capacity planning, high level design, low level design, bottlenecks."
+            }
+          ],
+          "tips": [
+            "Never jump straight to the architecture without clarifying functional and non-functional requirements."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "core-concepts",
+      "title": "Core Concepts",
+      "order": 2,
+      "topics": [
+        {
+          "id": "performance-vs-scalability",
+          "title": "Performance vs Scalability",
+          "description": "A service is scalable if it results in increased performance in a manner proportional to resources added.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Scalability vs Performance",
+              "url": "https://www.youtube.com/watch?v=-W9F__D3oY4",
+              "channel": "Hussein Nasser",
+              "duration": "15:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Scalability for Dummies",
+              "url": "https://www.lecloud.net/post/7295452622/scalability-for-dummies-part-1-clones",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "Difference between performance and scalability?",
+              "a": "Performance is about a single user's experience (speed). Scalability is maintaining performance as users increase."
+            }
+          ],
+          "tips": [
+            "Always design for scalability, but optimize for performance when bottlenecks become apparent."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "latency-vs-throughput",
+          "title": "Latency vs Throughput",
+          "description": "Latency is the time to perform some action or to produce some result. Throughput is the number of such actions or results per unit of time.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Latency vs Throughput",
+              "url": "https://www.youtube.com/watch?v=wY_CUkUvZJw",
+              "channel": "Gaurav Sen",
+              "duration": "9:30"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Understanding Latency and Throughput",
+              "url": "https://systemdesignprimer.com/latency-vs-throughput",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "How to improve throughput?",
+              "a": "By increasing parallelism, adding cache, horizontally scaling the servers."
+            }
+          ],
+          "tips": [
+            "Aim for maximum throughput with acceptable latency in most web systems."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "availability-consistency",
+          "title": "Availability vs Consistency (CAP Theorem)",
+          "description": "CAP theorem states that a distributed system cannot simultaneously be consistent, available, and partition tolerant (choose 2).",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "CAP Theorem",
+              "url": "https://www.youtube.com/watch?v=k-Yaq8AHlFA",
+              "channel": "ByteByteGo",
+              "duration": "6:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "An Illustrated Proof of CAP Theorem",
+              "url": "https://mwhittaker.github.io/blog/an_illustrated_proof_of_the_cap_theorem/",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What happens in a network partition for a CP system?",
+              "a": "The system denies requests (becomes unavailable) to keep the data consistent across nodes."
+            }
+          ],
+          "tips": [
+            "Most major cloud apps choose AP or eventual consistency."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "patterns-strategies",
+      "title": "Patterns & Strategies",
+      "order": 3,
+      "topics": [
+        {
+          "id": "consistency-patterns",
+          "title": "Consistency Patterns",
+          "description": "Strong, eventual, and weak consistency patterns.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Eventual vs Strong Consistency",
+              "url": "https://www.youtube.com/watch?v=VpjiA_Fnu60",
+              "channel": "Hussein Nasser",
+              "duration": "10:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Consistency Patterns",
+              "url": "https://github.com/donnemartin/system-design-primer",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "When to use eventual consistency?",
+              "a": "When high availability and low latency are more important than absolute correctness right away (e.g. social media feeds)."
+            }
+          ],
+          "tips": [
+            "Always clarify consistency models when discussing DBs."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "availability-patterns",
+          "title": "Availability Patterns",
+          "description": "Fail-over (Active-Active, Active-Passive) and Replication.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Active-Active vs Active-Passive",
+              "url": "https://www.youtube.com/watch?v=0kFh_gGzTq0",
+              "channel": "Gaurav Sen",
+              "duration": "8:20"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Availability Patterns",
+              "url": "https://roadmap.sh/system-design",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What is Active-Active?",
+              "a": "Traffic goes to multiple nodes at the same time to ensure no single point of failure."
+            }
+          ],
+          "tips": [
+            "Redundancy is the mathematical key to high availability."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "infrastructure-networking",
+      "title": "Infrastructure & Networking",
+      "order": 4,
+      "topics": [
+        {
+          "id": "dns",
+          "title": "Domain Name System (DNS)",
+          "description": "DNS maps domain names to IP addresses.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "How DNS works?",
+              "url": "https://www.youtube.com/watch?v=2ZUxoi7YNgs",
+              "channel": "ByteByteGo",
+              "duration": "5:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "DNS Explained",
+              "url": "https://howdns.works/",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "How does DNS resolution work?",
+              "a": "Browser cache -> OS cache -> Resolver -> Root server -> TLD server -> Authoritative server."
+            }
+          ],
+          "tips": [
+            "Mention DNS routing policies (Geographic, Weighted) in global designs."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "cdns",
+          "title": "Content Delivery Networks (CDNs)",
+          "description": "Globally distributed network of proxy servers for fast delivery of assets.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "What is a CDN?",
+              "url": "https://www.youtube.com/watch?v=8zX0RAH7_EQ",
+              "channel": "Gaurav Sen",
+              "duration": "6:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "CDN Guide",
+              "url": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "Push vs Pull CDN?",
+              "a": "Pull: CDN requests from origin when cache misses. Push: You actively upload to CDN."
+            }
+          ],
+          "tips": [
+            "Always use CDNs for static assets like images, JS, CSS in your architecture diagrams."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "load-balancers",
+          "title": "Load Balancers",
+          "description": "Distributes incoming network traffic across a group of backend servers.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Load Balancing Explained",
+              "url": "https://www.youtube.com/watch?v=K0Ta65OqXkI",
+              "channel": "ByteByteGo",
+              "duration": "8:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "HAProxy Load Balancing Basics",
+              "url": "https://www.haproxy.com/blog/load-balancing-basics",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "Layer 4 vs Layer 7 load balancing?",
+              "a": "L4 routes based on IP info (TCP/UDP). L7 routes based on HTTP headers/content."
+            }
+          ],
+          "tips": [
+            "Understand Round Robin vs Least Connections."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "architecture-communication",
+      "title": "Architecture & Communication",
+      "order": 5,
+      "topics": [
+        {
+          "id": "application-layer",
+          "title": "Application Layer",
+          "description": "Monoliths vs Microservices, and Service Discovery.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Microservices vs Monoliths",
+              "url": "https://www.youtube.com/watch?v=1xo-0gCVhCU",
+              "channel": "Kastio",
+              "duration": "5:30"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Microservices Guide",
+              "url": "https://martinfowler.com/microservices/",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "How does service discovery work in microservices?",
+              "a": "Using a unified registry (like Consul or Eureka) where instances register their IPs for dynamic routing."
+            }
+          ],
+          "tips": [
+            "Always justify why you chose microservices over a well-designed modular monolith."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "asynchronism",
+          "title": "Asynchronism",
+          "description": "Back pressure, task queues, and message queues allow decouple components.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Message Queues Explained",
+              "url": "https://www.youtube.com/watch?v=oUJbuFMyBDk",
+              "channel": "Gaurav Sen",
+              "duration": "14:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "RabbitMQ vs Kafka",
+              "url": "https://www.confluent.io/learn/kafka-vs-rabbitmq/",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "When to use Kafka over RabbitMQ?",
+              "a": "Kafka is best for high throughput event streaming and log aggregation. RabbitMQ is best for complex message routing."
+            }
+          ],
+          "tips": [
+            "Use queues to handle traffic spikes and build reliable asynchronous workflows."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "communication",
+          "title": "Communication Protocols",
+          "description": "HTTP, TCP, UDP, RPC, REST, gRPC, and GraphQL.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "REST vs GraphQL vs gRPC",
+              "url": "https://www.youtube.com/watch?v=yxgKWfxeX24",
+              "channel": "Fireship",
+              "duration": "9:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "gRPC vs REST",
+              "url": "https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "Why use gRPC over REST?",
+              "a": "gRPC uses HTTP/2 and Protobuf for multiplexing and smaller binary payloads, making inter-microservice communication much faster."
+            }
+          ],
+          "tips": [
+            "Choose REST for public APIs and gRPC for internal service-to-service communication."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "data-management",
+      "title": "Data Management",
+      "order": 6,
+      "topics": [
+        {
+          "id": "databases-sql-nosql",
+          "title": "Databases (SQL vs NoSQL)",
+          "description": "RDBMS (Replication, Sharding, Denormalization) and NoSQL (Key-Value, Document, Wide Column, Graph).",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "SQL vs NoSQL",
+              "url": "https://www.youtube.com/watch?v=zsjvFFKOm3c",
+              "channel": "Gaurav Sen",
+              "duration": "10:15"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Database Sharding",
+              "url": "https://www.digitalocean.com/community/tutorials/understanding-database-sharding",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What is Sharding vs Partitioning?",
+              "a": "Partitioning divides a table into multiple parts. Sharding places these parts on entirely different physical database servers."
+            }
+          ],
+          "tips": [
+            "Sharding should be your last resort due to cross-shard join complexity."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "caching",
+          "title": "Caching",
+          "description": "Strategies (Write-through, Write-behind, Cache Aside) and Types (CDN, DB, App).",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Caching Strategies",
+              "url": "https://www.youtube.com/watch?v=dGAgxozNWFE",
+              "channel": "ByteByteGo",
+              "duration": "7:45"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Redis vs Memcached",
+              "url": "https://aws.amazon.com/elasticache/redis-vs-memcached/",
+              "type": "article"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What is cache stampede and how do you prevent it?",
+              "a": "When a hot key expires and concurrent requests hit the DB simultaneously. Fixed by using a distributed lock."
+            }
+          ],
+          "tips": [
+            "Cache eviction policies (LRU, LFU) are common interview questions."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "operations-optimization",
+      "title": "Operations & Optimization",
+      "order": 7,
+      "topics": [
+        {
+          "id": "performance-antipatterns",
+          "title": "Performance Antipatterns",
+          "description": "Common pitfalls like Busy Database, Chatty I/O, Monolithic Persistence, and Noisy Neighbor.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "System Design Anti-patterns",
+              "url": "https://www.youtube.com/watch?v=Fpqm2m8Fh1g",
+              "channel": "InfoQ",
+              "duration": "45:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Performance Antipatterns for Cloud Apps",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/antipatterns/",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What is the Noisy Neighbor problem?",
+              "a": "In a multi-tenant environment, one tenant uses a massive amount of shared resources, starving others."
+            }
+          ],
+          "tips": [
+            "Always plan for multi-tenancy throttling in SaaS architectures."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "monitoring",
+          "title": "Monitoring",
+          "description": "Health, Availability, Performance, Security metrics, Logging, and Alerting.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Prometheus & Grafana under 10 minutes",
+              "url": "https://www.youtube.com/watch?v=h4Sl21AKiDg",
+              "channel": "TechWorld with Nana",
+              "duration": "12:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Google SRE Principles",
+              "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "What are the 4 golden signals of monitoring?",
+              "a": "Latency, Traffic, Errors, and Saturation."
+            }
+          ],
+          "tips": [
+            "Always include a monitoring layer (e.g. Prometheus + Grafana/ELK) in your diagrams."
+          ],
+          "subtopics": []
+        }
+      ]
+    },
+    {
+      "id": "advanced-cloud-design-patterns",
+      "title": "Advanced Cloud Design Patterns",
+      "order": 8,
+      "topics": [
+        {
+          "id": "data-cloud-patterns",
+          "title": "Data Management & Messaging Patterns",
+          "description": "Event Sourcing, CQRS, Materialized View, Sharding, Publisher/Subscriber.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "CQRS and Event Sourcing",
+              "url": "https://www.youtube.com/watch?v=9a1PqwFrMP0",
+              "channel": "GOTO Conferences",
+              "duration": "48:00"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Azure Cloud Design Patterns",
+              "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "Explain CQRS.",
+              "a": "Command Query Responsibility Segregation separates read and update operations for a data store to maximize performance, scalability, and security."
+            }
+          ],
+          "tips": [
+            "Only use Event Sourcing when you absolutely need a strict audit trail or playback functionality."
+          ],
+          "subtopics": []
+        },
+        {
+          "id": "reliability-resiliency",
+          "title": "Reliability & Resiliency",
+          "description": "Circuit Breaker, Bulkhead, Throttling, Leader Election, Sidecar, Strangler Fig.",
+          "isOptional": false,
+          "youtubeVideos": [
+            {
+              "title": "Circuit Breaker Pattern",
+              "url": "https://www.youtube.com/watch?v=2v-pG_C_rT8",
+              "channel": "Defog Tech",
+              "duration": "10:30"
+            }
+          ],
+          "resources": [
+            {
+              "title": "Resiliency Patterns",
+              "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/resiliency.html",
+              "type": "official"
+            }
+          ],
+          "interviewQuestions": [
+            {
+              "q": "How does the Circuit Breaker pattern work?",
+              "a": "It intercepts requests to a failing service. If failures cross a threshold, it 'trips', immediately failing subsequent requests to prevent overloading the broken service."
+            }
+          ],
+          "tips": [
+            "Mention retries with exponential backoff and jitter alongside Circuit Breakers."
+          ],
+          "subtopics": []
+        }
+      ]
+    }
+  ]
+}
