@@ -9,6 +9,8 @@
         doneTopics += CountDone(s.Topics, Model.Slug, topicStatus);
     }
     var progressPct = totalTopics > 0 ? Math.Round((double)doneTopics / totalTopics * 100) : 0;
+    var level = (int)Math.Floor((double)doneTopics / Math.Max(1, totalTopics) * 10) + 1;
+    level = Math.Min(level, 10);
 }
 
 @functions {
@@ -35,11 +37,22 @@
         var key = slug + ":" + topicId;
         if (!status.ContainsKey(key)) return "";
         return status[key] switch {
-            "done" => "rm-topic--done",
+            "done"        => "rm-topic--done",
             "in_progress" => "rm-topic--in-progress",
-            "skip" => "rm-topic--skip",
-            _ => ""
+            "skip"        => "rm-topic--skip",
+            _             => ""
         };
+    }
+
+    string GetMotivationalMessage(double pct) {
+        if (pct == 0)   return "Your quest begins! Every expert was once a beginner. 🚀";
+        if (pct < 15)   return "Off to a great start! The journey of a thousand miles begins with a single step. 💪";
+        if (pct < 30)   return "You're building momentum! Keep going, you've got this! 🔥";
+        if (pct < 50)   return "Solid progress! You're becoming a real DevOps warrior! ⚔️";
+        if (pct < 65)   return "Halfway hero! The hardest part is behind you — push forward! 🌟";
+        if (pct < 80)   return "Almost there! You're in the top tier of learners. Incredible! 🏆";
+        if (pct < 100)  return "So close to mastery! One final push — you've earned this! 🎯";
+        return "🎉 LEGENDARY! You've conquered the entire roadmap! You are unstoppable!";
     }
 }
 
@@ -49,32 +62,54 @@
 
 <div class="container" data-roadmap-slug="@Model.Slug" style="--rm-track-color: @Model.ColorHex">
 
-    <a asp-controller="Home" asp-action="Index" class="rm-back"><i class="bi bi-arrow-left"></i> Back to Tracks</a>
+    <a asp-controller="Home" asp-action="Index" class="rm-back">
+        <i class="bi bi-arrow-left"></i> Back to Tracks
+    </a>
 
     <!-- Hero -->
     <div class="rm-hero">
+        <div class="rm-level-badge">
+            ⚡ Level <span id="rmLevel">@level</span> DevOps Learner
+        </div>
         <span class="rm-hero-emoji">@Model.Emoji</span>
         <h1 class="rm-hero-title">@Model.Title</h1>
         <p class="rm-hero-desc">@Model.Description</p>
         <div class="rm-hero-stats">
             <div class="rm-hero-stat">
-                <strong>@Model.Sections.Count</strong> Sections
+                <span class="rm-stat-icon">📚</span>
+                <strong>@Model.Sections.Count</strong>
+                <span>Stages</span>
             </div>
             <div class="rm-hero-stat">
-                <strong>@totalTopics</strong> Topics
+                <span class="rm-stat-icon">🎯</span>
+                <strong>@totalTopics</strong>
+                <span>Quests</span>
             </div>
             <div class="rm-hero-stat">
-                <strong id="rmDoneCount">@doneTopics</strong> Completed
+                <span class="rm-stat-icon">⭐</span>
+                <strong id="rmDoneCount">@doneTopics</strong>
+                <span>Cleared</span>
             </div>
         </div>
+        <p class="rm-motivational" id="rmMotivational">@GetMotivationalMessage(progressPct)</p>
     </div>
 
-    <!-- Overall Progress -->
-    <div class="rm-overall-progress">
-        <span id="rmProgressPct">@progressPct%</span>
-        <div class="rm-overall-progress-bar">
-            <div class="rm-overall-progress-fill" id="rmProgressFill"
-                 style="width: @progressPct%; background: @Model.ColorHex"></div>
+    <!-- XP Bar -->
+    <div class="rm-xp-container">
+        <div class="rm-xp-header">
+            <span class="rm-xp-label">⚡ XP Progress</span>
+            <span class="rm-xp-pct"><span id="rmProgressPct">@progressPct</span>%</span>
+        </div>
+        <div class="rm-xp-bar-track">
+            <div class="rm-xp-bar-fill" id="rmProgressFill"
+                 style="width: @progressPct%; background: linear-gradient(90deg, @Model.ColorHex, color-mix(in srgb, @Model.ColorHex 65%, #f59e0b))"></div>
+        </div>
+        <div class="rm-xp-milestones">
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
+            <span>100%</span>
         </div>
     </div>
 
@@ -84,10 +119,22 @@
         @foreach (var sect in Model.Sections.OrderBy(s => s.Order))
         {
             sIdx++;
-            <div class="rm-section">
+            var sectTotal = CountTopics(sect.Topics);
+            var sectDone  = CountDone(sect.Topics, Model.Slug, topicStatus);
+            var sectCleared = sectTotal > 0 && sectDone == sectTotal;
+
+            <div class="rm-section @(sectCleared ? "rm-section--cleared" : "")">
                 <div class="rm-section-header" style="background: @Model.ColorHex">
-                    <span class="rm-section-num">@sIdx</span>
-                    @sect.Title
+                    <span class="rm-section-num">STAGE @sIdx</span>
+                    <span class="rm-section-title-text">@sect.Title</span>
+                    @if (sectCleared)
+                    {
+                        <span class="rm-section-clear-badge">✓ CLEARED</span>
+                    }
+                    else
+                    {
+                        <span class="rm-section-progress">@sectDone/@sectTotal</span>
+                    }
                 </div>
                 <div class="rm-topics">
                     @foreach (var topic in sect.Topics)
@@ -125,11 +172,11 @@
                 @if (sect.Project != null)
                 {
                     var diffColor = sect.Project.Difficulty switch {
-                        "beginner" => "#22c55e",
+                        "beginner"     => "#22c55e",
                         "intermediate" => "#f59e0b",
-                        "advanced" => "#f97316",
-                        "expert" => "#ef4444",
-                        _ => "#6366f1"
+                        "advanced"     => "#f97316",
+                        "expert"       => "#ef4444",
+                        _              => "#6366f1"
                     };
                     <div class="rm-project-card" data-project-id="@sect.Project.Id" title="@sect.Project.Title">
                         <div class="rm-project-card-icon">@sect.Project.Icon</div>
@@ -139,7 +186,7 @@
                                 <span class="rm-project-badge" style="background: @diffColor; color: #fff;">@sect.Project.Difficulty</span>
                                 @if (!string.IsNullOrEmpty(sect.Project.EstimatedTime))
                                 {
-                                    <span class="rm-project-time">@sect.Project.EstimatedTime</span>
+                                    <span class="rm-project-time">⏱ @sect.Project.EstimatedTime</span>
                                 }
                             </div>
                         </div>
@@ -153,16 +200,16 @@
         @if (Model.CapstoneProject != null)
         {
             var capDiffColor = Model.CapstoneProject.Difficulty switch {
-                "beginner" => "#22c55e",
+                "beginner"     => "#22c55e",
                 "intermediate" => "#f59e0b",
-                "advanced" => "#f97316",
-                "expert" => "#ef4444",
-                _ => "#6366f1"
+                "advanced"     => "#f97316",
+                "expert"       => "#ef4444",
+                _              => "#6366f1"
             };
             <div class="rm-capstone-card" data-project-id="@Model.CapstoneProject.Id">
                 <div class="rm-capstone-header" style="background: linear-gradient(135deg, @Model.ColorHex, @capDiffColor)">
                     <span class="rm-capstone-icon">@Model.CapstoneProject.Icon</span>
-                    <div class="rm-capstone-label">CAPSTONE PROJECT</div>
+                    <div class="rm-capstone-label">🏆 FINAL BOSS — CAPSTONE PROJECT</div>
                 </div>
                 <div class="rm-capstone-body">
                     <h3 class="rm-capstone-title">@Model.CapstoneProject.Title</h3>
@@ -171,14 +218,16 @@
                         <span class="rm-project-badge" style="background: @capDiffColor; color: #fff;">@Model.CapstoneProject.Difficulty</span>
                         @if (!string.IsNullOrEmpty(Model.CapstoneProject.EstimatedTime))
                         {
-                            <span class="rm-project-time">@Model.CapstoneProject.EstimatedTime</span>
+                            <span class="rm-project-time">⏱ @Model.CapstoneProject.EstimatedTime</span>
                         }
                         @if (Model.CapstoneProject.Tasks?.Count > 0)
                         {
-                            <span class="rm-project-time">@Model.CapstoneProject.Tasks.Count tasks</span>
+                            <span class="rm-project-time">🗺 @Model.CapstoneProject.Tasks.Count tasks</span>
                         }
                     </div>
-                    <div class="rm-capstone-cta" style="background: @Model.ColorHex">Start Capstone →</div>
+                    <div class="rm-capstone-cta" style="background: @Model.ColorHex">
+                        ⚔️ Accept the Challenge →
+                    </div>
                 </div>
             </div>
         }
